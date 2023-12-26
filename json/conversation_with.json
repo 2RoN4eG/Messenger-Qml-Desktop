@@ -1,0 +1,29 @@
+{
+  "messages":[
+    {
+      "peer_id":1024,
+      "text":"Hello, I am Nick",
+      "timestamp":100
+    },
+    {
+      "peer_id":2048,
+      "text":"Hello, I am Albert Einstein and I am genious",
+      "timestamp":100,
+
+      "photo":         {
+          "url":"https://hips.hearstapps.com/hmg-prod/images/albert-einstein-sticks-out-his-tongue-when-asked-by-news-photo-1681316749.jpg",
+          "thumb_hash":""
+      }
+    },
+    {
+      "peer_id":1024,
+      "text":"I know it man",
+      "timestamp":100
+    },
+    {
+      "peer_id":2048,
+      "text":"Ha ha ha",
+      "timestamp":100
+    }
+  ]
+}
