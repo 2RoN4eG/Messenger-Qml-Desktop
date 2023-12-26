@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/Main.qml</file>
+        <file>ui/PeerPreview.qml</file>
+        <file>ui/PeerPreview.qml</file>
+        <file>json/peers.js</file>
+        <file>json/conversation_with.js</file>
+    </qresource>
+</RCC>
