@@ -4,15 +4,13 @@
 
 #include <iostream>
 
-using t_meta = t_fs_meta;
-
 struct t_sorter_by_timestamp {
-    constexpr bool operator()(const t_meta& lhs, const t_meta& rhs) const {
+    constexpr bool operator()(const t_fs_meta& lhs, const t_fs_meta& rhs) const {
         return lhs._timestamp > rhs._timestamp;
     }
 };
 
-using t_sorted_by_timestamp_paths = std::multiset<t_meta>;
+using t_sorted_by_timestamp_paths = std::multiset<t_fs_meta>;
 
 t_sorted_by_timestamp_paths make_sorted_by_timestamp(const std::set<t_path>& paths, const t_fs& fs)
 {
@@ -49,8 +47,6 @@ t_sorted_by_timestamp_paths::iterator get_out_of_capacity_iterator(
 }
 
 //
-//
-//
 
 t_meta_holder_memory::t_meta_holder_memory(t_size minimum_capacity, t_size maximum_capacity, t_cache&& cache)
     : _minimum_capacity { minimum_capacity }
@@ -63,12 +59,12 @@ t_meta_holder_memory::t_meta_holder_memory(t_size minimum_capacity, t_size maxim
 }
 
 bool t_meta_holder_memory::does_exist(const t_path& path) const {
-    return std::ranges::find(_cache, path) != _cache.end();
+    return _does_exist(path);
 }
 
 // const time (O(1))
 void t_meta_holder_memory::do_register(const t_path& path) {
-    _cache.emplace(path);
+    _do_register(path);
 }
 
 // const time (O(1))
@@ -80,9 +76,17 @@ void t_meta_holder_memory::do_unregister(const t_path& path) {
 void t_meta_holder_memory::do_rotate(const t_fs& fs) {
     _do_unregister_out_of_capacity(fs);
     std::vector<t_path> to_remove = std::exchange(_to_remove, {});
-    for (const auto& path : to_remove) {
+    for (const t_path& path : to_remove) {
         fs.do_remove(path);
     }
+}
+
+bool t_meta_holder_memory::_does_exist(const t_path &path) const {
+    return std::ranges::find(_cache, path) != _cache.end();
+}
+
+void t_meta_holder_memory::_do_register(const t_path &path) {
+    _cache.emplace(path);
 }
 
 // const time (O(1))
@@ -90,7 +94,6 @@ void t_meta_holder_memory::_do_unregister(const t_path& path) {
     if (auto it = std::find(_cache.cbegin(), _cache.cend(), path); it != _cache.end()) {
         _cache.erase(it);
     }
-
     _to_remove.emplace_back(path);
 }
 

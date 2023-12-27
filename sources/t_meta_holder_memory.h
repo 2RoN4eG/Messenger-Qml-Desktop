@@ -49,6 +49,10 @@ public:
     void do_rotate(const t_fs& fs) override;
 
 protected:
+    bool _does_exist(const t_path& path) const;
+
+    void _do_register(const t_path& path);
+
     void _do_unregister(const t_path& path);
 
     void _do_unregister_out_of_capacity(const t_fs& fs);

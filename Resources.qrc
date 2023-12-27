@@ -3,7 +3,8 @@
         <file>ui/Main.qml</file>
         <file>ui/PeerPreview.qml</file>
         <file>ui/PeerPreview.qml</file>
-        <file>json/peers.js</file>
-        <file>json/conversation_with.js</file>
+        <file>json/peers.json</file>
+        <file>json/conversations.json</file>
+        <file>ui/Conversation.qml</file>
     </qresource>
 </RCC>

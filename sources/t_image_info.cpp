@@ -8,9 +8,7 @@ t_image_info::t_image_info(const t_url& url, const t_thumb_hash& thumb_hash)
 {
 }
 
-//
 // extra section
-//
 
 bool does_avatar_info_contain_url(const t_image_info& info) {
     return !info._url.isValid();

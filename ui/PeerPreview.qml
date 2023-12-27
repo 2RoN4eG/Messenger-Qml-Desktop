@@ -21,8 +21,8 @@ Rectangle {
             width: 100
             height: parent.height
             source: avatarSource
-            sourceSize.width: 100
-            sourceSize.height: 100
+            sourceSize.width: width
+            sourceSize.height: height
             fillMode: Image.PreserveAspectFit
         }
 

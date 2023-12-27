@@ -17,8 +17,8 @@ public:
     // getting image_info by image_id (image_info::path will be maked using avatar_type)
     virtual t_image_info get_image_info(const t_image_id image_id, const i_path_holder& path_holder) const = 0;
 
-    // setting image_info by image_id
-    virtual void set_image_info(const t_image_id image_id, const t_peer peer, const t_url& url, const t_thumb_hash& thumb_hash) = 0;
+    // setting image_info by image_id and peer_id
+    virtual void set_image_info(const t_image_id image_id, const t_peer_id peer_id, const t_url& url, const t_thumb_hash& thumb_hash) = 0;
 };
 
 //
@@ -35,7 +35,7 @@ public:
 
     t_image_info get_image_info(const t_image_id image_id, const i_path_holder& path_holder) const override;
 
-    void set_image_info(const t_image_id image_id, const t_peer peer, const t_url& url, const t_thumb_hash& thumb_hash) override;
+    void set_image_info(const t_image_id image_id, const t_peer_id peer_id, const t_url& url, const t_thumb_hash& thumb_hash) override;
 
 protected:
     t_image_info_extendeds _image_infos;

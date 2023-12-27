@@ -31,7 +31,6 @@ std::set<t_path> t_fs::get_paths_in_directory(const t_path& root) const {
         if (entry.is_directory()) {
             return;
         }
-
         paths.emplace(entry.path());
     });
     return paths;
@@ -39,15 +38,14 @@ std::set<t_path> t_fs::get_paths_in_directory(const t_path& root) const {
 
 std::set<t_fs_meta> t_fs::get_metas_in_directory(const t_path& root) const {
     using t_entry = std::filesystem::directory_entry;
-    std::set<t_fs_meta> paths;
-    std::ranges::for_each (std::filesystem::recursive_directory_iterator { root }, [&paths](const t_entry& entry) {
+    std::set<t_fs_meta> metas;
+    std::ranges::for_each (std::filesystem::recursive_directory_iterator { root }, [&metas](const t_entry& entry) {
         if (entry.is_directory()) {
             return;
         }
-
-        paths.emplace(entry.path(), entry.file_size(), entry.last_write_time());
+        metas.emplace(entry.path(), entry.file_size(), entry.last_write_time());
     });
-    return paths;
+    return metas;
 }
 
 void t_fs::do_remove(const t_path& path) const {

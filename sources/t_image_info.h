@@ -3,6 +3,8 @@
 
 #include "t_defines.h"
 
+//
+
 class t_image_info {
 public:
     t_image_info(const t_url& url, const t_thumb_hash& thumb_hash);
@@ -25,12 +27,12 @@ public:
 
 class t_image_info_extended {
 public:
-    t_image_info_extended(const t_image_id image_id, const t_peer peer, t_image_info&& image_info);
+    t_image_info_extended(const t_image_id image_id, const t_peer_id peer_id, t_image_info&& image_info);
 
 public:
     const t_image_id _image_id;
 
-    const t_peer _peer;
+    const t_peer_id _peer_id;
 
     t_image_info _image_info;
 };

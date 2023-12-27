@@ -9,7 +9,6 @@ ApplicationWindow {
     visible: true
     title: qsTr("Peer Preview")
 
-
     Row {
         id: row1
         width: 400
@@ -53,6 +52,16 @@ ApplicationWindow {
                     // onTriggered: parent.avatarSource = "image://avatars/3"
                     onTriggered: parent.avatarSource = "image://photos/6"
                 }
+            }
+        }
+
+        Column {
+            id: conversation_column
+            width: 250
+            height: 480
+
+            Conversation {
+                id: conversation_with_photos
             }
         }
     }

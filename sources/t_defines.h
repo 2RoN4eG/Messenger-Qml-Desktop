@@ -61,7 +61,7 @@ using t_bytes               = std::string;
 using t_error               = std::string;
 using t_extra               = std::string;
 
-using t_peer                = t_value_holder<int>;
+using t_peer_id             = t_value_holder<int>;
 
 using t_image_id            = t_value_holder<unsigned long long>;
 using t_avatar_id           = t_image_id;
