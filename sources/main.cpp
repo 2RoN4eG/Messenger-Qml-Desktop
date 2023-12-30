@@ -9,6 +9,8 @@
 #include "t_server_api.h"
 #include "t_fs.h"
 
+#include "t_qt_parse_peer_from_json.h"
+
 #include <QLocale>
 #include <QTranslator>
 #include <QNetworkAccessManager>
@@ -62,7 +64,6 @@ int main(int argc, char *argv[])
     }
 
     const t_peer_id& self = { 1024 };
-
     print(self);
 
     const t_path_aggregator path_aggregator = make_path_aggregator("/Users/2RoN4eG/", self);

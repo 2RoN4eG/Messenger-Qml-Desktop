@@ -42,40 +42,45 @@ protected:
     t_value _value {};
 };
 
-using t_qt_image            = QImage;
-using t_qt_avatar           = t_qt_image;
-using t_qt_photo            = t_qt_image;
-using t_qt_size             = QSize;
-using t_qt_nickname         = QString;
-using t_qt_url              = QUrl;
+using t_qt_image                = QImage;
+using t_qt_avatar               = t_qt_image;
+using t_qt_photo                = t_qt_image;
+using t_qt_size                 = QSize;
+using t_qt_nickname             = QString;
+using t_qt_url                  = QUrl;
 
-using t_path                = std::filesystem::path;
-using t_timestamp           = std::filesystem::file_time_type;
-using t_size                = std::uintmax_t;
-using t_filename            = std::filesystem::path::string_type;
+using t_path                    = std::filesystem::path;
+using t_timestamp               = std::filesystem::file_time_type;
+using t_size                    = std::uintmax_t;
+using t_filename                = std::filesystem::path::string_type;
 
-using t_thumb_hash          = std::string;
-using t_url                 = t_qt_url;
-using t_bytes               = std::string;
+using t_last_message_timestamp  = qint64;
 
-using t_error               = std::string;
-using t_extra               = std::string;
+using t_thumb_hash              = std::string;
+using t_url                     = t_qt_url;
+using t_bytes                   = std::string;
 
-using t_peer_id             = t_value_holder<int>;
+using t_nickname                = std::string;
+using t_text                    = std::string;
 
-using t_image_id            = t_value_holder<unsigned long long>;
-using t_avatar_id           = t_image_id;
-using t_photo_id            = t_image_id;
+using t_error                   = std::string;
+using t_extra                   = std::string;
 
-using t_image_bundle_id     = t_value_holder<long long>;
-using t_avatar_bundle_id    = t_image_bundle_id;
-using t_photo_bundle_id     = t_image_bundle_id;
+using t_peer_id                 = t_value_holder<int>;
 
-using t_protocol            = std::string_view;
-using t_hostname            = std::string_view;
-using t_endpoint            = std::string;
+using t_image_id                = t_value_holder<unsigned long long>;
+using t_avatar_id               = t_image_id;
+using t_photo_id                = t_image_id;
 
-enum t_avatar_type { t_default, t_squared, begin = t_default, end = t_squared };
+using t_image_bundle_id         = t_value_holder<long long>;
+using t_avatar_bundle_id        = t_image_bundle_id;
+using t_photo_bundle_id         = t_image_bundle_id;
+
+using t_protocol                = std::string_view;
+using t_hostname                = std::string_view;
+using t_endpoint                = std::string;
+
+enum t_avatar_type { t_default, t_squared, t_begin = t_default, t_end = t_squared };
 
 constexpr std::string_view to_string(const t_avatar_type avatar_type) {
     switch (avatar_type) {
