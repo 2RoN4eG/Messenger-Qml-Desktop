@@ -91,6 +91,4 @@ public:
     t_peer_models operator()(const std::string_view json) const;
 };
 
-void test_parse_peer_from_json();
-
 #endif // T_QT_PARSE_PEER_FROM_JSON_H
