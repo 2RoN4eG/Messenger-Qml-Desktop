@@ -2,7 +2,7 @@
 
 #include "t_defines.h"
 #include "t_ui_async_avatar_downloading_response.h"
-#include "t_path_maker.h"
+#include "t_path_aggregator.h"
 
 namespace {
 t_avatar_id make_avatar_id(const QString& id) {

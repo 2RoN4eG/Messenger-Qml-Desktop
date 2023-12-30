@@ -2,7 +2,7 @@
 
 #include "t_image_storage_memory.h"
 #include "t_image_info_storage_memory.h"
-#include "t_path_maker.h"
+#include "t_path_aggregator.h"
 
 #include <QMetaType>
 
@@ -14,11 +14,9 @@ namespace {
     }
 }
 
-//
-//
-//
-
 Q_DECLARE_METATYPE(t_avatar_id);
+
+//
 
 t_ui_async_avatar_creating_response::t_ui_async_avatar_creating_response(const i_path_holder& path_holder,
                                                                          const i_image_info_storage& avatar_info_storage,

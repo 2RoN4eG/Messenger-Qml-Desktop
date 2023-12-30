@@ -11,7 +11,7 @@
 
 class i_qt_fs;
 class i_meta_holder;
-class i_avatar_path_maker;
+class i_avatar_path_aggregator;
 class t_meta_holder_memory;
 class t_image_info;
 

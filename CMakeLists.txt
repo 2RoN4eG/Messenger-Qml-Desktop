@@ -18,7 +18,7 @@ add_executable(Messenger
     sources/t_defines.h
     # header and executable section
     sources/t_image_info.h                              sources/t_image_info.cpp
-    sources/t_path_maker.h                              sources/t_path_maker.cpp
+    sources/t_path_aggregator.h                              sources/t_path_aggregator.cpp
     sources/t_fs.h                                      sources/t_fs.cpp
     # in memory
     sources/t_image_storage_memory.h                    sources/t_image_storage_memory.cpp
@@ -35,6 +35,8 @@ add_executable(Messenger
     sources/t_ui_async_avatar_creating_response.h       sources/t_ui_async_avatar_creating_response.cpp
     # network
     sources/t_network_simulator.h                       sources/t_network_simulator.cpp
+    #
+    sources/t_server_api.h                             sources/t_server_api.cpp
     #
     Resources.qrc
 )

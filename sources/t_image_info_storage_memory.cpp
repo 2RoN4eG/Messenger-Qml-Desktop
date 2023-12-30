@@ -1,6 +1,6 @@
 #include "t_image_info_storage_memory.h"
 
-#include "t_path_maker.h"
+#include "t_path_aggregator.h"
 
 //
 

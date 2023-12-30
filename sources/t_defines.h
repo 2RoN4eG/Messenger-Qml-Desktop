@@ -71,6 +71,10 @@ using t_image_bundle_id     = t_value_holder<long long>;
 using t_avatar_bundle_id    = t_image_bundle_id;
 using t_photo_bundle_id     = t_image_bundle_id;
 
+using t_protocol            = std::string_view;
+using t_hostname            = std::string_view;
+using t_endpoint            = std::string;
+
 enum t_avatar_type { t_default, t_squared, begin = t_default, end = t_squared };
 
 constexpr std::string_view to_string(const t_avatar_type avatar_type) {
