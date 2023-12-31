@@ -77,13 +77,13 @@ namespace {
         const t_qt_json_object& json_object = document.object();
 
         return parse_peers(
-                json_object["peers"].toArray()
+            json_object["peers"].toArray()
             );
     }
 
     t_json_model_peers t_json_parse_peer::from_file(const i_fs& fs, const t_fs_path& path) const {
         return (*this)(
-                fs.read_as_single_line(path)
+            fs.read_as_single_line(path)
             );
     }
 

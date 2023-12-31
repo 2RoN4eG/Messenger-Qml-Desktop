@@ -6,86 +6,82 @@ import Qt5Compat.GraphicalEffects
 ListView {
     id: chatListView
     spacing: 10
-    model: 10 // Replace with your message model or use a ListModel
+    model: 10
 
     width: 600
     height: 800
 
-    delegate: Component {
-        id: chat_component
+    delegate: Item {
+        width: 600
+        height: 200
 
-        Item {
-            width: 600
-            height: 200
+        Rectangle {
+            anchors.fill: parent
+            color: "white"
 
-            Rectangle {
+            RowLayout {
                 anchors.fill: parent
-                color: "white"
+                spacing: 0
 
-                RowLayout {
-                    anchors.fill: parent
-                    spacing: 0
+                Image {
+                    id: peer_avatar
 
-                    Image {
-                        id: peer_avatar
+                    width: 80
+                    height: 80
 
-                        width: 80
-                        height: 80
+                    source: "image://avatars/1"
+                    sourceSize.height: height
+                    sourceSize.width: width
 
-                        source: "image://avatars/1"
-                        sourceSize.height: height
-                        sourceSize.width: width
+                    fillMode: Image.PreserveAspectFit
+                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
-                        fillMode: Image.PreserveAspectFit
-                        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                    layer.enabled: true
+                    layer.effect: OpacityMask {
+                        maskSource: Item {
+                            width: peer_avatar.width
+                            height: peer_avatar.height
 
-                        layer.enabled: true
-                        layer.effect: OpacityMask {
-                            maskSource: Item {
-                                width: peer_avatar.width
-                                height: peer_avatar.height
-
-                                Rectangle {
-                                    anchors.centerIn: parent
-                                    width: Math.min(peer_avatar.width, peer_avatar.height)
-                                    height: Math.min(peer_avatar.width, peer_avatar.height)
-                                    radius: Math.min(width, height)
-                                }
+                            Rectangle {
+                                anchors.centerIn: parent
+                                width: Math.min(peer_avatar.width, peer_avatar.height)
+                                height: Math.min(peer_avatar.width, peer_avatar.height)
+                                radius: Math.min(width, height)
                             }
                         }
                     }
+                }
 
-                    ColumnLayout {
-                        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
-                        Text {
-                            id: peer_nickname
-                            text: "John Doe"
-                            font.bold: true
-                        }
+                    Text {
+                        id: peer_nickname
+                        text: "John Doe"
+                        font.bold: true
+                    }
 
-                        Image {
-                            id: sent_photo
-                            width: 250
-                            height: 150
-                            source: "image://photos/3"
-                            sourceSize.width: width
-                            sourceSize.height: height
-                        }
-
-                        Text {
-                            id: message_text
-                            text: "This is a sample message." // Replace with actual message text
-                            wrapMode: Text.Wrap
-                        }
+                    Image {
+                        id: sent_photo
+                        width: 250
+                        height: 150
+                        source: "image://photos/3"
+                        sourceSize.width: width
+                        sourceSize.height: height
                     }
 
                     Text {
-                        id: message_timestamp
-                        text: "10:00 AM" // Replace with actual timestamp
-
-                        Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                        id: message_text
+                        text: "This is a sample message." // Replace with actual message text
+                        wrapMode: Text.Wrap
                     }
+                }
+
+                Text {
+                    id: message_timestamp
+                    text: "10:00 AM" // Replace with actual timestamp
+
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 }
             }
         }

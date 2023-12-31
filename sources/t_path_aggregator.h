@@ -17,14 +17,14 @@ public:
     virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer) const = 0;
 
     virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type) const = 0;
-    
+
     virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type, const t_fs_filename& filename) const = 0;
 };
 
 class i_photo_path_aggregator {
 public:
     virtual t_fs_path get_fs_path_for_photo(const t_peer_id peer) const = 0;
-    
+
     virtual t_fs_path get_fs_path_for_photo(const t_peer_id peer, const t_fs_filename& filename) const = 0;
 };
 
@@ -64,30 +64,30 @@ public:
     // /root/self_peer/peer/avatars/squared/{list-of-squared-avatars-or-single-avatar}
     
     t_fs_path get_fs_path_for_avatar(const t_peer_id peer) const override;
-    
+
     t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type) const override;
-    
+
     t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type, const t_fs_filename& filename) const override;
 
     // photo section (i_photo_path_aggregator's implementation)
 
     // /root/self_peer/peer/photos/{list-of-photos-or-single-photo}
-    
+
     t_fs_path get_fs_path_for_photo(const t_peer_id peer) const override;
-    
+
     t_fs_path get_fs_path_for_photo(const t_peer_id peer, const t_fs_filename& filename) const override;
 
     // stiker section (i_stiker_path_aggregator's implementation)
 
     // /root/stickers/{list-of-stikers}
-    
+
     t_fs_path get_fs_path_for_stiker(const t_fs_filename& filename) const override;
 
     // database section
 
 protected:
     const t_fs_path& _root { "/" };
-    
+
     const t_peer_id& _self;
 };
 

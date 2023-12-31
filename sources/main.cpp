@@ -6,6 +6,7 @@
 #include "t_path_aggregator.h"
 #include "t_ui_async_provider_default_avatar.h"
 #include "t_ui_async_provider_image.h"
+#include "t_ui_model_peers.h"
 #include "t_server_api.h"
 #include "t_fs.h"
 
@@ -39,6 +40,8 @@ namespace {
 int main(int argc, char *argv[])
 {
     QGuiApplication a(argc, argv);
+
+    qmlRegisterUncreatableType<t_ui_model_peers>( "Peers", 1, 0, "t_ui_model_peer", "interface" );
 
     const QUrl url("qrc:///ui/Main.qml");
     QQmlApplicationEngine engine;
@@ -86,7 +89,6 @@ int main(int argc, char *argv[])
         image_info_storage.set_image_info(t_avatar_id { 1 }, t_peer_id { 2048 }, t_url { "https://images.pexels.com/photos/19467240/pexels-photo-19467240/free-photo-of-hand-holding-coffee-cup.jpeg" },       {});
         image_info_storage.set_image_info(t_avatar_id { 2 }, t_peer_id { 2049 }, t_url { "https://images.pexels.com/photos/18926843/pexels-photo-18926843/free-photo-of-rough-volcanic-rock-formation.jpeg" }, {});
         image_info_storage.set_image_info(t_avatar_id { 3 }, t_peer_id { 2048 }, t_url { "https://images.pexels.com/photos/15561988/pexels-photo-15561988/free-photo-of-man-travelling-on-a-ferry.jpeg" },     {});
-
         image_info_storage.set_image_info(t_avatar_id { 4 }, t_peer_id { 2053 }, t_url { "https://images.pexels.com/photos/19467240/pexels-photo-19467240/free-photo-of-hand-holding-coffee-cup.jpeg" },       {});
         image_info_storage.set_image_info(t_avatar_id { 5 }, t_peer_id { 2049 }, t_url { "https://images.pexels.com/photos/18926843/pexels-photo-18926843/free-photo-of-rough-volcanic-rock-formation.jpeg" }, {});
         image_info_storage.set_image_info(t_avatar_id { 6 }, t_peer_id { 2050 }, t_url { "https://images.pexels.com/photos/15561988/pexels-photo-15561988/free-photo-of-man-travelling-on-a-ferry.jpeg" },     {});
