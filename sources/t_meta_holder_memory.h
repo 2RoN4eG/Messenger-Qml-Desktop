@@ -27,6 +27,11 @@ public:
 
 using t_cache = std::set<t_fs_path>;
 
+struct t_range {
+    t_fs_size _minimum {};
+    t_fs_size _maximum {};
+};
+
 // alternative name is { t_path_holder }
 class t_meta_holder_memory : public i_meta_holder, public i_rotator
 {
@@ -40,7 +45,9 @@ public:
     void do_register(const t_fs_path& path) override;
 
     // const time (O(1))
-    void do_hold(const t_fs_path& path) override { do_register(path); }
+    void do_hold(const t_fs_path& path) override {
+        do_register(path);
+    }
 
     void do_unregister(const t_fs_path& path) override;
 
@@ -55,11 +62,10 @@ protected:
 
     void _do_unregister(const t_fs_path& path);
 
-    void _do_unregister_out_of_capacity(const t_fs& fs);
+    void _do_unregister_out_of_range(const t_fs& fs);
 
 protected:
-    t_fs_size _minimum_capacity {};
-    t_fs_size _maximum_capacity {};
+    t_range _range;
 
     t_cache _cache;
 

@@ -48,8 +48,7 @@ t_sorted_by_timestamp_paths::iterator get_out_of_capacity_iterator(
 //
 
 t_meta_holder_memory::t_meta_holder_memory(t_fs_size minimum_capacity, t_fs_size maximum_capacity, t_cache&& cache)
-    : _minimum_capacity { minimum_capacity }
-    , _maximum_capacity { maximum_capacity }
+    : _range { minimum_capacity, maximum_capacity }
     , _cache { std::move(cache) }
 {
     for (const t_fs_path& path : _cache) {
@@ -73,7 +72,8 @@ void t_meta_holder_memory::do_unregister(const t_fs_path& path) {
 
 // Complexity does not matter (will be run separately in different thread)
 void t_meta_holder_memory::do_rotate(const t_fs& fs) {
-    _do_unregister_out_of_capacity(fs);
+    _do_unregister_out_of_range(fs);
+
     std::vector<t_fs_path> to_remove = std::exchange(_to_remove, {});
     for (const t_fs_path& path : to_remove) {
         fs.do_remove(path);
@@ -97,18 +97,17 @@ void t_meta_holder_memory::_do_unregister(const t_fs_path& path) {
 }
 
 // Complexity is O(N)
-void t_meta_holder_memory::_do_unregister_out_of_capacity(const t_fs& fs) {
+void t_meta_holder_memory::_do_unregister_out_of_range(const t_fs& fs) {
     const auto sorted = make_sorted_by_timestamp(_cache, fs);
-    
+
     t_fs_size cached_size {};
 
-    const auto since = get_out_of_capacity_iterator(sorted, _minimum_capacity, sorted.begin(), cached_size);
+    const auto since = get_out_of_capacity_iterator(sorted, _range._minimum, sorted.begin(), cached_size);
     if (since == sorted.end()) {
         return;
     }
 
-    const bool need_unregister = (get_out_of_capacity_iterator(sorted, _maximum_capacity, since, cached_size) != sorted.end());
-    if (!need_unregister) {
+    if (get_out_of_capacity_iterator(sorted, _range._maximum, since, cached_size) == sorted.end()) {
         return;
     }
 
