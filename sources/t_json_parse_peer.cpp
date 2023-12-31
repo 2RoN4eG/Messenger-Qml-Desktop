@@ -8,59 +8,6 @@
 #include <QJsonArray>
 #include <QDebug>
 
-
-//const auto json = R"(
-//        {
-//          "self": 1024,
-//          "peers": [
-//            {
-//              "peer": 2048,
-//              "nickname": "Albert Einstein",
-//              "avatars": [
-//                {
-//                  "thumb_hash": "",
-//                  "url": "https://hips.hearstapps.com/hmg-prod/images/albert-einstein-sticks-out-his-tongue-when-asked-by-news-photo-1681316749.jpg"
-//                },
-//                {
-//                  "thumb_hash": "",
-//                  "url": "https://www.nobelprize.org/images/einstein-12923-portrait-medium.jpg"
-//                },
-//                {
-//                  "thumb_hash": "",
-//                  "url": "https://assets.editorial.aetnd.com/uploads/2009/10/albert-einstein-gettyimages-544750041.jpg"
-//                }
-//              ],
-//              "last_message": {
-//                "message_text": "Hello, I'm Albert Einstein and I'm genious",
-//                "message_timestamp": 100
-//              }
-//            },
-//            {
-//              "peer": 2049,
-//              "nickname": "Albus Dumbledore",
-//              "last_message": {
-//                "message_text": "Hello, I am Albus Dumbledore. I wanna show you a bit magic ...",
-//                "message_timestamp": 100
-//              },
-//              "avatars": [
-//                {
-//                  "thumb_hash": "",
-//                  "url": "https://images.ctfassets.net/usf1vwtuqyxm/1dmmUJzpRcWaUmMOCu8QwO/7e013145694566076d47fd004fd604c2/AlbusDumbledore_WB_F6_DumbledoreSittingInChair_Promo_080615_Port.jpg?w=914&q=70&fm=jpg"
-//                },
-//                {
-//                  "thumb_hash": "",
-//                  "url": "https://creations.mattel.com/cdn/shop/products/e4g44r0kigsn14peqbtj_1024x.jpg?v=1699999014"
-//                },
-//                {
-//                  "thumb_hash": "",
-//                  "url": "https://static.wikia.nocookie.net/wikihp/images/8/88/Dumbledore.jpg/revision/latest?cb=20090911073332&path-prefix=es"
-//                }
-//              ]
-//            }
-//          ]
-//        }
-//    )";
-
 namespace {
     using t_qt_json_object = QJsonObject;
     using t_qt_json_array = QJsonArray;
@@ -119,26 +66,26 @@ namespace {
 }
 
     t_json_model_peers t_json_parse_peer::operator()(const std::string_view json) const {
-    QJsonParseError error;
-    QJsonDocument document = QJsonDocument::fromJson(QByteArray::fromRawData(json.data(), json.size()), &error);
+        QJsonParseError error;
+        QJsonDocument document = QJsonDocument::fromJson(QByteArray::fromRawData(json.data(), json.size()), &error);
 
-    if (error.error != QJsonParseError::NoError) {
-        qWarning() << "Error parsing JSON:" << error.errorString();
-        return {};
+        if (error.error != QJsonParseError::NoError) {
+            qWarning() << "Error parsing JSON:" << error.errorString();
+            return {};
+        }
+
+        const t_qt_json_object& json_object = document.object();
+
+        return parse_peers(
+                json_object["peers"].toArray()
+            );
     }
 
-    const t_qt_json_object& json_object = document.object();
-
-    return parse_peers(
-            json_object["peers"].toArray()
-        );
-}
-
     t_json_model_peers t_json_parse_peer::from_file(const i_fs& fs, const t_fs_path& path) const {
-    return (*this)(
-            fs.read_as_single_line(path)
-        );
-}
+        return (*this)(
+                fs.read_as_single_line(path)
+            );
+    }
 
 //void print(const t_avatar_model& avatar) {
 //    std::cout << "thumb_hash   : " << avatar.get_thumb_hash() << std::endl;
