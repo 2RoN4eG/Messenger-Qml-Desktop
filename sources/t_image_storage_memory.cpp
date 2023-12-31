@@ -13,7 +13,7 @@ t_image_storage_memory::t_image_storage_memory(const i_qt_fs& fs, i_meta_holder&
 }
 
 bool t_image_storage_memory::does_image_exist_on_drive(const t_image_info& info) {
-    const t_path& path = info._path;
+    const t_fs_path& path = info._path;
     if (path.empty()) {
         throw std::runtime_error { "avatar path to check existing on drive is empty" };
     }
@@ -26,7 +26,7 @@ bool t_image_storage_memory::does_image_exist_on_drive(const t_image_info& info)
 }
 
 t_qt_avatar t_image_storage_memory::read_image_from_drive(const t_image_info& info) {
-    const t_path& path = info._path;
+    const t_fs_path& path = info._path;
     if (path.empty()) {
         throw std::runtime_error { "avatar path to read from drive is empty" };
     }
@@ -39,7 +39,7 @@ t_qt_avatar t_image_storage_memory::read_image_from_drive(const t_image_info& in
 }
 
 void t_image_storage_memory::write_image_to_drive(const t_qt_avatar& avatar, t_image_info&& info) {
-    const t_path& path = info._path;
+    const t_fs_path& path = info._path;
     if (path.empty()) {
         throw std::runtime_error { "avatar path to write on drive is empty" };
     }

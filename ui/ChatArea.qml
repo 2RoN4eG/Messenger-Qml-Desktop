@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import Qt5Compat.GraphicalEffects
 
 ListView {
     id: chatListView
@@ -23,28 +24,39 @@ ListView {
 
                 RowLayout {
                     anchors.fill: parent
-                    spacing: 10
+                    spacing: 0
 
-                    Rectangle {
-                        width: 60
-                        height: 60
-                        radius: width / 2
-                        clip: true
-                        Layout.alignment: Qt.AlignTop
+                    Image {
+                        id: peer_avatar
 
-                        Image {
-                            anchors.fill: parent
+                        width: 80
+                        height: 80
 
-                            source: "image://avatars/1"
-                            sourceSize.height: parent.height
-                            sourceSize.width: parent.width
+                        source: "image://avatars/1"
+                        sourceSize.height: height
+                        sourceSize.width: width
 
-                            fillMode: Image.PreserveAspectFit
+                        fillMode: Image.PreserveAspectFit
+                        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+
+                        layer.enabled: true
+                        layer.effect: OpacityMask {
+                            maskSource: Item {
+                                width: peer_avatar.width
+                                height: peer_avatar.height
+
+                                Rectangle {
+                                    anchors.centerIn: parent
+                                    width: Math.min(peer_avatar.width, peer_avatar.height)
+                                    height: Math.min(peer_avatar.width, peer_avatar.height)
+                                    radius: Math.min(width, height)
+                                }
+                            }
                         }
                     }
 
                     ColumnLayout {
-                        spacing: 5
+                        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
                         Text {
                             id: peer_nickname
@@ -52,25 +64,26 @@ ListView {
                             font.bold: true
                         }
 
-                        Text {
-                            id: peer_message
-                            text: "This is a sample message." // Replace with actual message text
-                            wrapMode: Text.Wrap
-                        }
-
                         Image {
-                            id: sentPhoto
-                            width: 150
-                            height: 100
+                            id: sent_photo
+                            width: 250
+                            height: 150
                             source: "image://photos/3"
                             sourceSize.width: width
                             sourceSize.height: height
+                        }
+
+                        Text {
+                            id: message_text
+                            text: "This is a sample message." // Replace with actual message text
+                            wrapMode: Text.Wrap
                         }
                     }
 
                     Text {
                         id: message_timestamp
                         text: "10:00 AM" // Replace with actual timestamp
+
                         Layout.alignment: Qt.AlignTop | Qt.AlignRight
                     }
                 }

@@ -26,7 +26,7 @@ public:
     virtual void write_image_to_drive(const t_qt_avatar& avatar, t_image_info&& info) = 0;
 };
 
-// declaration section
+// class (interface's implementation) section
 
 class t_image_storage_memory : public i_image_storage {
 public:

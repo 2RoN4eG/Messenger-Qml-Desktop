@@ -12,11 +12,10 @@ struct t_sorter_by_timestamp {
 
 using t_sorted_by_timestamp_paths = std::multiset<t_fs_meta>;
 
-t_sorted_by_timestamp_paths make_sorted_by_timestamp(const std::set<t_path>& paths, const t_fs& fs)
-{
+t_sorted_by_timestamp_paths make_sorted_by_timestamp(const std::set<t_fs_path>& paths, const t_fs& fs) {
     t_sorted_by_timestamp_paths sorted;
 
-    for (const t_path& path : paths) {
+    for (const t_fs_path& path : paths) {
         if (is_directory(path)) {
             continue;
         }
@@ -48,49 +47,49 @@ t_sorted_by_timestamp_paths::iterator get_out_of_capacity_iterator(
 
 //
 
-t_meta_holder_memory::t_meta_holder_memory(t_size minimum_capacity, t_size maximum_capacity, t_cache&& cache)
+t_meta_holder_memory::t_meta_holder_memory(t_fs_size minimum_capacity, t_fs_size maximum_capacity, t_cache&& cache)
     : _minimum_capacity { minimum_capacity }
     , _maximum_capacity { maximum_capacity }
     , _cache { std::move(cache) }
 {
-    for (const t_path& path : _cache) {
+    for (const t_fs_path& path : _cache) {
         std::cout << "t_memory_meta_holder path is " << path << std::endl;
     }
 }
 
-bool t_meta_holder_memory::does_exist(const t_path& path) const {
+bool t_meta_holder_memory::does_exist(const t_fs_path& path) const {
     return _does_exist(path);
 }
 
 // const time (O(1))
-void t_meta_holder_memory::do_register(const t_path& path) {
+void t_meta_holder_memory::do_register(const t_fs_path& path) {
     _do_register(path);
 }
 
 // const time (O(1))
-void t_meta_holder_memory::do_unregister(const t_path& path) {
+void t_meta_holder_memory::do_unregister(const t_fs_path& path) {
     _do_unregister(path);
 }
 
 // Complexity does not matter (will be run separately in different thread)
 void t_meta_holder_memory::do_rotate(const t_fs& fs) {
     _do_unregister_out_of_capacity(fs);
-    std::vector<t_path> to_remove = std::exchange(_to_remove, {});
-    for (const t_path& path : to_remove) {
+    std::vector<t_fs_path> to_remove = std::exchange(_to_remove, {});
+    for (const t_fs_path& path : to_remove) {
         fs.do_remove(path);
     }
 }
 
-bool t_meta_holder_memory::_does_exist(const t_path &path) const {
+bool t_meta_holder_memory::_does_exist(const t_fs_path &path) const {
     return std::ranges::find(_cache, path) != _cache.end();
 }
 
-void t_meta_holder_memory::_do_register(const t_path &path) {
+void t_meta_holder_memory::_do_register(const t_fs_path &path) {
     _cache.emplace(path);
 }
 
 // const time (O(1))
-void t_meta_holder_memory::_do_unregister(const t_path& path) {
+void t_meta_holder_memory::_do_unregister(const t_fs_path& path) {
     if (auto it = std::find(_cache.cbegin(), _cache.cend(), path); it != _cache.end()) {
         _cache.erase(it);
     }
@@ -100,8 +99,8 @@ void t_meta_holder_memory::_do_unregister(const t_path& path) {
 // Complexity is O(N)
 void t_meta_holder_memory::_do_unregister_out_of_capacity(const t_fs& fs) {
     const auto sorted = make_sorted_by_timestamp(_cache, fs);
-
-    t_size cached_size {};
+    
+    t_fs_size cached_size {};
 
     const auto since = get_out_of_capacity_iterator(sorted, _minimum_capacity, sorted.begin(), cached_size);
     if (since == sorted.end()) {

@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+//import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
 
 ListView {
     id: peers
@@ -34,21 +36,32 @@ ListView {
                 RowLayout {
                     spacing: 0
 
-                    Rectangle {
+                    Image {
+                        id: peer_avatar
+
                         width: peer_item.height
                         height: peer_item.height
-                        radius: width / 2
-                        clip: true
-                        Layout.alignment: Qt.AlignTop
 
-                        Image {
-                            anchors.fill: parent
+                        source: peer_avatar_source
+                        sourceSize.height: Math.min(width, height)
+                        sourceSize.width: Math.min(width, height)
 
-                            source: peer_avatar_source
-                            sourceSize.height: parent.height
-                            sourceSize.width: parent.width
+                        fillMode: Image.PreserveAspectFit
 
-                            fillMode: Image.PreserveAspectFit
+                        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+
+                        layer.enabled: true
+                        layer.effect: OpacityMask {
+                            maskSource: Item {
+                                width: peer_avatar.width
+                                height: peer_avatar.height
+                                Rectangle {
+                                    anchors.centerIn: parent
+                                    width: Math.min(peer_avatar.width, peer_avatar.height)
+                                    height: Math.min(peer_avatar.width, peer_avatar.height)
+                                    radius: Math.min(width, height)
+                                }
+                            }
                         }
                     }
 

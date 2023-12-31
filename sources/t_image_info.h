@@ -3,7 +3,7 @@
 
 #include "t_defines.h"
 
-//
+// interface section
 
 class t_image_info {
 public:
@@ -17,13 +17,12 @@ public:
 
 public:
     t_url _url;
-
     t_thumb_hash _thumb_hash;
 
-    t_path _path;
+    t_fs_path _path;
 };
 
-//
+// class (interface's implementation) section
 
 class t_image_info_extended {
 public:
@@ -50,7 +49,5 @@ bool does_avatar_info_contain_path(const t_image_info& info);
 void print_image_info_path(const t_image_info& avatar_info);
 
 void print_image_info(const t_image_info& avatar_info, const bool print_url = true, const bool print_thumb_hash = true, const bool print_path = true);
-
-//
 
 #endif // T_IMAGE_INFO_H

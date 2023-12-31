@@ -24,7 +24,7 @@ t_image_info t_image_info_storage_memory::get_image_info(const t_image_id image_
     auto predicate = [this, &image_id](const t_image_info_extended& extended) { return extended._image_id == image_id; };
     if (t_image_infos_iterator it = std::find_if(_image_infos.begin(), _image_infos.end(), predicate); it != _image_infos.end()) {
         t_image_info image_info = it->_image_info;
-        const t_filename& filename = image_info._url.fileName().toStdString();
+        const t_fs_filename& filename = image_info._url.fileName().toStdString();
         image_info._path = path_holder(it->_peer_id, filename);
 
         std::cout << "avatar_id { " << image_id.to_string() << " } contains info {"

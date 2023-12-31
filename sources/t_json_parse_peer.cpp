@@ -1,4 +1,6 @@
-#include "t_qt_parse_peer_from_json.h"
+#include "t_json_parse_peer.h"
+
+#include "t_fs.h"
 
 #include <QCoreApplication>
 #include <QJsonDocument>
@@ -59,59 +61,64 @@
 //        }
 //    )";
 
-t_avatar_model parse_peer_avatar(const QJsonObject& json_object) {
-    return {
-        json_object["thumb_hash"].toString().toStdString(),
-        json_object["url"].toString()
-    };
-}
+namespace {
+    using t_qt_json_object = QJsonObject;
+    using t_qt_json_array = QJsonArray;
+    using t_qt_json_value = QJsonValue;
 
-t_avatar_models parse_peer_avatars(const QJsonArray& json_array) {
-    t_avatar_models avatar_models {};
-
-    for (const QJsonValue& json_value : json_array) {
-        avatar_models.emplace_back(
-            parse_peer_avatar(
-                json_value.toObject()
-            )
-        );
+    t_json_model_avatar parse_peer_avatar(const t_qt_json_object& json_object) {
+        return {
+            json_object["thumb_hash"].toString().toStdString(),
+            json_object["url"].toString()
+        };
     }
 
-    return avatar_models;
-}
+    t_json_model_avatars parse_peer_avatars(const t_qt_json_array& json_array) {
+        t_json_model_avatars avatar_models {};
 
-t_last_message_model parse_peer_last_message(const QJsonObject& json_object) {
-    return {
-        json_object["message_text"].toString().toStdString(),
-        json_object["message_timestamp"].toInteger()
-    };
-}
-
-t_peer_model parse_peer(const QJsonObject& json_object) {
-    return {
-        json_object["peer"].toInteger(),
-        json_object["nickname"].toString().toStdString(),
-        parse_peer_avatars(json_object["avatars"].toArray()),
-        parse_peer_last_message(json_object["last_message"].toObject())
-    };
-}
-
-t_peer_models parse_peers(const QJsonArray& json_array) {
-    t_peer_models peer_models {};
-
-    for (const QJsonValue& json_value : json_array) {
-        peer_models.emplace_back(
-            parse_peer(
-                json_value.toObject()
+        for (const t_qt_json_value& json_value : json_array) {
+            avatar_models.emplace_back(
+                parse_peer_avatar(
+                    json_value.toObject()
                 )
             );
+        }
+
+        return avatar_models;
     }
 
-    return peer_models;
+    t_json_model_last_message parse_peer_last_message(const t_qt_json_object& json_object) {
+        return {
+            json_object["message_text"].toString().toStdString(),
+            json_object["message_timestamp"].toInteger()
+        };
+    }
+
+    t_json_model_peer parse_peer(const t_qt_json_object& json_object) {
+        return {
+            json_object["peer"].toInteger(),
+            json_object["nickname"].toString().toStdString(),
+            parse_peer_avatars(json_object["avatars"].toArray()),
+            parse_peer_last_message(json_object["last_message"].toObject())
+        };
+    }
+
+    t_json_model_peers parse_peers(const t_qt_json_array& json_array) {
+        t_json_model_peers peer_models {};
+
+        for (const t_qt_json_value& json_value : json_array) {
+            peer_models.emplace_back(
+                parse_peer(
+                    json_value.toObject()
+                    )
+                );
+        }
+
+        return peer_models;
+    }
 }
 
-
-t_peer_models t_qt_parse_peer_from_json::operator()(const std::string_view json) const {
+    t_json_model_peers t_json_parse_peer::operator()(const std::string_view json) const {
     QJsonParseError error;
     QJsonDocument document = QJsonDocument::fromJson(QByteArray::fromRawData(json.data(), json.size()), &error);
 
@@ -120,10 +127,16 @@ t_peer_models t_qt_parse_peer_from_json::operator()(const std::string_view json)
         return {};
     }
 
-    const QJsonObject& json_object = document.object();
+    const t_qt_json_object& json_object = document.object();
 
     return parse_peers(
             json_object["peers"].toArray()
+        );
+}
+
+    t_json_model_peers t_json_parse_peer::from_file(const i_fs& fs, const t_fs_path& path) const {
+    return (*this)(
+            fs.read_as_single_line(path)
         );
 }
 

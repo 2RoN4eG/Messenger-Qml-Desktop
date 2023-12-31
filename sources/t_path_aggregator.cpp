@@ -4,7 +4,7 @@
 
 // class section
 
-t_path_aggregator::t_path_aggregator(const t_path& root, const t_peer_id& self)
+t_path_aggregator::t_path_aggregator(const t_fs_path& root, const t_peer_id& self)
     : _root { root }
     , _self { self }
 {
@@ -12,68 +12,68 @@ t_path_aggregator::t_path_aggregator(const t_path& root, const t_peer_id& self)
 
 //
 
-t_path t_path_aggregator::get_fs_path_for_self() const {
+t_fs_path t_path_aggregator::get_fs_path_for_self() const {
     return _root / _self.to_string();
 }
 
-t_path t_path_aggregator::get_fs_path_for_peer(const t_peer_id peer_id) const {
+t_fs_path t_path_aggregator::get_fs_path_for_peer(const t_peer_id peer_id) const {
     return get_fs_path_for_self() / peer_id.to_string();
 }
 
 //
 
-t_path t_path_aggregator::get_fs_path_for_avatar(const t_peer_id peer_id) const {
+t_fs_path t_path_aggregator::get_fs_path_for_avatar(const t_peer_id peer_id) const {
     return get_fs_path_for_peer(peer_id) / "avatars";
 }
 
-t_path t_path_aggregator::get_fs_path_for_avatar(const t_peer_id peer_id, const t_avatar_type avatar_type) const {
+t_fs_path t_path_aggregator::get_fs_path_for_avatar(const t_peer_id peer_id, const t_avatar_type avatar_type) const {
     return get_fs_path_for_avatar(peer_id) / to_string(avatar_type);
 }
 
-t_path t_path_aggregator::get_fs_path_for_avatar(const t_peer_id peer_id, const t_avatar_type avatar_type, const t_filename& filename) const {
+t_fs_path t_path_aggregator::get_fs_path_for_avatar(const t_peer_id peer_id, const t_avatar_type avatar_type, const t_fs_filename& filename) const {
     return get_fs_path_for_avatar(peer_id, avatar_type) / filename;
 }
 
 //
 
-t_path t_path_aggregator::get_fs_path_for_photo(const t_peer_id peer_id) const {
+t_fs_path t_path_aggregator::get_fs_path_for_photo(const t_peer_id peer_id) const {
     return get_fs_path_for_peer(peer_id) / "photos";
 }
 
-t_path t_path_aggregator::get_fs_path_for_photo(const t_peer_id peer_id, const t_filename& filename) const {
+t_fs_path t_path_aggregator::get_fs_path_for_photo(const t_peer_id peer_id, const t_fs_filename& filename) const {
     return get_fs_path_for_photo(peer_id) / filename;
 }
 
 //
 
-t_path t_path_aggregator::get_fs_path_for_stiker(const t_filename& filename) const {
+t_fs_path t_path_aggregator::get_fs_path_for_stiker(const t_fs_filename& filename) const {
     return _root / "stikers" / filename;
 }
 
 // make section (fabric methods section)
 
-t_path_aggregator make_path_aggregator(const t_path& root, const t_peer_id& self) {
+t_path_aggregator make_path_aggregator(const t_fs_path& root, const t_peer_id& self) {
     return t_path_aggregator { root, self };
 }
 
 // test section (to avoid wasting time is located here)
 
-void test_path_aggregator__get_fs_path_for_avatar(const i_avatar_path_aggregator& avatar_path_aggregator, const t_peer_id peer_id, const t_avatar_type avatar_type, const t_filename& filename, const t_path& must_be = {}) {
-    const t_path& path = avatar_path_aggregator.get_fs_path_for_avatar(peer_id, avatar_type, filename);
+void test_path_aggregator__get_fs_path_for_avatar(const i_avatar_path_aggregator& avatar_path_aggregator, const t_peer_id peer_id, const t_avatar_type avatar_type, const t_fs_filename& filename, const t_fs_path& must_be = {}) {
+    const t_fs_path& path = avatar_path_aggregator.get_fs_path_for_avatar(peer_id, avatar_type, filename);
     if (path != must_be) {
         throw std::runtime_error { "path " + path.string() + " does not equal with must_be path " + must_be.string() };
     }
 }
 
-void test_path_aggregator__get_fs_path_for_photo(const i_photo_path_aggregator& photo_path_aggregator, const t_peer_id peer_id, const t_filename& filename, const t_path& must_be) {
-    const t_path& path = photo_path_aggregator.get_fs_path_for_photo(peer_id, filename);
+void test_path_aggregator__get_fs_path_for_photo(const i_photo_path_aggregator& photo_path_aggregator, const t_peer_id peer_id, const t_fs_filename& filename, const t_fs_path& must_be) {
+    const t_fs_path& path = photo_path_aggregator.get_fs_path_for_photo(peer_id, filename);
     if (path != must_be) {
         throw std::runtime_error { "path " + path.string() + " does not equal with must_be path " + must_be.string() };
     }
 }
 
-void test_path_aggregator__get_fs_path_for_stiker(const i_stiker_path_aggregator& photo_path_aggregator, const t_filename& filename, const t_path& must_be) {
-    const t_path& path = photo_path_aggregator.get_fs_path_for_stiker(filename);
+void test_path_aggregator__get_fs_path_for_stiker(const i_stiker_path_aggregator& photo_path_aggregator, const t_fs_filename& filename, const t_fs_path& must_be) {
+    const t_fs_path& path = photo_path_aggregator.get_fs_path_for_stiker(filename);
     if (path != must_be) {
         throw std::runtime_error { "path " + path.string() + " does not equal with must_be path " + must_be.string() };
     }

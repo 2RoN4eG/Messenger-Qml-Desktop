@@ -4,12 +4,12 @@
 #include "t_image_info_storage_memory.h"
 #include "t_meta_holder_memory.h"
 #include "t_path_aggregator.h"
-#include "t_ui_default_avatar_provider.h"
-#include "t_ui_squared_avatar_provider.h"
+#include "t_ui_async_provider_default_avatar.h"
+#include "t_ui_async_provider_image.h"
 #include "t_server_api.h"
 #include "t_fs.h"
 
-#include "t_qt_parse_peer_from_json.h"
+#include "t_json_parse_peer.h"
 
 #include <QLocale>
 #include <QTranslator>
@@ -21,7 +21,7 @@
 
 namespace {
     void do_create_peer_directories(const t_peer_id peer_id,
-                                    const i_path_aggregator& path_aggregator, const i_fs& fs) {
+                                const i_path_aggregator& path_aggregator, const i_fs& fs) {
         fs.do_create_directories(
             path_aggregator.get_fs_path_for_avatar(peer_id, t_avatar_type::t_default)
             );
@@ -92,13 +92,13 @@ int main(int argc, char *argv[])
         image_info_storage.set_image_info(t_avatar_id { 6 }, t_peer_id { 2050 }, t_url { "https://images.pexels.com/photos/15561988/pexels-photo-15561988/free-photo-of-man-travelling-on-a-ferry.jpeg" },     {});
     } while (false);
 
-    const t_path& self_path = path_aggregator.get_fs_path_for_self();
+    const t_fs_path& self_path = path_aggregator.get_fs_path_for_self();
     t_meta_holder_memory meta_holder { 1024, 2048, fs.get_paths_in_directory(self_path) };
     t_image_storage_memory avatar_storage { fs, meta_holder };
 
-    engine.addImageProvider(QLatin1String("default"), new t_ui_default_avatar_provider { t_avatar_path_holder { path_aggregator, t_avatar_type::t_default }, image_info_storage, avatar_storage });
-    engine.addImageProvider(QLatin1String("avatars"), new t_ui_squared_avatar_provider { t_avatar_path_holder { path_aggregator, t_avatar_type::t_squared }, image_info_storage, avatar_storage });
-    engine.addImageProvider(QLatin1String("photos"),  new t_ui_squared_avatar_provider { t_photo_path_holder  { path_aggregator },                           image_info_storage, avatar_storage });
+    engine.addImageProvider(QLatin1String("default"), new t_ui_async_provider_default_avatar { t_avatar_path_holder { path_aggregator, t_avatar_type::t_default }, image_info_storage, avatar_storage });
+    engine.addImageProvider(QLatin1String("avatars"), new t_ui_async_provider_image { t_avatar_path_holder { path_aggregator, t_avatar_type::t_squared }, image_info_storage, avatar_storage });
+    engine.addImageProvider(QLatin1String("photos"),  new t_ui_async_provider_image { t_photo_path_holder  { path_aggregator },                           image_info_storage, avatar_storage });
 
     engine.load(url);
     if (engine.rootObjects().isEmpty()) {
