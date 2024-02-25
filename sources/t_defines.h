@@ -8,11 +8,12 @@
 #include <QImage>
 
 template <typename t_value>
-class t_value_holder {
+class t_value_holder
+{
 public:
     using t_value_type = t_value;
 
-    t_value_holder(t_value value = 0)
+    t_value_holder(t_value value = {})
         : _value { value }
     {
     }
@@ -27,6 +28,10 @@ public:
         return std::to_string(_value);
     }
 
+    const t_value value() const {
+        return _value;
+    }
+
 protected:
     friend
         bool operator==(const t_value_holder<t_value>& lhs, const t_value_holder<t_value>& rhs) {
@@ -38,6 +43,39 @@ protected:
             return lhs._value < rhs._value;
         }
 
+    friend
+        bool operator>(const t_value_holder<t_value>& lhs, const t_value_holder<t_value>& rhs) {
+            return lhs._value > rhs._value;
+        }
+
+    friend
+        std::ostream& operator<<(std::ostream& stream, const t_value_holder<t_value>& holder) {
+            stream << holder.value();
+            return stream;
+        }
+
+    t_value _value {};
+};
+
+
+template <typename t_value>
+class t_value_generator
+{
+public:
+    t_value_generator()
+        : _value {}
+    {
+    }
+
+    const t_value_holder<t_value> get_value_and_generate_next() {
+        return _value ++;
+    }
+
+    const t_value_holder<t_value> get_value_and_generate_previous() {
+        return _value --;
+    }
+
+protected:
     t_value _value {};
 };
 
@@ -69,6 +107,7 @@ using t_extra                   = std::string;
 using t_peer_id                 = t_value_holder<int>;
 
 using t_image_id                = t_value_holder<unsigned long long>;
+using t_image_id_generator      = t_value_generator<unsigned long long>;
 using t_avatar_id               = t_image_id;
 using t_photo_id                = t_image_id;
 
@@ -119,17 +158,17 @@ struct t_fs_meta
     t_fs_timestamp _timestamp;
 };
 
-class t_json_model_avatar
+class t_json_avatar_model
 {
 public:
-    t_json_model_avatar(t_thumb_hash&& thumb_hash, t_url&& url)
+    t_json_avatar_model(t_thumb_hash&& thumb_hash, t_url&& url)
         : _thumb_hash { std::move(thumb_hash) }
         , _url { std::move(url) }
     {
     }
-
-    t_json_model_avatar()
-        : t_json_model_avatar { {}, {} }
+    
+    t_json_avatar_model()
+        : t_json_avatar_model { {}, {} }
     {
     }
 
@@ -142,19 +181,19 @@ protected:
     t_url _url;
 };
 
-using t_json_model_avatars = std::vector<t_json_model_avatar>;
+using t_json_avatar_models = std::vector<t_json_avatar_model>;
 
-class t_json_model_message
+class t_json_message_model
 {
 public:
-    t_json_model_message(t_text&& text, t_message_timestamp timestamp)
+    t_json_message_model(t_text&& text, t_message_timestamp timestamp)
         : _text { std::move(text) }
         , _timestamp { timestamp }
     {
     }
 
-    t_json_model_message()
-        : t_json_model_message { {}, {} }
+    t_json_message_model()
+        : t_json_message_model { {}, {} }
     {
     }
 
@@ -168,12 +207,12 @@ protected:
     t_message_timestamp _timestamp;
 };
 
-using t_json_model_last_message = t_json_model_message;
+using t_json_model_last_message = t_json_message_model;
 
-class t_json_model_peer
+class t_json_peer_info_model
 {
 public:
-    t_json_model_peer(t_peer_id peer_id, t_nickname&& nickname, t_json_model_avatars&& avatars, t_json_model_last_message&& last_message)
+    t_json_peer_info_model(t_peer_id peer_id, t_nickname&& nickname, t_json_avatar_models&& avatars, t_json_model_last_message&& last_message)
         : _peer_id { peer_id }
         , _nickname { std::move(nickname) }
         , _avatars { std::move(avatars) }
@@ -181,28 +220,29 @@ public:
     {
     }
 
-    t_json_model_peer()
-        : t_json_model_peer { {}, {}, {}, {} }
+    t_json_peer_info_model()
+        : t_json_peer_info_model { {}, {}, {}, {} }
     {
     }
 
-    t_peer_id get_peer_id() const { return _peer_id; }
+    t_peer_id peer_id() const { return _peer_id; }
 
-    t_nickname get_nickname() const { return _nickname; }
+    t_nickname nickname() const { return _nickname; }
+    
+    t_json_avatar_model avatar() const { return _avatars.front(); }
 
-    t_json_model_avatars get_avatars() const { return _avatars; }
-
-    t_json_model_last_message get_last_message() const { return _last_message; }
-
-    t_json_model_avatar get_latest_avatar() const { return _avatars.front(); }
+    t_json_model_last_message last_message() const { return _last_message; }
 
 protected:
     t_peer_id                   _peer_id;
+
     t_nickname                  _nickname;
-    t_json_model_avatars        _avatars;
+    
+    t_json_avatar_models        _avatars;
+
     t_json_model_last_message   _last_message;
 };
 
-using t_json_model_peers = std::vector<t_json_model_peer>;
+using t_json_peer_models = std::vector<t_json_peer_info_model>;
 
 #endif // T_DEFINES_H

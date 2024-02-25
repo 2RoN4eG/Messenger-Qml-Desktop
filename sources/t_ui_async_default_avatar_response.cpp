@@ -1,9 +1,9 @@
-#include "t_ui_async_response_default_avatar.h"
+#include "t_ui_async_default_avatar_response.h"
 
 #include "t_image_fs_worker.h"
 #include "t_path_aggregator.h"
 
-#include "memory/t_memory_image_info_storage.h"
+#include "memory/t_image_info_storage.h"
 
 #include <QMetaType>
 
@@ -19,7 +19,7 @@ Q_DECLARE_METATYPE(t_image_id);
 
 //
 
-t_ui_async_response_default_avatar::t_ui_async_response_default_avatar(const i_make_path& path_holder,
+t_ui_async_response_default_avatar::t_ui_async_response_default_avatar(const i_path_maker& path_holder,
                                                                        const i_image_info_storage& image_info_storage,
                                                                        i_image_worker& image_storage,
                                                                        const QSize& size)
@@ -32,11 +32,9 @@ t_ui_async_response_default_avatar::t_ui_async_response_default_avatar(const i_m
 }
 
 void t_ui_async_response_default_avatar::run(const t_image_id image_id) {
-    const t_image_info& default_info = _image_info_storage.get_image_info(image_id, _path_holder);
-
-    const t_fs_path& default_path = default_info._path;
-    if (_image_storage.does_image_exist_on_drive(default_info)) {
-        _image = _image_storage.read_image_from_drive(default_info);
+    const t_fs_path& default_image_path = _image_info_storage.get_image_path(image_id, _path_holder);
+    if (_image_storage.does_image_exist_on_drive(default_image_path)) {
+        _image = _image_storage.read_image_from_drive(default_image_path);
         emit_finished();
         return;
     }
@@ -63,8 +61,8 @@ void t_ui_async_response_default_avatar::run_async_image_creating(const t_image_
 void t_ui_async_response_default_avatar::on_image_created(const t_image_id image_id) {
     _image = make_default_image(_creating_command);
 
-    t_image_info&& default_info = _image_info_storage.get_image_info(image_id, _path_holder);
-    _image_storage.write_image_to_drive(_image, std::move(default_info));
+    const t_fs_path& default_image_path = _image_info_storage.get_image_path(image_id, _path_holder);
+    _image_storage.write_image_to_drive(_image, default_image_path);
 
     emit_finished();
 }

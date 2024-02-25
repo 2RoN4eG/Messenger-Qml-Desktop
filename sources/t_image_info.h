@@ -3,6 +3,7 @@
 
 #include "t_defines.h"
 
+
 // interface section
 
 class t_image_info {
@@ -18,16 +19,15 @@ public:
 public:
     t_url _url;
     t_thumb_hash _thumb_hash;
-
-    t_fs_path _path;
 };
+
 
 // class (interface's implementation) section
 
-class t_image_info_extended {
+class t_image_info_extended : public t_image_info
+{
 public:
     t_image_info_extended(const t_peer_id peer_id, const t_image_id image_id, t_image_info&& image_info);
-
     t_image_info_extended(const t_peer_id peer_id, const t_image_id image_id, t_photo_bundle_id bundle_id, t_image_info&& image_info);
 
 public:
@@ -37,18 +37,17 @@ public:
 
     const t_photo_bundle_id _bundle_id;
 
-    t_image_info _image_info;
+    // t_image_info _image_info;
 };
 
 bool operator<(const t_image_info_extended& lhs, const t_image_info_extended& rhs);
+
 
 // extra section
 
 bool does_avatar_info_contain_url(const t_image_info& info);
 
 bool does_avatar_info_contain_thumb_hash(const t_image_info& info);
-
-bool does_avatar_info_contain_path(const t_image_info& info);
 
 void print_image_info_path(const t_image_info& avatar_info);
 

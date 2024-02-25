@@ -1,24 +1,23 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import Qt5Compat.GraphicalEffects
+import QtGraphicalEffects 1.0
+import Bindings 1.0
 
 ListView {
+
+    property int font_size: 12
+
+    PeerInfoProvider {
+        id: peer_info_provider
+    }
+
     id: peer_area
     spacing: 0
-    model: 20
+    model: peer_info_provider.peers()
 
     width: 300
     height: 800
-
-    property string peer: "2048"
-    property string peer_nickname: "Nick O'Conor"
-    property string peer_last_message: "Hello, it's my last message to you ...\n second line"
-    property string peer_last_message_timestamp: "12:51"
-    property int peer_message_amount: 12
-
-    property string peer_avatar_source: "image://avatars/10"
-    property int font_size: 12
 
     delegate: Item {
         id: peer_item
@@ -34,11 +33,10 @@ ListView {
 
                 Image {
                     id: peer_avatar
-
                     width: peer_item.height
                     height: peer_item.height
 
-                    source: peer_avatar_source
+                    source: peer_info_provider.avatar_id(index)
                     sourceSize.height: Math.min(width, height)
                     sourceSize.width: Math.min(width, height)
 
@@ -65,9 +63,8 @@ ListView {
                     id: info_preview
 
                     Text {
-                        id: nickname
                         height: 25
-                        text: qsTr("Nick O'Conor")
+                        text: peer_info_provider.nickname(index)
                         font.pixelSize: font_size
                         font.bold: true
 
@@ -88,8 +85,8 @@ ListView {
                     width: 25
 
                     Text {
-                        id: last_message_timestamp
-                        text: "12:51"
+                        id: peer_last_message_timestamp
+                        text: peer_info_provider.last_message_timestamp(index)
                         font.pixelSize: font_size
                         horizontalAlignment: Text.AlignRight
 
@@ -103,11 +100,10 @@ ListView {
                         color: "black"
 
                         Text {
-                            id: message_amount
                             width: parent.width
                             height: parent.height
 
-                            text: qsTr("3")
+                            text: peer_info_provider.messages_to_read(index)
                             color: "white"
                             font.pixelSize: font_size
                             horizontalAlignment: Text.AlignHCenter

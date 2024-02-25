@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #include <QImage>
 
@@ -77,6 +78,7 @@ t_fs_line t_fs::read_as_single_line(const t_fs_path &path) const {
 }
 
 void t_fs::do_write_to_drive(const t_qt_image& image, const t_fs_path& path) const {
+    std::cout << "do_write_to_drive(..., path: " << path.string() << ")" << std::endl;
     if (!image.save(QString::fromStdString(path.string()))) {
         throw std::runtime_error { "image did not write on drive by path " + path.string() };
     }

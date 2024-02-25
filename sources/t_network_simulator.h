@@ -23,8 +23,8 @@ class t_network_simulator
 {
 public:
     t_network_simulator();
-
-    t_json_model_peers get_peers();
+    
+    t_json_peer_models get_peers();
 
 protected:
     t_url _get_peer_info { "qrc:/json/conversations.json" };

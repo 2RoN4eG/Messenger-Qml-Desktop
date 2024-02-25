@@ -1,30 +1,35 @@
-#include "t_ui_async_response_image.h"
+#include "t_ui_async_image_response.h"
 
-#include "memory/t_memory_image_info_storage.h"
+#include "memory/t_image_info_storage.h"
 
 #include "t_image_fs_worker.h"
 #include "t_path_aggregator.h"
 
+#include <QMetaType>
+
+#include <iostream>
+
 
 namespace {
-    t_qt_image make_avatar_by_thumb_hash(const t_image_info& info) {
-        const t_thumb_hash thumb_hash = info._thumb_hash;
+    t_qt_image make_avatar_by_thumb_hash(const t_thumb_hash& thumb_hash) {
         if (thumb_hash.empty()) {
             return {};
         }
         return {};
     }
 
-    t_qt_image make_squared_image(t_pointer_async_image_downloader& downloader) {
+    t_qt_image make_image(t_pointer_async_image_downloader& downloader) {
         t_qt_image image = downloader->get_image();
         downloader.reset();
         return image;
     }
 }
 
-//
 
-t_ui_async_response_image::t_ui_async_response_image(const i_make_path& path_holder,
+Q_DECLARE_METATYPE(t_image_id);
+
+
+t_ui_async_response_image::t_ui_async_response_image(const i_path_maker& path_holder,
                                                                                const i_image_info_storage& image_info_storage,
                                                      i_image_worker& image_storage,
                                                                                const QSize& size)
@@ -39,19 +44,22 @@ t_ui_async_response_image::t_ui_async_response_image(const i_make_path& path_hol
     _image.fill(Qt::transparent);
 }
 
-void t_ui_async_response_image::run(const t_image_id image_id) {
-    const t_image_info& squared_info = _image_info_storage.get_image_info(image_id, _path_holder);
+t_ui_async_response_image::~t_ui_async_response_image() {}
 
-    if (_image_storage.does_image_exist_on_drive(squared_info)) {
-        _image = _image_storage.read_image_from_drive(squared_info);
+void t_ui_async_response_image::run(const t_image_id image_id) {
+    const t_fs_path& image_path = _image_info_storage.get_image_path(image_id, _path_holder);
+    if (_image_storage.does_image_exist_on_drive(image_path)) {
+        _image = _image_storage.read_image_from_drive(image_path);
         emit_finished();
         return;
     }
 
-    run_async_image_downloading(image_id, squared_info._url);
+    const t_url& image_url = _image_info_storage.get_image_url(image_id);
+    run_async_image_downloading(image_id, image_url);
 
-    if (does_avatar_info_contain_thumb_hash(squared_info)) {
-        _image = make_avatar_by_thumb_hash(squared_info);
+    const t_thumb_hash& image_thumb_hash = _image_info_storage.get_image_thumb_hash(image_id);
+    if (!image_thumb_hash.empty()) {
+        _image = make_avatar_by_thumb_hash(image_thumb_hash);
         emit_finished();
         return;
     }
@@ -74,10 +82,10 @@ void t_ui_async_response_image::run_async_image_downloading(const t_image_id ima
 }
 
 void t_ui_async_response_image::on_image_downloaded(const t_image_id image_id) {
-    _image = make_squared_image(_downloading_command);
+    _image = make_image(_downloading_command);
 
-    t_image_info&& squared_info = _image_info_storage.get_image_info(image_id, _path_holder);
-    _image_storage.write_image_to_drive(_image, std::move(squared_info));
+    const t_fs_path& image_path = _image_info_storage.get_image_path(image_id, _path_holder);
+    _image_storage.write_image_to_drive(_image, image_path);
 
     emit_finished();
 }

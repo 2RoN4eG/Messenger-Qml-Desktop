@@ -23,26 +23,32 @@ add_executable(${CMAKE_PROJECT_NAME}
     sources/t_image_fs_worker.h                     sources/t_image_fs_worker.cpp
     #
     sources/interface/i_image_info_storage.h        sources/interface/i_image_info_storage.cpp
+    sources/interface/i_peer_info_storage.h         sources/interface/i_peer_info_storage.cpp
     sources/interface/i_meta_holder.h               sources/interface/i_meta_holder.cpp
     sources/interface/i_rotator.h                   sources/interface/i_rotator.cpp
-    # in memory
-    sources/memory/t_memory_meta_holder.h           sources/memory/t_memory_meta_holder.cpp
-    sources/memory/t_memory_image_info_storage.h    sources/memory/t_memory_image_info_storage.cpp
+    # implementation in memory
+    sources/memory/t_meta_holder.h                  sources/memory/t_meta_holder.cpp
+    sources/memory/t_image_info_storage.h           sources/memory/t_image_info_storage.cpp
+    sources/memory/t_peer_info_storage.h            sources/memory/t_peer_info_storage.cpp
+    # implementation in file
     #
     sources/t_async_image_downloader.h              sources/t_async_image_downloader.cpp
     sources/t_async_default_avatar_creator.h        sources/t_async_default_avatar_creator.cpp
     #
-    sources/t_ui_async_provider_image.h             sources/t_ui_async_provider_image.cpp
-    sources/t_ui_async_provider_default_avatar.h    sources/t_ui_async_provider_default_avatar.cpp
-    sources/t_ui_async_response_image.h             sources/t_ui_async_response_image.cpp
-    sources/t_ui_async_response_default_avatar.h    sources/t_ui_async_response_default_avatar.cpp
-    sources/t_ui_model_peers.h                      sources/t_ui_model_peers.cpp
+    sources/t_ui_async_image_provider.h             sources/t_ui_async_image_provider.cpp
+    sources/t_ui_async_default_avatar_provider.h    sources/t_ui_async_default_avatar_provider.cpp
+    sources/t_ui_async_image_response.h             sources/t_ui_async_image_response.cpp
+    sources/t_ui_async_default_avatar_response.h    sources/t_ui_async_default_avatar_response.cpp
     # network
     sources/t_network_simulator.h                   sources/t_network_simulator.cpp
     #
     sources/t_server_api.h                          sources/t_server_api.cpp
     #
     sources/t_json_peer_parser.h                    sources/t_json_peer_parser.cpp
+    # UI bindings
+    sources/t_ui_binding_peer_info_provider.h       sources/t_ui_binding_peer_info_provider.cpp
+    #
+    sources/t_messenger_context.h                   sources/t_messenger_context.cpp
     #
     Resources.qrc
 )

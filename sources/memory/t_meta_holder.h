@@ -1,5 +1,5 @@
-#ifndef T_MEMORY_META_HOLDER_H
-#define T_MEMORY_META_HOLDER_H
+#ifndef T_META_HOLDER_H
+#define T_META_HOLDER_H
 
 #include "../t_defines.h"
 
@@ -12,17 +12,27 @@ class t_fs;
 class t_fs_meta;
 
 using t_meta_holder_cache = std::set<t_fs_path>;
+using t_capacity = t_fs_size;
 
-struct t_size_range {
-    t_fs_size _minimum {};
-    t_fs_size _maximum {};
+struct t_capacity_range {
+    t_capacity _minimum {};
+    t_capacity _maximum {};
 };
 
+namespace memory
+{
+
+// Im memory meta holder
+// Pros: to avoid working with fs
+// Cons: in systems with limited amount of memory needs to use "in file image info storage"
+
 // alternative name is { t_path_holder }
-class t_memory_meta_holder : public i_meta_holder, public i_rotator
+class t_meta_holder : public i_meta_holder, public i_rotator
 {
 public:
-    t_memory_meta_holder(t_fs_size minimum_capacity, t_fs_size maximum_capacity, t_meta_holder_cache&& paths);
+    t_meta_holder(t_capacity minimum_capacity,
+                  t_capacity maximum_capacity,
+                  t_meta_holder_cache&& paths);
 
     // implement i_meta_holder interface
 
@@ -51,11 +61,13 @@ protected:
     void _do_unregister_out_of_range(const t_fs& fs);
 
 protected:
-    t_size_range _range;
+    t_capacity_range _capacity_range;
 
     t_meta_holder_cache _cache;
 
     std::vector<t_fs_path> _to_remove;
 };
 
-#endif // T_MEMORY_META_HOLDER_H
+}
+
+#endif // T_META_HOLDER_H

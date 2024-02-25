@@ -1,7 +1,7 @@
-#include "t_ui_async_provider_default_avatar.h"
+#include "t_ui_async_default_avatar_provider.h"
 
 #include "t_defines.h"
-#include "t_ui_async_response_default_avatar.h"
+#include "t_ui_async_default_avatar_response.h"
 
 namespace {
 t_image_id make_image_id(const QString& id) {
@@ -9,7 +9,7 @@ t_image_id make_image_id(const QString& id) {
 }
 }
 
-t_ui_async_provider_default_avatar::t_ui_async_provider_default_avatar(const i_make_path& path_holder,
+t_ui_async_provider_default_avatar::t_ui_async_provider_default_avatar(const i_path_maker& path_holder,
                                                                        const i_image_info_storage& image_info_storage,
                                                                        i_image_worker& image_storage)
     : _path_holder { path_holder }

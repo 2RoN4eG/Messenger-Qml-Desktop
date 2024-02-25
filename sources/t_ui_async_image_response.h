@@ -1,5 +1,5 @@
-#ifndef T_UI_ASYNC_RESPONSE_IMAGE_H
-#define T_UI_ASYNC_RESPONSE_IMAGE_H
+#ifndef T_UI_ASYNC_IMAGE_RESPONSE_H
+#define T_UI_ASYNC_IMAGE_RESPONSE_H
 
 #include "t_defines.h"
 
@@ -10,17 +10,18 @@
 
 class i_image_worker;
 class i_image_info_storage;
-class i_make_path;
+class i_path_maker;
 
 class QQuickTextureFactory;
 
 class t_ui_async_response_image : public QQuickImageResponse
 {
 public:
-    t_ui_async_response_image(const i_make_path& path_holder,
+    t_ui_async_response_image(const i_path_maker& path_holder,
                                            const i_image_info_storage& image_info_storage,
                               i_image_worker& image_storage,
                                            const QSize& size);
+    ~t_ui_async_response_image();
 
     void run(const t_image_id image_id);
 
@@ -38,7 +39,7 @@ protected:
     t_pointer_async_image_downloader _downloading_command;
 
 private:
-    const i_make_path& _path_holder;
+    const i_path_maker& _path_holder;
 
     const i_image_info_storage& _image_info_storage;
     
@@ -51,4 +52,4 @@ private:
     QNetworkAccessManager _network;
 };
 
-#endif // T_UI_ASYNC_RESPONSE_IMAGE_H
+#endif // T_UI_ASYNC_IMAGE_RESPONSE_H

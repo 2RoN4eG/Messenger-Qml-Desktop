@@ -112,15 +112,15 @@ t_common_paths make_common_path(const t_fs_path& root, const t_peer_id& self);
 
 //
 
-class i_make_path {
+class i_path_maker {
 public:
-    virtual ~i_make_path() = default;
+    virtual ~i_path_maker() = default;
 
     virtual t_fs_path operator()(const t_peer_id peer,
-                                 const t_fs_filename &filename) const = 0;
+                                 const t_fs_filename& filename) const = 0;
 };
 
-class t_make_avatar_path : public i_make_path {
+class t_make_avatar_path : public i_path_maker {
 public:
     t_make_avatar_path(const i_avatar_path& path, const t_avatar_type avatar_type) : _path { path }, _type { avatar_type } { }
     ~t_make_avatar_path() = default;
@@ -133,7 +133,7 @@ private:
     const t_avatar_type _type;
 };
 
-class t_make_photo_path : public i_make_path {
+class t_make_photo_path : public i_path_maker {
 public:
     t_make_photo_path(const i_photo_path& path) : _path { path } { }
     ~t_make_photo_path() = default;
