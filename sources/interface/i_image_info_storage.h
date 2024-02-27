@@ -23,6 +23,8 @@ public:
 
     // getting image thumb hash using image_id
     virtual const t_thumb_hash& get_image_thumb_hash(const t_image_id image_id) const = 0;
+
+    virtual const t_image_id get_latest_avatar_id(const t_peer_id peer_id) const = 0;
 };
 
 #endif // I_IMAGE_INFO_STORAGE_H

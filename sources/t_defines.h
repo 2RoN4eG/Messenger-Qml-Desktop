@@ -3,9 +3,12 @@
 
 #include <filesystem>
 #include <string>
+#include <set>
+
 
 #include <QUrl>
 #include <QImage>
+
 
 template <typename t_value>
 class t_value_holder
@@ -88,6 +91,8 @@ using t_qt_nickname             = QString;
 using t_qt_url                  = QUrl;
 using t_qt_message_timestamp    = qint64;
 
+using t_ui_image_id             = QString;
+
 using t_fs_path                 = std::filesystem::path;
 using t_fs_timestamp            = std::filesystem::file_time_type;
 using t_fs_size                 = std::uintmax_t;
@@ -99,6 +104,7 @@ using t_url                     = t_qt_url;
 using t_bytes                   = std::string;
 
 using t_nickname                = std::string;
+using t_nickname_view           = std::string_view;
 using t_text                    = std::string;
 
 using t_error                   = std::string;
@@ -123,13 +129,13 @@ using t_endpoint                = std::string;
 
 using t_message_timestamp       = t_qt_message_timestamp;
 
+
 enum t_avatar_type {
     t_default,
     t_squared,
     t_begin = t_default,
     t_end = t_squared
 };
-
 
 constexpr std::string_view to_string(const t_avatar_type avatar_type) {
     switch (avatar_type) {
@@ -151,7 +157,7 @@ struct t_fs_meta
     friend
         bool operator<(const t_fs_meta& lhs, const t_fs_meta& rhs) {
             return lhs._timestamp < rhs._timestamp;
-    }
+        }
 
     t_fs_path _path;
     t_fs_size _size;
@@ -237,12 +243,38 @@ protected:
     t_peer_id                   _peer_id;
 
     t_nickname                  _nickname;
-    
+
     t_json_avatar_models        _avatars;
 
     t_json_model_last_message   _last_message;
 };
 
 using t_json_peer_models = std::vector<t_json_peer_info_model>;
+
+class t_peer_info
+{
+public:
+    t_peer_info()
+        : t_peer_info({}, {})
+    {
+    }
+
+    t_peer_info(const t_peer_id peer_id, t_nickname&& nickname)
+        : _peer_id { peer_id }
+        , _nickname { std::move(nickname) }
+    {
+    }
+
+public:
+    t_peer_id _peer_id;
+
+    t_nickname _nickname;
+};
+using t_peer_infos = std::set<t_peer_info>;
+
+inline bool operator<(const t_peer_info& lhs, const t_peer_info& rhs) {
+    return lhs._peer_id < rhs._peer_id;
+}
+
 
 #endif // T_DEFINES_H

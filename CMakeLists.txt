@@ -29,7 +29,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     # implementation in memory
     sources/memory/t_meta_holder.h                  sources/memory/t_meta_holder.cpp
     sources/memory/t_image_info_storage.h           sources/memory/t_image_info_storage.cpp
-    sources/memory/t_peer_info_storage.h            sources/memory/t_peer_info_storage.cpp
+    sources/memory/t_messenger_context.h            sources/memory/t_messenger_context.cpp
     # implementation in file
     #
     sources/t_async_image_downloader.h              sources/t_async_image_downloader.cpp
@@ -46,9 +46,9 @@ add_executable(${CMAKE_PROJECT_NAME}
     #
     sources/t_json_peer_parser.h                    sources/t_json_peer_parser.cpp
     # UI bindings
-    sources/t_ui_binding_peer_info_provider.h       sources/t_ui_binding_peer_info_provider.cpp
+    sources/t_ui_peer_info_wrapper.h                sources/t_ui_peer_info_wrapper.cpp
     #
-    sources/t_messenger_context.h                   sources/t_messenger_context.cpp
+
     #
     Resources.qrc
 )

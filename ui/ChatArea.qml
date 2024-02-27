@@ -28,7 +28,7 @@ ListView {
                     id: peer_avatar
 
 
-                    source: "image://avatars/" + (index + 1)
+                    source: "image://avatars/1"
                     sourceSize.height: height
                     sourceSize.width: width
 

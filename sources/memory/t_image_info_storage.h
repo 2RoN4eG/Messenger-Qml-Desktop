@@ -30,10 +30,13 @@ public:
     const t_fs_path get_image_path(const t_image_id image_id, const i_path_maker& path_maker) const override;
 
     // getting image url using image_id
-    virtual const t_url& get_image_url(const t_image_id image_id) const override;
+    const t_url& get_image_url(const t_image_id image_id) const override;
 
     // getting image thumb hash using image_id
-    virtual const t_thumb_hash& get_image_thumb_hash(const t_image_id image_id) const override;
+    const t_thumb_hash& get_image_thumb_hash(const t_image_id image_id) const override;
+
+    // getting lates avatar id (image id) using peer_id
+    const t_image_id get_latest_avatar_id(const t_peer_id peer_id) const override;
 
 protected:
     t_extended_image_infos _image_infos;

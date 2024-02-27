@@ -5,16 +5,11 @@ import QtGraphicalEffects 1.0
 import Bindings 1.0
 
 ListView {
-
     property int font_size: 12
-
-    PeerInfoProvider {
-        id: peer_info_provider
-    }
 
     id: peer_area
     spacing: 0
-    model: peer_info_provider.peers()
+    model: peer_info_context.peer_amount()
 
     width: 300
     height: 800
@@ -36,7 +31,7 @@ ListView {
                     width: peer_item.height
                     height: peer_item.height
 
-                    source: peer_info_provider.avatar_id(index)
+                    source: peer_info_context.avatar_id(index)
                     sourceSize.height: Math.min(width, height)
                     sourceSize.width: Math.min(width, height)
 
@@ -64,7 +59,7 @@ ListView {
 
                     Text {
                         height: 25
-                        text: peer_info_provider.nickname(index)
+                        text: peer_info_context.nickname(index)
                         font.pixelSize: font_size
                         font.bold: true
 
@@ -86,7 +81,7 @@ ListView {
 
                     Text {
                         id: peer_last_message_timestamp
-                        text: peer_info_provider.last_message_timestamp(index)
+                        text: peer_info_context.last_message_timestamp(index)
                         font.pixelSize: font_size
                         horizontalAlignment: Text.AlignRight
 
@@ -103,7 +98,7 @@ ListView {
                             width: parent.width
                             height: parent.height
 
-                            text: peer_info_provider.messages_to_read(index)
+                            text: peer_info_context.messages_to_read(index)
                             color: "white"
                             font.pixelSize: font_size
                             horizontalAlignment: Text.AlignHCenter

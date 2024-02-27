@@ -3,11 +3,13 @@
 #include "../t_path_aggregator.h"
 #include <iostream>
 
+#include <QDebug>
+
 // t_peer and i_image_path_maker are hidden in constructor becase object will be used by interface
 
 namespace {
 const t_image_info_extended& get_extended_image_info(const t_extended_image_infos& image_infos, const t_image_id image_id) {
-    auto finding_predicate = [&image_id](const t_image_info_extended& extended) {
+    auto finding_predicate = [image_id](const t_image_info_extended& extended) {
         return extended._image_id == image_id;
     };
 
@@ -16,6 +18,18 @@ const t_image_info_extended& get_extended_image_info(const t_extended_image_info
     }
 
     throw std::runtime_error { "t_image_info_storage_memory::get_image_info: avatar info does not exist by avatar id { " + image_id.to_string() + " }" };
+}
+
+const t_image_info_extended& get_extended_image_info(const t_extended_image_infos& image_infos, const t_peer_id peer_id) {
+    auto finding_predicate = [peer_id](const t_image_info_extended& extended) {
+        return extended._peer_id == peer_id;
+    };
+
+    if (t_image_infos_iterator it = std::find_if(image_infos.begin(), image_infos.end(),  finding_predicate); it != image_infos.end()) {
+        return *it;
+    }
+
+    throw std::runtime_error { "t_image_info_storage_memory::get_image_info: avatar info does not exist by peer id { " + peer_id.to_string() + " }" };
 }
 }
 
@@ -33,6 +47,8 @@ const t_fs_path t_image_info_storage::get_image_path(const t_image_id image_id, 
 const t_url& t_image_info_storage::get_image_url(const t_image_id image_id) const {
     const t_image_info_extended& image_info_extended = get_extended_image_info(_image_infos, image_id);
 
+    qDebug() << "URL: " << image_info_extended._url;
+
     return image_info_extended._url;
 }
 
@@ -40,6 +56,12 @@ const t_thumb_hash& t_image_info_storage::get_image_thumb_hash(const t_image_id 
     const t_image_info_extended& image_info_extended = get_extended_image_info(_image_infos, image_id);
 
     return image_info_extended._thumb_hash;
+}
+
+const t_image_id t_image_info_storage::get_latest_avatar_id(const t_peer_id peer_id) const {
+    const t_image_info_extended& image_info_extended = get_extended_image_info(_image_infos, peer_id);
+
+    return image_info_extended._image_id;
 }
 
 void t_image_info_storage::set_image_info(const t_peer_id peer_id, const t_image_id image_id, const t_url& url, const t_thumb_hash& thumb_hash) {

@@ -2,14 +2,10 @@
 #define T_NETWORK_SIMULATOR_H
 
 #include "t_defines.h"
+#include "t_json_peer_parser.h"
 
 
-//
-
-class t_peer_info_network {
-    // self peer
-    // conversations with
-};
+class i_set_peer_info;
 
 
 //
@@ -22,12 +18,14 @@ class i_network_simulator { };
 class t_network_simulator
 {
 public:
-    t_network_simulator();
-    
-    t_json_peer_models get_peers();
+    t_network_simulator(i_set_peer_info& peer_info_storage);
+
+    void process_peer_infos();
 
 protected:
-    t_url _get_peer_info { "qrc:/json/conversations.json" };
+    i_set_peer_info& _peer_info_storage;
+
+    t_json_peer_info_processor _peer_info_parser;
 };
 
 #endif // T_NETWORK_SIMULATOR_H

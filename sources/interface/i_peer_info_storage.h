@@ -3,17 +3,18 @@
 
 #include "../t_defines.h"
 
-class t_json_peer_info_model;
-using t_peer_info = t_json_peer_info_model;
 
-class i_peer_info_storage
+class t_peer_info;
+
+
+class i_set_peer_info
 {
 public:
-    virtual ~i_peer_info_storage() = 0;
+    virtual ~i_set_peer_info() = 0;
 
-    virtual const t_peer_info& get_peer_info(const t_peer_id peer_id) const = 0;
+    virtual void set_peer_info(const t_peer_id peer_id, t_nickname&& nickname) = 0;
 
-    virtual void set_peer_info(const t_peer_id peer_id, const t_nickname& nickname) = 0;
+    virtual void set_image_info(const t_peer_id peer_id, const t_url& url, const t_thumb_hash& thumb_hash) = 0;
 };
 
 #endif // I_PEER_INFO_STORAGE_H
