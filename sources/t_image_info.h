@@ -6,41 +6,28 @@
 
 // interface section
 
-class t_image_info {
-public:
-    t_image_info(const t_url& url, const t_thumb_hash& thumb_hash);
-
-    t_image_info(const t_image_info& avatar_info) = default;
-    t_image_info& operator=(const t_image_info& avatar_info) = default;
-
-    t_image_info(t_image_info&& avatar_info) = default;
-    t_image_info& operator=(t_image_info&& avatar_info) = default;
-
-public:
-    t_url _url;
-    t_thumb_hash _thumb_hash;
-};
-
-
 // class (interface's implementation) section
 
-class t_image_info_extended : public t_image_info
+class t_image_info
 {
 public:
-    t_image_info_extended(const t_peer_id peer_id, const t_image_id image_id, t_image_info&& image_info);
-    t_image_info_extended(const t_peer_id peer_id, const t_image_id image_id, t_photo_bundle_id bundle_id, t_image_info&& image_info);
+    t_image_info(const t_peer_id peer_id, const t_image_id image_id, const t_image_type image_type, const t_url& url, const t_thumb_hash& thumb_hash);
 
 public:
     const t_peer_id _peer_id;
 
+    const t_image_bundle_id _image_bundle_id { t_image_bundle_id::none() };
+
     const t_image_id _image_id;
 
-    const t_photo_bundle_id _bundle_id;
+    const t_image_type _image_type;
 
-    // t_image_info _image_info;
+    t_url _url;
+
+    t_thumb_hash _thumb_hash;
 };
 
-bool operator<(const t_image_info_extended& lhs, const t_image_info_extended& rhs);
+bool operator<(const t_image_info& lhs, const t_image_info& rhs);
 
 
 // extra section

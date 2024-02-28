@@ -17,10 +17,10 @@ class QQuickTextureFactory;
 class t_ui_async_response_image : public QQuickImageResponse
 {
 public:
-    t_ui_async_response_image(const i_path_maker& path_holder,
-                                           const i_image_info_storage& image_info_storage,
-                              i_image_worker& image_storage,
-                                           const QSize& size);
+    t_ui_async_response_image(i_image_worker& image_storage,
+                              const i_path_maker& path_holder,
+                              const i_image_info_storage& image_info_storage,
+                              const QSize& size);
     ~t_ui_async_response_image();
 
     void run(const t_image_id image_id);

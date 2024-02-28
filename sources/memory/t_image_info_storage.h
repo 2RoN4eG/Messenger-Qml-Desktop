@@ -7,12 +7,11 @@
 
 #include <set>
 
-//
 
 class i_path_maker;
 
-using t_extended_image_infos = std::set<t_image_info_extended>;
-using t_image_infos_iterator = t_extended_image_infos::iterator;
+using t_image_infos = std::set<t_image_info>;
+using t_image_infos_iterator = t_image_infos::iterator;
 
 namespace memory
 {
@@ -24,7 +23,10 @@ namespace memory
 class t_image_info_storage : public i_image_info_storage
 {
 public:
-    void set_image_info(const t_peer_id peer_id, const t_image_id image_id, const t_url& url, const t_thumb_hash& thumb_hash) override;
+    void set_avatar_image_info(const t_peer_id peer_id, const t_avatar_id image_id, const t_url& url, const t_thumb_hash& thumb_hash) override;
+
+    void set_photo_image_info(const t_peer_id peer_id, const t_photo_id photo_id, const t_url& url, const t_thumb_hash& thumb_hash) override;
+
 
     // getting image path using image_id and path maker (image_info::path will be maked using avatar_type)
     const t_fs_path get_image_path(const t_image_id image_id, const i_path_maker& path_maker) const override;
@@ -39,7 +41,7 @@ public:
     const t_image_id get_latest_avatar_id(const t_peer_id peer_id) const override;
 
 protected:
-    t_extended_image_infos _image_infos;
+    t_image_infos _image_infos;
 };
 
 }

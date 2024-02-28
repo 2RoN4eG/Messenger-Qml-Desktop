@@ -17,10 +17,10 @@ public:
 class i_avatar_path {
 public:
     virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer) const = 0;
-
-    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type) const = 0;
-
-    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type, const t_fs_filename& filename) const = 0;
+    
+    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_types avatar_type) const = 0;
+    
+    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_types avatar_type, const t_fs_filename& filename) const = 0;
 };
 
 class i_photo_path {
@@ -75,10 +75,10 @@ public:
     // /root/self_peer/peer/avatars/squared/{ list-of-squared-avatars-or-single-avatar }
 
     t_fs_path get_fs_path_for_avatar(const t_peer_id peer) const override;
-
-    t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type) const override;
-
-    t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type, const t_fs_filename& filename) const override;
+    
+    t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_types avatar_type) const override;
+    
+    t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_types avatar_type, const t_fs_filename& filename) const override;
 
 
     // photo section (i_photo_path's implementation)
@@ -122,15 +122,15 @@ public:
 
 class t_make_avatar_path : public i_path_maker {
 public:
-    t_make_avatar_path(const i_avatar_path& path, const t_avatar_type avatar_type) : _path { path }, _type { avatar_type } { }
+    t_make_avatar_path(const i_avatar_path& path, const t_avatar_types avatar_type) : _path { path }, _type { avatar_type } { }
     ~t_make_avatar_path() = default;
 
     t_fs_path operator()(const t_peer_id peer, const t_fs_filename& filename) const override { return _path.get_fs_path_for_avatar(peer, _type, filename); }
 
 private:
     const i_avatar_path& _path;
-
-    const t_avatar_type _type;
+    
+    const t_avatar_types _type;
 };
 
 class t_make_photo_path : public i_path_maker {

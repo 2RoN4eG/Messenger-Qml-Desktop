@@ -9,7 +9,7 @@ ListView {
 
     id: peer_area
     spacing: 0
-    model: peer_info_context.peer_amount()
+    model: peer_info_context.count()
 
     width: 300
     height: 800

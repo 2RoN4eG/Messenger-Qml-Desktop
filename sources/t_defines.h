@@ -34,6 +34,8 @@ public:
     const t_value value() const {
         return _value;
     }
+    
+    static t_value_holder<t_value> none() { return std::numeric_limits<t_value>::max(); }
 
 protected:
     friend
@@ -112,6 +114,8 @@ using t_extra                   = std::string;
 
 using t_peer_id                 = t_value_holder<int>;
 
+enum t_image_type { t_avatar_image, t_photo_image, t_stiker_image };
+
 using t_image_id                = t_value_holder<unsigned long long>;
 using t_image_id_generator      = t_value_generator<unsigned long long>;
 using t_avatar_id               = t_image_id;
@@ -127,20 +131,20 @@ using t_protocol                = std::string_view;
 using t_hostname                = std::string_view;
 using t_endpoint                = std::string;
 
+using t_message_text            = std::string;
 using t_message_timestamp       = t_qt_message_timestamp;
 
-
-enum t_avatar_type {
-    t_default,
-    t_squared,
-    t_begin = t_default,
-    t_end = t_squared
+enum t_avatar_types {
+    t_default_avatar,
+    t_squared_avatar,
+    t_begin = t_default_avatar,
+    t_end = t_squared_avatar
 };
 
-constexpr std::string_view to_string(const t_avatar_type avatar_type) {
+constexpr std::string_view to_string(const t_avatar_types avatar_type) {
     switch (avatar_type) {
-    case t_avatar_type::t_default: return "default";
-    case t_avatar_type::t_squared: return "squared";
+    case t_avatar_types::t_default_avatar: return "default";
+    case t_avatar_types::t_squared_avatar: return "squared";
     default: throw std::runtime_error { "avatar_type is unknown" };
     }
 }
@@ -164,93 +168,6 @@ struct t_fs_meta
     t_fs_timestamp _timestamp;
 };
 
-class t_json_avatar_model
-{
-public:
-    t_json_avatar_model(t_thumb_hash&& thumb_hash, t_url&& url)
-        : _thumb_hash { std::move(thumb_hash) }
-        , _url { std::move(url) }
-    {
-    }
-    
-    t_json_avatar_model()
-        : t_json_avatar_model { {}, {} }
-    {
-    }
-
-    t_thumb_hash get_thumb_hash() const { return _thumb_hash; }
-
-    t_url get_url() const { return _url; }
-
-protected:
-    t_thumb_hash _thumb_hash;
-    t_url _url;
-};
-
-using t_json_avatar_models = std::vector<t_json_avatar_model>;
-
-class t_json_message_model
-{
-public:
-    t_json_message_model(t_text&& text, t_message_timestamp timestamp)
-        : _text { std::move(text) }
-        , _timestamp { timestamp }
-    {
-    }
-
-    t_json_message_model()
-        : t_json_message_model { {}, {} }
-    {
-    }
-
-    t_text get_text() const { return _text; }
-
-    t_message_timestamp get_timestamp() const { return _timestamp; }
-
-protected:
-    t_text _text;
-
-    t_message_timestamp _timestamp;
-};
-
-using t_json_model_last_message = t_json_message_model;
-
-class t_json_peer_info_model
-{
-public:
-    t_json_peer_info_model(t_peer_id peer_id, t_nickname&& nickname, t_json_avatar_models&& avatars, t_json_model_last_message&& last_message)
-        : _peer_id { peer_id }
-        , _nickname { std::move(nickname) }
-        , _avatars { std::move(avatars) }
-        , _last_message { std::move(last_message) }
-    {
-    }
-
-    t_json_peer_info_model()
-        : t_json_peer_info_model { {}, {}, {}, {} }
-    {
-    }
-
-    t_peer_id peer_id() const { return _peer_id; }
-
-    t_nickname nickname() const { return _nickname; }
-    
-    t_json_avatar_model avatar() const { return _avatars.front(); }
-
-    t_json_model_last_message last_message() const { return _last_message; }
-
-protected:
-    t_peer_id                   _peer_id;
-
-    t_nickname                  _nickname;
-
-    t_json_avatar_models        _avatars;
-
-    t_json_model_last_message   _last_message;
-};
-
-using t_json_peer_models = std::vector<t_json_peer_info_model>;
-
 class t_peer_info
 {
 public:
@@ -270,6 +187,7 @@ public:
 
     t_nickname _nickname;
 };
+
 using t_peer_infos = std::set<t_peer_info>;
 
 inline bool operator<(const t_peer_info& lhs, const t_peer_info& rhs) {

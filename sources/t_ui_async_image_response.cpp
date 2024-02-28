@@ -7,8 +7,6 @@
 
 #include <QMetaType>
 
-#include <iostream>
-
 
 namespace {
     t_qt_image make_avatar_by_thumb_hash(const t_thumb_hash& thumb_hash) {
@@ -29,10 +27,10 @@ namespace {
 Q_DECLARE_METATYPE(t_image_id);
 
 
-t_ui_async_response_image::t_ui_async_response_image(const i_path_maker& path_holder,
-                                                                               const i_image_info_storage& image_info_storage,
-                                                     i_image_worker& image_storage,
-                                                                               const QSize& size)
+t_ui_async_response_image::t_ui_async_response_image(i_image_worker& image_storage,
+                                                     const i_path_maker& path_holder,
+                                                     const i_image_info_storage& image_info_storage,
+                                                     const QSize& size)
     : _path_holder { path_holder }
     , _image_info_storage { image_info_storage }
     , _image_storage { image_storage }
@@ -44,9 +42,12 @@ t_ui_async_response_image::t_ui_async_response_image(const i_path_maker& path_ho
     _image.fill(Qt::transparent);
 }
 
-t_ui_async_response_image::~t_ui_async_response_image() {}
+t_ui_async_response_image::~t_ui_async_response_image() {
+}
 
 void t_ui_async_response_image::run(const t_image_id image_id) {
+    std::cout << "t_ui_async_response_image::run(const t_image_id image_id { " << image_id << " })" << std::endl;
+
     const t_fs_path& image_path = _image_info_storage.get_image_path(image_id, _path_holder);
     if (_image_storage.does_image_exist_on_drive(image_path)) {
         _image = _image_storage.read_image_from_drive(image_path);
@@ -55,6 +56,8 @@ void t_ui_async_response_image::run(const t_image_id image_id) {
     }
 
     const t_url& image_url = _image_info_storage.get_image_url(image_id);
+    std::cout << "t_ui_async_response_image::run(...) url is '" << image_url.toString().toStdString() << "'" << std::endl;
+
     run_async_image_downloading(image_id, image_url);
 
     const t_thumb_hash& image_thumb_hash = _image_info_storage.get_image_thumb_hash(image_id);
@@ -72,6 +75,7 @@ QQuickTextureFactory* t_ui_async_response_image::textureFactory() const {
 }
 
 void t_ui_async_response_image::emit_finished() {
+    // std::cout << "t_ui_async_response_image::finished()" << std::endl;
     emit finished();
 }
 

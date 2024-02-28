@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>ui/Main.qml</file>
         <file>json/peer_info_models.json</file>
-        <file>json/conversations.json</file>
+        <file>json/conversation_with_models.json</file>
         <file>ui/ChatArea.qml</file>
         <file>ui/PeerArea.qml</file>
         <file>ui/DebugArea.qml</file>

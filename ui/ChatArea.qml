@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 ListView {
     id: chat_area
     spacing: 0
-    model: 10
+    model: peer_conversation_provider.count()
 
     width: parent.width
     height: parent.height
@@ -26,7 +26,6 @@ ListView {
 
                 Image {
                     id: peer_avatar
-
 
                     source: "image://avatars/1"
                     sourceSize.height: height
@@ -56,7 +55,7 @@ ListView {
 
                     Text {
                         id: peer_nickname
-                        text: "John Doe"
+                        text: peer_conversation_provider.peer_message_nickname(index)
                         font.bold: true
                     }
 
@@ -64,21 +63,21 @@ ListView {
                         id: sent_photo
                         width: 250
                         height: 150
-                        source: "image://photos/3"
+                        source: peer_conversation_provider.peer_message_photo(index)
                         sourceSize.width: width
                         sourceSize.height: height
                     }
 
                     Text {
                         id: message_text
-                        text: "This is a sample message." // Replace with actual message text
+                        text: peer_conversation_provider.peer_message_text(index)
                         wrapMode: Text.Wrap
                     }
                 }
 
                 Text {
                     id: message_timestamp
-                    text: "23:41" // Replace with actual timestamp
+                    text: peer_conversation_provider.peer_message_timestamp(index)
 
                     Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 }

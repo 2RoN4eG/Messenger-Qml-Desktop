@@ -3,28 +3,21 @@
 #include <iostream>
 #include <sstream>
 
-t_image_info::t_image_info(const t_url& url, const t_thumb_hash& thumb_hash)
-    : _url { url }
+
+t_image_info::t_image_info(const t_peer_id peer_id, const t_image_id image_id, const t_image_type image_type, const t_url& url, const t_thumb_hash& thumb_hash)
+    : _peer_id { peer_id }
+    , _image_id { image_id }
+    , _image_type { image_type }
+    , _url { url }
     , _thumb_hash { thumb_hash }
 {
 }
 
+bool operator<(const t_image_info& lhs, const t_image_info& rhs) {
+    if (lhs._image_id == rhs._image_id) {
+        throw std::runtime_error { "image id must be unique for each image (avatar, photo, sticker)" };
+    }
 
-t_image_info_extended::t_image_info_extended(const t_peer_id peer_id, const t_image_id image_id, t_image_info&& image_info)
-    : t_image_info_extended { peer_id, image_id, {}, std::move(image_info) }
-{
-}
-
-t_image_info_extended::t_image_info_extended(const t_peer_id peer_id, const t_image_id image_id, t_photo_bundle_id bundle_id, t_image_info&& image_info)
-    : t_image_info { std::move(image_info) }
-    , _peer_id { peer_id }
-    , _image_id { image_id }
-    , _bundle_id { bundle_id }
-{
-}
-
-bool operator<(const t_image_info_extended& lhs, const t_image_info_extended& rhs) {
-    if (lhs._image_id == rhs._image_id) { throw std::runtime_error { "image id must be unique for each image (avatar, photo, sticker)" }; }
     return lhs._image_id < rhs._image_id;
 }
 

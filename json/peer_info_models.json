@@ -2,7 +2,7 @@
   "self":1024,
   "peers":[
     {
-      "peer":2048,
+      "peer_id":2048,
       "nickname":"Albert Einstein",
       "avatars":[
         {
@@ -25,7 +25,7 @@
       "messages_to_read":3
     },
     {
-      "peer":2049,
+      "peer_id": 2049,
       "nickname":"Albus Dumbledore",
       "avatars":[
         {
@@ -44,7 +44,7 @@
       "messages_to_read":3
     },
     {
-      "peer":2050,
+      "peer_id":2050,
       "nickname":"Harry Potter",
       "avatars":[
         {

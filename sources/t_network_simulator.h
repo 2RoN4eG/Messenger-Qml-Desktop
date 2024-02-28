@@ -2,30 +2,39 @@
 #define T_NETWORK_SIMULATOR_H
 
 #include "t_defines.h"
-#include "t_json_peer_parser.h"
+
+#include "t_json_peer_info_parser.h"
+#include "t_json_peer_message_processor.h"
 
 
-class i_set_peer_info;
-
+class i_peer_context_setter;
 
 //
 
 class i_network_simulator { };
-
 
 //
 
 class t_network_simulator
 {
 public:
-    t_network_simulator(i_set_peer_info& peer_info_storage);
+    t_network_simulator(i_peer_context_setter& peer_context_setter);
 
-    void process_peer_infos();
+    void process_peer_info();
+
+    void process_peer_message();
 
 protected:
-    i_set_peer_info& _peer_info_storage;
+    i_peer_context_setter& _peer_context_setter;
 
-    t_json_peer_info_processor _peer_info_parser;
+    t_image_id_generator _avatar_id_generator;
+
+    t_json_peer_info_processor _peer_info_processor;
+
+    t_image_id_generator& _photo_id_generator;
+
+    t_json_peer_message_processor _peer_message_processor;
+
 };
 
 #endif // T_NETWORK_SIMULATOR_H
