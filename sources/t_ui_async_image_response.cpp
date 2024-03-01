@@ -7,6 +7,8 @@
 
 #include <QMetaType>
 
+#include <iostream>
+
 
 namespace {
     t_qt_image make_avatar_by_thumb_hash(const t_thumb_hash& thumb_hash) {

@@ -17,9 +17,9 @@ class t_ui_async_response_default_avatar : public QQuickImageResponse
 {
 public:
     t_ui_async_response_default_avatar(const i_path_maker& path_holder,
-                                        const i_image_info_storage& image_info_storage,
-                                       i_image_worker& image_storage,
-                                        const QSize& size);
+                                       const i_image_info_storage& image_info_storage,
+                                       const t_qt_size& size,
+                                       i_image_worker& image_storage);
 
     void run(const t_image_id image_id);
 
@@ -28,7 +28,7 @@ public:
 protected:
     void emit_finished();
 
-    void run_async_image_creating(const t_image_id image_id, const t_qt_nickname nickname, const t_qt_size size);
+    void run_async_image_creating(const t_image_id image_id, const t_qt_nickname nickname, const t_qt_size& size);
 
 protected slots:
     void on_image_created(const t_image_id image_id);
@@ -43,7 +43,7 @@ private:
     
     i_image_worker& _image_storage;
 
-    QSize _size;
+    t_qt_size _size;
 
     t_qt_image _image;
 };

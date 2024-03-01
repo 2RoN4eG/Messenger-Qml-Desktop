@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QQuickItem>
 
-#include "memory/t_peer_context_setter.h"
+#include "memory/t_messender_context_setter.h"
 
 
 class t_ui_peer_conversation_provider : public QQuickItem
@@ -12,9 +12,11 @@ class t_ui_peer_conversation_provider : public QQuickItem
     Q_OBJECT
 
 public:
-    t_ui_peer_conversation_provider(const t_messages* messages = nullptr);
+    t_ui_peer_conversation_provider(const t_message_info_storage* messages = nullptr);
 
     Q_INVOKABLE int count() const;
+
+    Q_INVOKABLE QString latest_avatar_id(int index) const;
 
     Q_INVOKABLE QString peer_message_nickname(int index) const;
 
@@ -25,7 +27,7 @@ public:
     Q_INVOKABLE QString peer_message_timestamp(int index) const;
 
 private:
-    const t_messages& _messages;
+    const t_message_info_storage& _messages;
 };
 
 #endif // T_UI_PEER_CONVERSATION_PROVIDER_H

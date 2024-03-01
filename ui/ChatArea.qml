@@ -27,7 +27,7 @@ ListView {
                 Image {
                     id: peer_avatar
 
-                    source: "image://avatars/1"
+                    source: peer_conversation_provider.latest_avatar_id(index)
                     sourceSize.height: height
                     sourceSize.width: width
 
@@ -65,7 +65,7 @@ ListView {
                         height: 150
                         source: peer_conversation_provider.peer_message_photo(index)
                         sourceSize.width: width
-                        sourceSize.height: height
+                        sourceSize.height: peer_conversation_provider.peer_message_photo(index) ? height : ""
                     }
 
                     Text {

@@ -9,85 +9,35 @@
 #include <QUrl>
 #include <QImage>
 
+#include "t_value.h"
 
-template <typename t_value>
-class t_value_holder
-{
-public:
-    using t_value_type = t_value;
 
-    t_value_holder(t_value value = {})
-        : _value { value }
-    {
-    }
+enum t_avatar_type {
+    t_default,
+    t_squared,
 
-    t_value_holder(const t_value_holder<t_value>& other) = default;
-    t_value_holder<t_value>& operator=(const t_value_holder<t_value>& other) = default;
+    t_amount,
+    t_begin = t_default,
+    t_end = t_squared,
 
-    t_value_holder(t_value_holder<t_value>&& other) = default;
-    t_value_holder<t_value>& operator=(t_value_holder<t_value>&& other) = default;
-
-    std::string to_string() const {
-        return std::to_string(_value);
-    }
-
-    const t_value value() const {
-        return _value;
-    }
-    
-    static t_value_holder<t_value> none() { return std::numeric_limits<t_value>::max(); }
-
-protected:
-    friend
-        bool operator==(const t_value_holder<t_value>& lhs, const t_value_holder<t_value>& rhs) {
-            return lhs._value == rhs._value;
-        }
-
-    friend
-        bool operator<(const t_value_holder<t_value>& lhs, const t_value_holder<t_value>& rhs) {
-            return lhs._value < rhs._value;
-        }
-
-    friend
-        bool operator>(const t_value_holder<t_value>& lhs, const t_value_holder<t_value>& rhs) {
-            return lhs._value > rhs._value;
-        }
-
-    friend
-        std::ostream& operator<<(std::ostream& stream, const t_value_holder<t_value>& holder) {
-            stream << holder.value();
-            return stream;
-        }
-
-    t_value _value {};
+    t_default_avatar = t_default,
+    t_squared_avatar = t_squared,
 };
 
+enum t_image_type {
+    t_avatar_image,
+    t_photo_image,
+    t_stiker_image,
 
-template <typename t_value>
-class t_value_generator
-{
-public:
-    t_value_generator()
-        : _value {}
-    {
-    }
-
-    const t_value_holder<t_value> get_value_and_generate_next() {
-        return _value ++;
-    }
-
-    const t_value_holder<t_value> get_value_and_generate_previous() {
-        return _value --;
-    }
-
-protected:
-    t_value _value {};
+    t_default_avatar_image,
+    t_squared_avatar_image,
 };
 
 
 using t_qt_image                = QImage;
 using t_qt_avatar               = t_qt_image;
 using t_qt_photo                = t_qt_image;
+using t_qt_id                   = QString;
 using t_qt_size                 = QSize;
 using t_qt_nickname             = QString;
 using t_qt_url                  = QUrl;
@@ -112,45 +62,47 @@ using t_text                    = std::string;
 using t_error                   = std::string;
 using t_extra                   = std::string;
 
-using t_peer_id                 = t_value_holder<int>;
+using t_id_type                 = unsigned long long;
+using t_peer_id                 = t_value_holder<t_id_type>;
 
-enum t_image_type { t_avatar_image, t_photo_image, t_stiker_image };
+using t_image_id                = t_value_holder<t_id_type>;
+using t_image_id_generator      = t_value_generator<t_id_type>;
+using t_image_bundle_id         = t_value_holder<t_id_type>;
 
-using t_image_id                = t_value_holder<unsigned long long>;
-using t_image_id_generator      = t_value_generator<unsigned long long>;
 using t_avatar_id               = t_image_id;
-using t_photo_id                = t_image_id;
-
-using t_image_bundle_id         = t_value_holder<long long>;
+using t_avatar_id_generator     = t_image_id_generator;
 using t_avatar_bundle_id        = t_image_bundle_id;
-using t_photo_bundle_id         = t_image_bundle_id;
 
-using t_photo_bundle            = std::string;
+using t_photo_id                = t_image_id;
+using t_photo_id_generator      = t_image_id_generator;
+using t_photo_bundle_id         = t_image_bundle_id;
 
 using t_protocol                = std::string_view;
 using t_hostname                = std::string_view;
 using t_endpoint                = std::string;
 
+using t_message_id              = t_value_holder<t_id_type>;
+using t_message_id_generator    = t_value_generator<t_id_type>;
+using t_message_bundle_id       = t_value_holder<t_id_type>;
+
 using t_message_text            = std::string;
 using t_message_timestamp       = t_qt_message_timestamp;
 
-enum t_avatar_types {
-    t_default_avatar,
-    t_squared_avatar,
-    t_begin = t_default_avatar,
-    t_end = t_squared_avatar
-};
 
-constexpr std::string_view to_string(const t_avatar_types avatar_type) {
+constexpr std::string_view to_string(const t_avatar_type avatar_type) {
+    static_assert(t_avatar_type::t_amount == 2, "t_avatar_type::t_amount must be equal with 2");
+
     switch (avatar_type) {
-    case t_avatar_types::t_default_avatar: return "default";
-    case t_avatar_types::t_squared_avatar: return "squared";
+    case t_avatar_type::t_default: return "default";
+    case t_avatar_type::t_squared: return "squared";
     default: throw std::runtime_error { "avatar_type is unknown" };
     }
 }
 
-struct t_fs_meta
+
+class t_fs_meta
 {
+public:
     t_fs_meta(const t_fs_path& path, t_fs_size size, t_fs_timestamp timestamp)
         : _path { path }
         , _size { size }
@@ -158,11 +110,12 @@ struct t_fs_meta
     {
     }
 
-    friend
+    friend inline
         bool operator<(const t_fs_meta& lhs, const t_fs_meta& rhs) {
             return lhs._timestamp < rhs._timestamp;
         }
 
+public:
     t_fs_path _path;
     t_fs_size _size;
     t_fs_timestamp _timestamp;
@@ -182,17 +135,18 @@ public:
     {
     }
 
+    friend inline
+        bool operator<(const t_peer_info& lhs, const t_peer_info& rhs) {
+            return lhs._peer_id < rhs._peer_id;
+        }
+
+
 public:
     t_peer_id _peer_id;
 
     t_nickname _nickname;
 };
 
-using t_peer_infos = std::set<t_peer_info>;
-
-inline bool operator<(const t_peer_info& lhs, const t_peer_info& rhs) {
-    return lhs._peer_id < rhs._peer_id;
-}
-
+using t_peer_info_storage = std::set<t_peer_info>;
 
 #endif // T_DEFINES_H

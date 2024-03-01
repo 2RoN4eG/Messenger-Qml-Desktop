@@ -8,10 +8,10 @@ class t_peer_info;
 
 // Подумать над: стоит ли разделить контексты для пиров и сообщений?
 
-class i_peer_context_setter
+class i_messenger_context_setter
 {
 public:
-    virtual ~i_peer_context_setter() = 0;
+    virtual ~i_messenger_context_setter() = 0;
 
 
     virtual void set_peer_info(const t_peer_id peer_id, t_nickname&& nickname) = 0;

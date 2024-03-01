@@ -10,19 +10,43 @@
 // t_peer and i_image_path_maker are hidden in constructor becase object will be used by interface
 
 namespace {
-    const t_image_info& get_image_info(const t_image_infos& image_infos, const t_image_id image_id) {
-        auto finding_predicate = [image_id](const t_image_info& image_info) {
+    const t_image_info& get_image_info_by_image_id(const t_image_infos& image_infos, const t_image_id image_id) {
+        auto finding_image_predicate = [image_id](const t_image_info& image_info) {
             return image_id == image_info._image_id;
         };
 
-        if (t_image_infos_iterator iterator = std::find_if(image_infos.begin(), image_infos.end(),  finding_predicate); iterator != image_infos.end()) {
+        if (t_image_infos_iterator iterator = std::find_if(image_infos.begin(), image_infos.end(), finding_image_predicate); iterator != image_infos.end()) {
             return *iterator;
         }
 
-        throw std::runtime_error { "t_image_info_storage_memory::get_image_info: avatar info does not exist by avatar id { " + image_id.to_string() + " }" };
+        throw std::runtime_error { "get_image_info: avatar info does not exist by avatar id { " + image_id.to_string() + " }" };
     }
 
-    const t_image_info& get_image_info(const t_image_infos& image_infos, const t_peer_id peer_id) {
+    const t_image_info& get_avatar_info_by_avatar_id(const t_image_infos& image_infos, const t_avatar_id avatar_id) {
+        auto finding_avatar_predicate = [avatar_id](const t_image_info& image_info) {
+            return avatar_id == image_info._image_id && image_info._image_type == t_image_type::t_avatar_image;
+        };
+
+        if (t_image_infos_iterator iterator = std::find_if(image_infos.begin(), image_infos.end(), finding_avatar_predicate); iterator != image_infos.end()) {
+            return *iterator;
+        }
+
+        throw std::runtime_error { "get_avatar_info_by_image_id: avatar info does not exist by avatar id { " + avatar_id.to_string() + " }" };
+    }
+
+    const t_image_info& get_photo_info_by_photo_id(const t_image_infos& image_infos, const t_photo_id photo_id) {
+        auto finding_avatar_predicate = [photo_id](const t_image_info& image_info) {
+            return photo_id == image_info._image_id && image_info._image_type == t_image_type::t_photo_image;
+        };
+
+        if (t_image_infos_iterator iterator = std::find_if(image_infos.begin(), image_infos.end(), finding_avatar_predicate); iterator != image_infos.end()) {
+            return *iterator;
+        }
+
+        throw std::runtime_error { "get_photo_info_by_photo_id: avatar info does not exist by photo id { " + photo_id.to_string() + " }" };
+    }
+
+    const t_image_info& get_image_info_by_peer_id(const t_image_infos& image_infos, const t_peer_id peer_id) {
         auto finding_predicate = [peer_id](const t_image_info& image_info) {
             return peer_id == image_info._peer_id;
         };
@@ -31,7 +55,7 @@ namespace {
             return *iterator;
         }
 
-        throw std::runtime_error { "t_image_info_storage_memory::get_image_info: avatar info does not exist by peer id { " + peer_id.to_string() + " }" };
+        throw std::runtime_error { "get_image_info: avatar info does not exist by peer id { " + peer_id.to_string() + " }" };
     }
 }
 
@@ -39,7 +63,7 @@ namespace {
 namespace memory
 {
     const t_fs_path t_image_info_storage::get_image_path(const t_image_id image_id, const i_path_maker& path_maker) const {
-        const t_image_info& image_info = get_image_info(_image_infos, image_id);
+        const t_image_info& image_info = get_image_info_by_image_id(_image_infos, image_id);
 
         const t_fs_filename& filename = image_info._url.fileName().toStdString();
 
@@ -47,20 +71,20 @@ namespace memory
     }
 
     const t_url& t_image_info_storage::get_image_url(const t_image_id image_id) const {
-        const t_image_info& image_info = get_image_info(_image_infos, image_id);
+        const t_image_info& image_info = get_image_info_by_image_id(_image_infos, image_id);
 
         return image_info._url;
     }
 
     const t_thumb_hash& t_image_info_storage::get_image_thumb_hash(const t_image_id image_id) const {
-        const t_image_info& image_info = get_image_info(_image_infos, image_id);
+        const t_image_info& image_info = get_image_info_by_image_id(_image_infos, image_id);
 
         return image_info._thumb_hash;
     }
 
     const t_image_id t_image_info_storage::get_latest_avatar_id(const t_peer_id peer_id) const {
         try {
-            const t_image_info& image_info = get_image_info(_image_infos, peer_id);
+            const t_image_info& image_info = get_image_info_by_peer_id(_image_infos, peer_id);
 
             return image_info._image_id;
         }

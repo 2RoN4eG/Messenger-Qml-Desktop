@@ -21,8 +21,8 @@ t_ui_async_provider_default_avatar::t_ui_async_provider_default_avatar(const i_p
 QQuickImageResponse* t_ui_async_provider_default_avatar::requestImageResponse(const QString &id, const QSize& size) {
     t_ui_async_response_default_avatar* async_response = new t_ui_async_response_default_avatar(_path_holder,
                                                                                                 _image_info_storage,
-                                                                                                _image_storage,
-                                                                                                size);
+                                                                                                size,
+                                                                                                _image_storage);
     async_response->run(make_image_id(id));
     return async_response;
 }

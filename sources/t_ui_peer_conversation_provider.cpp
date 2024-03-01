@@ -1,13 +1,17 @@
 #include "t_ui_peer_conversation_provider.h"
 #include <iostream>
 
-t_ui_peer_conversation_provider::t_ui_peer_conversation_provider(const t_messages* messages)
+t_ui_peer_conversation_provider::t_ui_peer_conversation_provider(const t_message_info_storage* messages)
     : _messages { *messages }
 {
 }
 
 int t_ui_peer_conversation_provider::count() const {
     return (int)_messages.size();
+}
+
+QString t_ui_peer_conversation_provider::latest_avatar_id(int index) const {
+    return "";
 }
 
 QString t_ui_peer_conversation_provider::peer_message_nickname(int index) const {
@@ -17,12 +21,11 @@ QString t_ui_peer_conversation_provider::peer_message_nickname(int index) const 
 QString t_ui_peer_conversation_provider::peer_message_photo(int index) const {
     const t_photo_id photo_id = _messages[index]._photo_id;
 
-    if (photo_id == t_photo_id::none()) {
-        std::cout << "photo_id is none (" << photo_id << ")" << std::endl;
-        return "";
-    }
+    // std::cout << "photo_id is " << (photo_id == t_photo_id::none() ? "" : "none ") << photo_id << std::endl;
+    // if (photo_id == t_photo_id::none()) {
+    //     return "";
+    // }
 
-    std::cout << "photo_id is " << photo_id << std::endl;
     return "image://photos/" + QString::number(photo_id.value());
 }
 

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QQuickItem>
 
-#include "memory/t_peer_context_setter.h"
+#include "memory/t_messender_context_setter.h"
 
 
 class t_ui_peer_preview_provider : public QQuickItem
@@ -12,7 +12,7 @@ class t_ui_peer_preview_provider : public QQuickItem
     Q_OBJECT
 
 public:
-    t_ui_peer_preview_provider(t_peer_infos* peer_infos = nullptr, memory::t_peer_context_setter* peer_context_setter = nullptr);
+    t_ui_peer_preview_provider(t_peer_info_storage* peer_infos = nullptr, memory::t_messenger_context_setter* peer_context_setter = nullptr);
     
     Q_INVOKABLE int count() const;
 
@@ -29,9 +29,9 @@ public:
     Q_INVOKABLE QString messages_to_read(int index) const;
 
 private:
-    t_peer_infos& _peer_infos;
+    t_peer_info_storage& _peer_infos;
 
-    memory::t_peer_context_setter& _peer_context_setter;
+    memory::t_messenger_context_setter& _peer_context_setter;
 };
 
 

@@ -7,7 +7,7 @@
 #include "t_json_peer_message_processor.h"
 
 
-class i_peer_context_setter;
+class i_messenger_context_setter;
 
 //
 
@@ -18,14 +18,14 @@ class i_network_simulator { };
 class t_network_simulator
 {
 public:
-    t_network_simulator(i_peer_context_setter& peer_context_setter);
+    t_network_simulator(i_messenger_context_setter& peer_context_setter);
 
     void process_peer_info();
 
     void process_peer_message();
 
 protected:
-    i_peer_context_setter& _peer_context_setter;
+    i_messenger_context_setter& _peer_context_setter;
 
     t_image_id_generator _avatar_id_generator;
 

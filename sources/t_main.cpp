@@ -3,7 +3,7 @@
 #include "t_image_fs_worker.h"
 #include "memory/t_image_info_storage.h"
 #include "memory/t_meta_holder.h"
-#include "memory/t_peer_context_setter.h"
+#include "memory/t_messender_context_setter.h"
 #include "t_path_aggregator.h"
 #include "t_ui_async_default_avatar_provider.h"
 #include "t_ui_async_image_provider.h"
@@ -31,11 +31,11 @@ namespace {
                                     const i_fs& fs)
     {
         fs.do_create_directories(
-            path.get_fs_path_for_avatar(peer_id, t_avatar_types::t_default_avatar)
+            path.get_fs_path_for_avatar(peer_id, t_avatar_type::t_default_avatar)
             );
 
         fs.do_create_directories(
-            path.get_fs_path_for_avatar(peer_id, t_avatar_types::t_squared_avatar)
+            path.get_fs_path_for_avatar(peer_id, t_avatar_type::t_squared_avatar)
             );
 
         fs.do_create_directories(
@@ -95,14 +95,14 @@ int main(int argc, char *argv[])
     }
     
 
-    t_peer_infos peer_infos;
+    t_peer_info_storage peer_infos;
     memory::t_image_info_storage image_info_storage;
-    t_messages messages;
+    t_message_info_storage messages;
 
     t_image_id_generator avatar_id_generator {};
     // t_image_id_generator photo_id_generator {};
 
-    memory::t_peer_context_setter messenger_context { peer_infos, image_info_storage, messages };
+    memory::t_messenger_context_setter messenger_context { peer_infos, image_info_storage, messages };
 
     t_ui_peer_preview_provider peer_preview_provider { &peer_infos, &messenger_context };
     t_ui_peer_conversation_provider peer_conversation_provider { &messages };
@@ -122,8 +122,8 @@ int main(int argc, char *argv[])
     QQmlContext* context = engine.rootContext();
     context->setContextProperty("peer_info_storage", &messenger_context);
 
-    engine.addImageProvider(QLatin1String("default"), new t_ui_async_provider_default_avatar { t_make_avatar_path { path, t_avatar_types::t_default_avatar }, image_info_storage, image_worker });
-    engine.addImageProvider(QLatin1String("avatars"), new t_ui_async_image_provider          { t_make_avatar_path { path, t_avatar_types::t_squared_avatar }, image_info_storage, image_worker });
+    engine.addImageProvider(QLatin1String("default"), new t_ui_async_provider_default_avatar { t_make_avatar_path { path, t_avatar_type::t_default_avatar }, image_info_storage, image_worker });
+    engine.addImageProvider(QLatin1String("avatars"), new t_ui_async_image_provider          { t_make_avatar_path { path, t_avatar_type::t_squared_avatar }, image_info_storage, image_worker });
     engine.addImageProvider(QLatin1String("photos"),  new t_ui_async_image_provider          { t_make_photo_path  { path },                           image_info_storage, image_worker });
 
     engine.load(url);

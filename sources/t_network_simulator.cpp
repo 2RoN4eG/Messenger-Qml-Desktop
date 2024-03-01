@@ -2,9 +2,9 @@
 
 #include "t_fs.h"
 
-#include "interface/i_peer_context_setter.h"
+#include "interface/i_messenger_context_setter.h"
 
-t_network_simulator::t_network_simulator(i_peer_context_setter& peer_context_setter)
+t_network_simulator::t_network_simulator(i_messenger_context_setter& peer_context_setter)
     : _peer_context_setter { peer_context_setter }
     , _peer_info_processor { _peer_context_setter, _avatar_id_generator }
     , _photo_id_generator { _avatar_id_generator }
