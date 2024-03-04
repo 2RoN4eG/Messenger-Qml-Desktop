@@ -17,8 +17,8 @@ namespace {
         }
         return {};
     }
-
-    t_qt_image make_image(t_pointer_async_image_downloader& downloader) {
+    
+    t_qt_image make_image(t_async_image_downloader_pointer& downloader) {
         t_qt_image image = downloader->get_image();
         downloader.reset();
         return image;
@@ -48,7 +48,7 @@ t_ui_async_response_image::~t_ui_async_response_image() {
 }
 
 void t_ui_async_response_image::run(const t_image_id image_id) {
-    std::cout << "t_ui_async_response_image::run(const t_image_id image_id { " << image_id << " })" << std::endl;
+    // std::cout << "t_ui_async_response_image::run(const t_image_id image_id { " << image_id << " })" << std::endl;
 
     const t_fs_path& image_path = _image_info_storage.get_image_path(image_id, _path_holder);
     if (_image_storage.does_image_exist_on_drive(image_path)) {
@@ -58,7 +58,7 @@ void t_ui_async_response_image::run(const t_image_id image_id) {
     }
 
     const t_url& image_url = _image_info_storage.get_image_url(image_id);
-    std::cout << "t_ui_async_response_image::run(...) url is '" << image_url.toString().toStdString() << "'" << std::endl;
+    // std::cout << "t_ui_async_response_image::run(...) url is '" << image_url.toString().toStdString() << "'" << std::endl;
 
     run_async_image_downloading(image_id, image_url);
 
@@ -77,14 +77,13 @@ QQuickTextureFactory* t_ui_async_response_image::textureFactory() const {
 }
 
 void t_ui_async_response_image::emit_finished() {
-    // std::cout << "t_ui_async_response_image::finished()" << std::endl;
     emit finished();
 }
 
-void t_ui_async_response_image::run_async_image_downloading(const t_image_id image_id, const t_url &url) {
-    _downloading_command = std::make_unique<t_async_image_downloader>(image_id);
+void t_ui_async_response_image::run_async_image_downloading(const t_image_id image_id, const t_url& url) {
+    _downloading_command = std::make_unique<t_async_image_downloader>();
     connect(_downloading_command.get(), &t_async_image_downloader::downloaded, this, &t_ui_async_response_image::on_image_downloaded, Qt::QueuedConnection);
-    _downloading_command->run(url);
+    _downloading_command->run(image_id, url);
 }
 
 void t_ui_async_response_image::on_image_downloaded(const t_image_id image_id) {

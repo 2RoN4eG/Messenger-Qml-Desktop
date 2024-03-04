@@ -13,7 +13,7 @@ class i_messenger_context_setter;
 class t_json_peer_info_processor : public i_json_processor
 {
 public:
-    t_json_peer_info_processor(i_messenger_context_setter& peer_info_storage, t_image_id_generator& avatar_id_generator);
+    t_json_peer_info_processor(i_messenger_context_setter& messenger_context_getter, t_image_id_generator& avatar_id_generator);
 
     void operator()(const std::string_view json) const override;
 

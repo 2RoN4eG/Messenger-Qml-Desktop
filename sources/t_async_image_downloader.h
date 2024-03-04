@@ -8,11 +8,12 @@
 
 class QNetworkReply;
 
-class i_async_image_downloader : public QObject {
+class i_async_image_downloader : public QObject
+{
     Q_OBJECT
 
 public:
-    virtual void run(const t_url& url) = 0;
+    virtual void run(const t_image_id image_id, const t_url& url) = 0;
 
     virtual t_image_id get_image_id() const = 0;
 
@@ -24,13 +25,14 @@ signals:
     void error_happend(const t_error& error);
 };
 
-class t_async_image_downloader : public i_async_image_downloader {
+class t_async_image_downloader : public i_async_image_downloader
+{
     Q_OBJECT
 
 public:
-    t_async_image_downloader(const t_image_id image_id);
+    t_async_image_downloader();
 
-    void run(const t_url& url) override;
+    void run(const t_image_id image_id, const t_url& url) override;
 
     t_image_id get_image_id() const override;
 
@@ -40,14 +42,14 @@ private slots:
     void on_finished(QNetworkReply* reply);
 
 protected:
-    t_qt_image _image;
+    t_image_id _image_id;
 
-    const t_image_id _image_id;
+    t_qt_image _image;
 
 private:
     QNetworkAccessManager _network;
 };
 
-using t_pointer_async_image_downloader = std::unique_ptr<t_async_image_downloader>;
+using t_async_image_downloader_pointer = std::unique_ptr<t_async_image_downloader>;
 
 #endif // T_ASYNC_IMAGE_DOWNLOADER_H

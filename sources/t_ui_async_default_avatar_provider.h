@@ -7,10 +7,10 @@ class i_image_info_storage;
 class i_image_worker;
 class i_path_maker;
 
-class t_ui_async_provider_default_avatar : public QQuickAsyncImageProvider
+class t_ui_async_default_avatar_provider : public QQuickAsyncImageProvider
 {
 public:
-    t_ui_async_provider_default_avatar(const i_path_maker& path_holder,
+    t_ui_async_default_avatar_provider(const i_path_maker& path_holder,
                                  const i_image_info_storage& avatar_info_storage,
                                        i_image_worker& avatar_storage);
 

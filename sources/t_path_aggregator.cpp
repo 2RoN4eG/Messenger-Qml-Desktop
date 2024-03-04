@@ -76,7 +76,7 @@ void test_path__get_fs_path_for_photo(const i_photo_path& photo_path, const t_pe
     }
 }
 
-void test_path__get_fs_path_for_stiker(const i_stiker_path& photo_path, const t_fs_filename& filename, const t_fs_path& must_be) {
+void test_path__get_fs_path_for_stiker(const i_path_stiker& photo_path, const t_fs_filename& filename, const t_fs_path& must_be) {
     const t_fs_path& path = photo_path.get_fs_path_for_stiker(filename);
     if (path != must_be) {
         throw std::runtime_error { "path " + path.string() + " does not equal with must_be path " + must_be.string() };

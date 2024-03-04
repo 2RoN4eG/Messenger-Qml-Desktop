@@ -99,7 +99,6 @@ constexpr std::string_view to_string(const t_avatar_type avatar_type) {
     }
 }
 
-
 class t_fs_meta
 {
 public:
@@ -147,6 +146,35 @@ public:
     t_nickname _nickname;
 };
 
-using t_peer_info_storage = std::set<t_peer_info>;
+class t_message
+{
+public:
+    t_message(const t_peer_id peer_id, const t_message_text& text, t_message_timestamp timestamp)
+        : t_message { peer_id, t_photo_id::none(), text, timestamp }
+    {
+    }
+
+    t_message(const t_peer_id peer_id, const t_photo_id photo_id, const t_message_text& text, t_message_timestamp timestamp)
+        : _peer_id { peer_id }
+        , _photo_id { photo_id }
+        , _text { text }
+        , _timestamp { timestamp }
+    {
+    }
+
+public:
+    t_peer_id _peer_id {};
+
+    t_message_id _message_id {};
+
+    t_photo_id _photo_id {};
+
+    t_message_text _text {};
+
+    t_message_timestamp _timestamp {};
+};
+
+using t_peer_infos           = std::set<t_peer_info>;
+using t_message_info_storage = std::vector<t_message>;
 
 #endif // T_DEFINES_H

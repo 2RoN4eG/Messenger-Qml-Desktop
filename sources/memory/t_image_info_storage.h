@@ -23,6 +23,11 @@ namespace memory
 class t_image_info_storage : public i_image_info_storage
 {
 public:
+    virtual ~t_image_info_storage() override = default;
+
+
+    void set_default_avatar_image_info(const t_peer_id peer_id, const t_avatar_id image_id) override;
+
     void set_avatar_image_info(const t_peer_id peer_id, const t_avatar_id image_id, const t_url& url, const t_thumb_hash& thumb_hash) override;
 
     void set_photo_image_info(const t_peer_id peer_id, const t_photo_id photo_id, const t_url& url, const t_thumb_hash& thumb_hash) override;
@@ -36,6 +41,9 @@ public:
 
     // getting image thumb hash using image_id
     const t_thumb_hash& get_image_thumb_hash(const t_image_id image_id) const override;
+
+    // getting default avatar id (image id) using peer_id
+    const t_image_id get_default_avatar_id(const t_peer_id peer_id) const override;
 
     // getting lates avatar id (image id) using peer_id
     const t_image_id get_latest_avatar_id(const t_peer_id peer_id) const override;

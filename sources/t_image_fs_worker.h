@@ -14,9 +14,11 @@ class i_avatar_path;
 class t_memory_meta_holder;
 class t_image_info;
 
+
 // interface section
 
-class i_image_worker {
+class i_image_worker
+{
 public:
     virtual bool does_image_exist_on_drive(const t_fs_path& path) = 0;
 
@@ -28,7 +30,8 @@ public:
 
 // class (interface's implementation) section
 
-class t_image_fs_worker : public i_image_worker {
+class t_image_fs_worker : public i_image_worker
+{
 public:
     t_image_fs_worker(const i_qt_fs& fs, i_meta_holder& meta_holder);
 

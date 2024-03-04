@@ -29,12 +29,16 @@ add_executable(${CMAKE_PROJECT_NAME}
     sources/interface/i_messenger_context_getter.h  sources/interface/i_messenger_context_getter.cpp
     sources/interface/i_meta_holder.h               sources/interface/i_meta_holder.cpp
     sources/interface/i_rotator.h                   sources/interface/i_rotator.cpp
+    sources/interface/i_path_avatar.h               sources/interface/i_path_avatar.cpp
+    sources/interface/i_path_self_and_peer.h        sources/interface/i_path_self_and_peer.cpp
+    sources/interface/i_path_photo.h                sources/interface/i_path_photo.cpp
+    sources/interface/i_path_stiker.h               sources/interface/i_path_stiker.cpp
     # implementation in memory
     sources/memory/t_meta_holder.h                  sources/memory/t_meta_holder.cpp
     sources/memory/t_image_info_storage.h           sources/memory/t_image_info_storage.cpp
-    sources/memory/t_messender_context_setter.h     sources/memory/t_messender_context_setter.cpp
+    sources/memory/t_messenger_context_setter.h     sources/memory/t_messenger_context_setter.cpp
+    sources/memory/t_messenger_context_getter.h     sources/memory/t_messenger_context_getter.cpp
     # implementation in file
-    #
     sources/t_async_default_avatar_creator.h        sources/t_async_default_avatar_creator.cpp
     sources/t_async_image_downloader.h              sources/t_async_image_downloader.cpp
     # UI providers

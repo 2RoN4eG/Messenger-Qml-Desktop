@@ -29,7 +29,9 @@ public:
         return _value;
     }
 
-    static t_value_holder<t_value> none() { return std::numeric_limits<t_value>::max(); }
+    static t_value_holder<t_value> none() {
+        return std::numeric_limits<t_value>::max();
+    }
 
 protected:
     friend

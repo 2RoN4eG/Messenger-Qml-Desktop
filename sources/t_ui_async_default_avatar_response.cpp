@@ -6,6 +6,7 @@
 #include "memory/t_image_info_storage.h"
 
 #include <QMetaType>
+#include <iostream>
 
 namespace {
 t_qt_image make_default_image(t_image_creator_async_pointer& creator) {
@@ -32,7 +33,10 @@ t_ui_async_response_default_avatar::t_ui_async_response_default_avatar(const i_p
 }
 
 void t_ui_async_response_default_avatar::run(const t_image_id image_id) {
+    std::cout << "t_ui_async_response_default_avatar::run(const t_image_id image_id { " << image_id << " })" << std::endl;
+
     const t_fs_path& default_image_path = _image_info_storage.get_image_path(image_id, _path_holder);
+    std::cout << "default_image_path: " << default_image_path << std::endl;
     if (_image_storage.does_image_exist_on_drive(default_image_path)) {
         _image = _image_storage.read_image_from_drive(default_image_path);
         emit_finished();
@@ -51,9 +55,9 @@ void t_ui_async_response_default_avatar::emit_finished() {
 }
 
 void t_ui_async_response_default_avatar::run_async_image_creating(const t_image_id image_id, const t_qt_nickname nickname, const t_qt_size& size) {
-    _creating_command = std::make_unique<t_async_default_avatar_creator>(image_id);
+    _creating_command = std::make_unique<t_async_default_avatar_creator>();
     connect(_creating_command.get(), &t_async_default_avatar_creator::created, this, &t_ui_async_response_default_avatar::on_image_created, Qt::QueuedConnection);
-    _creating_command->run("?", size);
+    _creating_command->run(image_id, "?", size);
 }
 
 void t_ui_async_response_default_avatar::on_image_created(const t_image_id image_id) {

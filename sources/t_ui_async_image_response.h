@@ -36,13 +36,13 @@ protected slots:
     void on_image_downloaded(const t_image_id image_id);
 
 protected:
-    t_pointer_async_image_downloader _downloading_command;
+    t_async_image_downloader_pointer _downloading_command;
 
 private:
     const i_path_maker& _path_holder;
 
     const i_image_info_storage& _image_info_storage;
-    
+
     i_image_worker& _image_storage;
 
     QSize _size;

@@ -9,9 +9,11 @@
 
 class i_messenger_context_setter;
 
+
 //
 
 class i_network_simulator { };
+
 
 //
 

@@ -3,7 +3,7 @@
 #include "t_image_fs_worker.h"
 #include "memory/t_image_info_storage.h"
 #include "memory/t_meta_holder.h"
-#include "memory/t_messender_context_setter.h"
+#include "memory/t_messenger_context_setter.h"
 #include "t_path_aggregator.h"
 #include "t_ui_async_default_avatar_provider.h"
 #include "t_ui_async_image_provider.h"
@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
     result = qmlRegisterType<t_ui_peer_conversation_provider>("Bindings", 1, 0, "PeerConversationProvider");
     qDebug() << "register result is" << result;
 
-
     const QUrl url("qrc:///ui/Main.qml");
     QQmlApplicationEngine engine;
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &a, [url](QObject *obj, const QUrl &objUrl) {
@@ -78,10 +77,11 @@ int main(int argc, char *argv[])
 
     const t_peer_id& self = { 1024 };
     print(self);
-    
+
     const t_common_paths path = make_common_path("/Users/2RoN4eG/", self);
 
     try {
+        do_create_peer_directories(t_peer_id { 1024 }, path, fs);
         do_create_peer_directories(t_peer_id { 2048 }, path, fs);
         do_create_peer_directories(t_peer_id { 2049 }, path, fs);
         do_create_peer_directories(t_peer_id { 2050 }, path, fs);
@@ -94,24 +94,20 @@ int main(int argc, char *argv[])
         std::cout << "exception's what " << exception.what() << std::endl;
     }
     
-
-    t_peer_info_storage peer_infos;
+    t_peer_infos peer_infos;
     memory::t_image_info_storage image_info_storage;
     t_message_info_storage messages;
 
-    t_image_id_generator avatar_id_generator {};
-    // t_image_id_generator photo_id_generator {};
+    memory::t_messenger_context_setter messenger_context_setter { peer_infos, image_info_storage, messages };
+    memory::t_messenger_context_getter messenger_context_getter { peer_infos, image_info_storage, messages };
 
-    memory::t_messenger_context_setter messenger_context { peer_infos, image_info_storage, messages };
+    t_ui_peer_preview_provider      peer_preview_provider      { &messenger_context_getter };
+    t_ui_peer_conversation_provider peer_conversation_provider { &messenger_context_getter };
 
-    t_ui_peer_preview_provider peer_preview_provider { &peer_infos, &messenger_context };
-    t_ui_peer_conversation_provider peer_conversation_provider { &messages };
-
-    // Expose the instance to the QML engine's root context
-    engine.rootContext()->setContextProperty("peer_info_context", &peer_preview_provider);
+    engine.rootContext()->setContextProperty("peer_info_context",          &peer_preview_provider);
     engine.rootContext()->setContextProperty("peer_conversation_provider", &peer_conversation_provider);
 
-    t_network_simulator network_simulator { messenger_context };
+    t_network_simulator network_simulator { messenger_context_setter };
     network_simulator.process_peer_info();
     network_simulator.process_peer_message();
 
@@ -119,12 +115,9 @@ int main(int argc, char *argv[])
     memory::t_meta_holder meta_holder { 1024, 2048, fs.get_paths_in_directory(self_path) };
     t_image_fs_worker image_worker { fs, meta_holder };
 
-    QQmlContext* context = engine.rootContext();
-    context->setContextProperty("peer_info_storage", &messenger_context);
-
-    engine.addImageProvider(QLatin1String("default"), new t_ui_async_provider_default_avatar { t_make_avatar_path { path, t_avatar_type::t_default_avatar }, image_info_storage, image_worker });
+    engine.addImageProvider(QLatin1String("default"), new t_ui_async_default_avatar_provider { t_make_avatar_path { path, t_avatar_type::t_default_avatar }, image_info_storage, image_worker });
     engine.addImageProvider(QLatin1String("avatars"), new t_ui_async_image_provider          { t_make_avatar_path { path, t_avatar_type::t_squared_avatar }, image_info_storage, image_worker });
-    engine.addImageProvider(QLatin1String("photos"),  new t_ui_async_image_provider          { t_make_photo_path  { path },                           image_info_storage, image_worker });
+    engine.addImageProvider(QLatin1String("photos"),  new t_ui_async_image_provider          { t_make_photo_path  { path },                                  image_info_storage, image_worker });
 
     engine.load(url);
     if (engine.rootObjects().isEmpty()) {

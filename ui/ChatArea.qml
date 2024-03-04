@@ -27,9 +27,12 @@ ListView {
                 Image {
                     id: peer_avatar
 
-                    source: peer_conversation_provider.latest_avatar_id(index)
+                    property string photo_source: peer_conversation_provider.peer_latest_avatar_id(index)
+
+                    source: photo_source
                     sourceSize.height: height
                     sourceSize.width: width
+                    visible: photo_source.length ? true : false
 
                     fillMode: Image.PreserveAspectFit
                     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
@@ -60,12 +63,14 @@ ListView {
                     }
 
                     Image {
+                        property string photo_source: peer_conversation_provider.peer_message_photo(index)
+
                         id: sent_photo
                         width: 250
-                        height: 150
+                        height: photo_source.length ? 150 : 0
                         source: peer_conversation_provider.peer_message_photo(index)
                         sourceSize.width: width
-                        sourceSize.height: peer_conversation_provider.peer_message_photo(index) ? height : ""
+                        sourceSize.height: photo_source.length ? height : 0
                     }
 
                     Text {

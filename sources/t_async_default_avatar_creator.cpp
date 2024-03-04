@@ -3,12 +3,16 @@
 #include <QImage>
 #include <QPainter>
 
-t_async_default_avatar_creator::t_async_default_avatar_creator(const t_image_id image_id)
-    : _image_id { image_id }
+#include <iostream>
+
+t_async_default_avatar_creator::t_async_default_avatar_creator()
 {
 }
 
-void t_async_default_avatar_creator::run(const t_qt_nickname nickname, const t_qt_size size) {
+void t_async_default_avatar_creator::run(const t_image_id image_id, const t_qt_nickname nickname, const t_qt_size size) {
+    std::cout << "run (const t_image_id image_id { " << image_id << " }, const t_qt_nickname nickname { " << nickname.toStdString() << " }, const t_qt_size size)" << std::endl;
+
+    _image_id = image_id;
     _image = { size, t_qt_image::Format_RGB32 };
 
     QPainter painter(&_image);

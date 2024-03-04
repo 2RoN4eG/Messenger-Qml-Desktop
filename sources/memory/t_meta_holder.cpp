@@ -7,47 +7,49 @@
 
 
 namespace {
-struct t_sorter_by_timestamp {
-    constexpr bool operator()(const t_fs_meta& lhs, const t_fs_meta& rhs) const {
-        return lhs._timestamp > rhs._timestamp;
-    }
-};
+    struct t_sorter_by_timestamp {
+        constexpr bool operator()(const t_fs_meta& lhs, const t_fs_meta& rhs) const {
+            return lhs._timestamp > rhs._timestamp;
+        }
+    };
 
-using t_sorted_by_timestamp_paths = std::multiset<t_fs_meta>;
+    using t_sorted_by_timestamp_paths = std::multiset<t_fs_meta>;
+    using t_paths_iterator = t_sorted_by_timestamp_paths::iterator;
 
-t_sorted_by_timestamp_paths make_sorted_by_timestamp(const std::set<t_fs_path>& paths, const t_fs& fs) {
-    t_sorted_by_timestamp_paths sorted;
+    t_sorted_by_timestamp_paths make_sorted_by_timestamp(const std::set<t_fs_path>& paths,
+                                                         const t_fs& fs) {
+        t_sorted_by_timestamp_paths sorted;
 
-    for (const t_fs_path& path : paths) {
-        if (is_directory(path)) {
-            continue;
+        for (const t_fs_path& path : paths) {
+            if (is_directory(path)) {
+                continue;
+            }
+
+            auto size = fs.get_size(path);
+            auto timestamp = fs.get_timestamp(path);
+
+            sorted.emplace(path, size, timestamp);
         }
 
-        auto size = fs.get_size(path);
-        auto timestamp = fs.get_timestamp(path);
-
-        sorted.emplace(path, size, timestamp);
+        return sorted;
     }
 
-    return sorted;
-}
+    t_paths_iterator get_out_of_capacity_iterator(const t_sorted_by_timestamp_paths& sorted,
+                                                  const size_t capacity,
+                                                  const t_paths_iterator since,
+                                                  size_t& cached_size) {
+        if (since == sorted.end()) {
+            return sorted.end();
+        }
 
-t_sorted_by_timestamp_paths::iterator get_out_of_capacity_iterator(const t_sorted_by_timestamp_paths& sorted,
-                                                                   const size_t capacity,
-                                                                   const t_sorted_by_timestamp_paths::iterator since,
-                                                                   size_t& cached_size) {
-    if (since == sorted.end()) {
+        for (auto it = since; it != sorted.end(); ++it) {
+            if (cached_size += it->_size; cached_size > capacity) {
+                return it;
+            }
+        }
+
         return sorted.end();
     }
-
-    for (auto it = since; it != sorted.end(); ++it) {
-        if (cached_size += it->_size; cached_size > capacity) {
-            return it;
-        }
-    }
-
-    return sorted.end();
-}
 }
 
 //

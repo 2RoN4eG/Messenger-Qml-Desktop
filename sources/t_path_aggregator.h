@@ -3,59 +3,18 @@
 
 #include "t_defines.h"
 
-
-// interface section
-
-class i_self_path_and_peer_path
-{
-public:
-    virtual t_fs_path get_fs_path_for_self() const = 0;
-
-    virtual t_fs_path get_fs_path_for_peer(const t_peer_id peer) const = 0;
-};
-
-class i_avatar_path {
-public:
-    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer) const = 0;
-    
-    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type) const = 0;
-    
-    virtual t_fs_path get_fs_path_for_avatar(const t_peer_id peer, const t_avatar_type avatar_type, const t_fs_filename& filename) const = 0;
-};
-
-class i_photo_path {
-public:
-    virtual t_fs_path get_fs_path_for_photo(const t_peer_id peer) const = 0;
-
-    virtual t_fs_path get_fs_path_for_photo(const t_peer_id peer, const t_fs_filename& filename) const = 0;
-    
-    [[maybe_unused]] virtual t_fs_path get_fs_path_for_photo(const t_peer_id peer, const t_photo_bundle_id& photo_bundle, const t_fs_filename& filename) const = 0;
-};
-
-class [[maybe_unused]] i_stiker_path {
-public:
-    virtual t_fs_path get_fs_path_for_stiker(const t_fs_filename& filename) const = 0;
-};
-
-class [[maybe_unused]] i_database_path {
-public:
-    virtual t_fs_path get_fs_path_for_database(const t_fs_filename& filename) const = 0;
-};
-
-// conversation will be implemented as file with json string with stored messages
-class [[maybe_unused]] i_conversation_path {
-public:
-    virtual t_fs_path get_fs_path_for_conversation(const t_peer_id peer) const = 0;
-};
-
+#include "interface/i_path_self_and_peer.h"
+#include "interface/i_path_avatar.h"
+#include "interface/i_path_photo.h"
+#include "interface/i_path_stiker.h"
 
 // class (interface's implementation) section
 
 class t_common_paths
-    : public i_self_path_and_peer_path
+    : public i_path_self_path_and_peer
     , public i_avatar_path
     , public i_photo_path
-    , public i_stiker_path
+    , public i_path_stiker
 {
 public:
     t_common_paths(const t_fs_path& root, const t_peer_id& self);
