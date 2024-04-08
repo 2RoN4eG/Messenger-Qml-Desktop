@@ -1,1 +1,1 @@
-# Messenger-Qml-Desktop
+# Qml Messenger for Desktop (MacOS, Windows, Linux)
