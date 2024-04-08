@@ -29,59 +29,63 @@ enum /*class*/ t_image_type_id /*: size_t*/
     t_image_type_amount
 };
 
-using t_ui_string               = QString;
-using t_ui_image                = QImage;
-using t_ui_id                   = QString;
-using t_ui_size                 = QSize;
-using t_ui_nickname             = QString;
-using t_ui_message_timestamp    = qint64;
-using t_ui_path                 = t_ui_string;
-using t_ui_image_id             = t_ui_path;
+using t_ui_string                   = QString;
+using t_ui_image                    = QImage;
+using t_ui_id                       = QString;
+using t_ui_size                     = QSize;
+using t_ui_nickname                 = QString;
+using t_ui_message_timestamp        = qint64;
+using t_ui_path                     = t_ui_string;
+using t_ui_image_id                 = t_ui_path;
 
-using t_qt_url                  = QUrl;
+using t_qt_url                      = QUrl;
 
-using t_fs_path                 = std::filesystem::path;
-using t_fs_timestamp            = std::filesystem::file_time_type;
-using t_fs_size                 = std::uintmax_t;
-using t_fs_filename             = std::filesystem::path::string_type;
-using t_fs_line                 = std::string;
+using t_fs_path                     = std::filesystem::path;
+using t_fs_timestamp                = std::filesystem::file_time_type;
+using t_fs_size                     = std::uintmax_t;
+using t_fs_filename                 = std::filesystem::path::string_type;
+using t_fs_line                     = std::string;
 
-using t_thumb_hash              = std::string;
-using t_url                     = t_qt_url;
-using t_bytes                   = std::string;
+using t_thumb_hash                  = std::string;
+using t_url                         = t_qt_url;
+using t_bytes                       = std::string;
 
-using t_nickname                = std::string;
-using t_text                    = std::string;
+using t_nickname                    = std::string;
+using t_text                        = std::string;
 
-using t_error                   = std::string;
-using t_extra                   = std::string;
+using t_error                       = std::string;
+using t_extra                       = std::string;
 
-using t_id_type                 = unsigned long long;
-using t_peer_id                 = t_value_holder<t_id_type>;
+using t_id_type                     = unsigned long long;
+using t_peer_id                     = t_value_holder<t_id_type>;
 
-using t_image_id                = t_value_holder<t_id_type>;
-using t_image_id_generator      = t_value_generator<t_id_type>;
-using t_image_bundle_id         = t_value_holder<t_id_type>;
+using t_image_id                    = t_value_holder<t_id_type>;
+using t_image_id_generator          = t_value_generator<t_id_type>;
+using t_image_bundle_id             = t_value_holder<t_id_type>;
 
-using t_avatar_id               = t_image_id;
-using t_default_avatar_id       = t_avatar_id;
-using t_avatar_id_generator     = t_image_id_generator;
-using t_avatar_bundle_id        = t_image_bundle_id;
+using t_avatar_id                   = t_image_id;
+using t_avatar_id_generator         = t_image_id_generator;
+using t_avatar_bundle_id            = t_image_bundle_id;
 
-using t_photo_id                = t_image_id;
-using t_photo_id_generator      = t_image_id_generator;
-using t_photo_bundle_id         = t_image_bundle_id;
+using t_default_avatar_id           = t_avatar_id;
 
-using t_protocol                = std::string_view;
-using t_hostname                = std::string_view;
-using t_endpoint                = std::string;
+using t_photo_id                    = t_image_id;
+using t_photo_id_generator          = t_image_id_generator;
+using t_photo_bundle_id             = t_image_bundle_id;
 
-using t_message_id              = t_value_holder<t_id_type>;
-using t_message_id_generator    = t_value_generator<t_id_type>;
-using t_message_bundle_id       = t_value_holder<t_id_type>;
+using t_message_id                  = t_value_holder<t_id_type>;
+using t_message_id_generator        = t_value_generator<t_id_type>;
+using t_message_bundle_id           = t_value_holder<t_id_type>;
 
-using t_message_text            = std::string;
-using t_message_timestamp       = t_ui_message_timestamp;
+using t_conversation_id             = t_value_holder<t_id_type>;
+using t_conversation_id_generator   = t_value_generator<t_id_type>;
+
+using t_protocol                    = std::string_view;
+using t_hostname                    = std::string_view;
+using t_endpoint                    = std::string;
+
+using t_message_text                = std::string;
+using t_message_timestamp           = t_ui_message_timestamp;
 
 constexpr std::string_view to_string(const t_avatar_type_id avatar_type_id)
 {
@@ -186,12 +190,9 @@ public:
     {
     }
 
-    friend inline bool operator<(const t_message_info& lhs, const t_message_info& rhs)
-    {
-        return lhs._message_id < rhs._message_id;
-    }
-
 public:
+    t_conversation_id _conversation_id {};
+
     t_message_id _message_id {};
 
     t_peer_id _peer_id {};

@@ -20,13 +20,15 @@ namespace {
                                                          const t_fs& fs) {
         t_sorted_by_timestamp_paths sorted;
 
-        for (const t_fs_path& path : paths) {
-            if (is_directory(path)) {
+        for (const t_fs_path& path : paths)
+        {
+            if (is_directory(path))
+            {
                 continue;
             }
 
-            auto size = fs.get_size(path);
-            auto timestamp = fs.get_timestamp(path);
+            t_fs_size size           = fs.get_size(path);
+            t_fs_timestamp timestamp = fs.get_timestamp(path);
 
             sorted.emplace(path, size, timestamp);
         }
@@ -38,7 +40,8 @@ namespace {
                                                   const t_paths_iterator since,
                                                   const size_t capacity,
                                                   size_t& cached_size) {
-        if (since == sorted.end()) {
+        if (since == sorted.end())
+        {
             return sorted.end();
         }
 

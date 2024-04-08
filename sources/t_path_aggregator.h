@@ -75,7 +75,8 @@ public:
                                  const t_fs_filename& filename) const = 0;
 };
 
-class t_avatar_fs_path_maker : public i_image_fs_path_maker
+class t_avatar_fs_path_maker
+    : public i_image_fs_path_maker
 {
 public:
     t_avatar_fs_path_maker(const i_avatar_fs_path& path, const t_avatar_type_id avatar_type)
@@ -98,7 +99,8 @@ private:
     const t_avatar_type_id _type;
 };
 
-class t_photo_fs_path_maker : public i_image_fs_path_maker
+class t_photo_fs_path_maker
+    : public i_image_fs_path_maker
 {
 public:
     t_photo_fs_path_maker(const i_photo_fs_path& path)
