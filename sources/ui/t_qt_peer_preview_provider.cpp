@@ -25,11 +25,13 @@ t_peer_preview_provider::t_peer_preview_provider(const i_peer_context_getter* pe
 {
 }
 
-int t_peer_preview_provider::size() const {
+int t_peer_preview_provider::size() const
+{
     return (int)_peer_info_storage.size();
 }
 
-QString t_peer_preview_provider::latest_avatar_id(int index) const {
+QString t_peer_preview_provider::latest_peer_avatar(int index) const
+{
     const t_peer_id peer_id = _peer_info_storage[index];
 
     try
@@ -48,7 +50,8 @@ QString t_peer_preview_provider::latest_avatar_id(int index) const {
     }
 }
 
-QString t_peer_preview_provider::nickname(int index) const {
+QString t_peer_preview_provider::peer_nickname(int index) const
+{
     const t_peer_id peer_id = _peer_info_storage[index];
 
     const t_nickname nickname = _peer_context_getter.get_peer_nickname(peer_id);
@@ -56,15 +59,17 @@ QString t_peer_preview_provider::nickname(int index) const {
     return QString::fromStdString(nickname);
 }
 
-QString t_peer_preview_provider::last_message_preview(int index) const {
-
+QString t_peer_preview_provider::latest_message_preview(int index) const
+{
     return "peer_last_message, Index " + QString::number(index);
 }
 
-QString t_peer_preview_provider::last_message_timestamp(int index) const {
-    return "peer_last_message_timestamp, Index " + QString::number(index);
+QString t_peer_preview_provider::latest_message_timestamp(int index) const
+{
+    return QString::number(index);
 }
 
-QString t_peer_preview_provider::unread_messages(int index) const {
+QString t_peer_preview_provider::unread_messages(int index) const
+{
     return "peer_message_amount, Index " + QString::number(index);
 }

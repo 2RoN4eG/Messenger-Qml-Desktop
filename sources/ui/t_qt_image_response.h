@@ -14,7 +14,8 @@ class i_image_fs_path_maker;
 
 class QQuickTextureFactory;
 
-class t_qt_image_response : public QQuickImageResponse
+class t_qt_image_response
+    : public QQuickImageResponse
 {
 public:
     t_qt_image_response(i_fs_image_worker& image_storage,

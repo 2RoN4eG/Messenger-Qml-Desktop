@@ -1,78 +1,78 @@
 {
-    "self": {
-        "peer_id":1024,
-        "nickname":"Self Nickname",
-        "avatars":[
-            {
-                "url":"https://www.alexanderthamm.com/wp-content/uploads/Bilderkennung1-e1537862307419.jpg",
-                "thumb_hash":""
-            }
-        ]
-    },
-    "peers":[
-        {
-            "peer_id":2048,
-            "nickname":"Albert Einstein",
-            "avatars":[
-                {
-                    "url":"https://hips.hearstapps.com/hmg-prod/images/albert-einstein-sticks-out-his-tongue-when-asked-by-news-photo-1681316749.jpg",
-                    "thumb_hash":""
-                },
-                {
-                    "url":"https://www.nobelprize.org/images/einstein-12923-portrait-medium.jpg",
-                    "thumb_hash":""
-                },
-                {
-                    "url":"https://assets.editorial.aetnd.com/uploads/2009/10/albert-einstein-gettyimages-544750041.jpg",
-                    "thumb_hash":""
-                }
-            ],
-            "last_message":{
-                "text":"Hello, I'm Albert Einstein and I'm genious",
-                "timestamp":100
-            },
-            "messages_to_read":3
-        },
-        {
-            "peer_id": 2049,
-            "nickname":"Albus Dumbledore",
-            "avatars":[
-                {
-                    "url":"https://creations.mattel.com/cdn/shop/products/e4g44r0kigsn14peqbtj_1024x.jpg",
-                    "thumb_hash":""
-                },
-                {
-                    "url":"https://images.ctfassets.net/usf1vwtuqyxm/1dmmUJzpRcWaUmMOCu8QwO/7e013145694566076d47fd004fd604c2/AlbusDumbledore_WB_F6_DumbledoreSittingInChair_Promo_080615_Port.jpg",
-                    "thumb_hash":""
-                }
-            ],
-            "last_message":{
-                "text":"Hello, I am Albus Dumbledore. I wanna show you a bit magic ...",
-                "timestamp":100
-            },
-            "messages_to_read":3
-        },
-        {
-            "peer_id":2050,
-            "nickname":"Harry Potter",
-            "avatars":[
-                {
-                    "url":"https://www.irishtimes.com/resizer/o8d6ehEnAeE9LYXPAP1Vl1GYCBg=/1600x0/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/irishtimes/3MS3PYEKJI2N533Z3ZG6VJ2RKU.jpg",
-                    "thumb_hash":""
-                }
-            ],
-            "last_message":{
-                "message_id":0,
-                "text":"Hello, I am Harry Potter",
-                "timestamp":100,
-                "hash":0
-            },
-            "messages_to_read":3
-        },
-        {
-            "peer_id":2051,
-            "nickname":"Anonimous",
-            "messages_to_read":0
-        }
+  "self": {
+    "peer_id": 1024,
+    "nickname": "Self Nickname",
+    "avatars": [
+      {
+        "url": "https://www.alexanderthamm.com/wp-content/uploads/Bilderkennung1-e1537862307419.jpg",
+        "thumb_hash": ""
+      }
     ]
+  },
+  "peers": [
+    {
+      "peer_id": 2048,
+      "nickname": "Albert Einstein",
+      "avatars": [
+        {
+          "url": "https://hips.hearstapps.com/hmg-prod/images/albert-einstein-sticks-out-his-tongue-when-asked-by-news-photo-1681316749.jpg",
+          "thumb_hash": ""
+        },
+        {
+          "url": "https://www.nobelprize.org/images/einstein-12923-portrait-medium.jpg",
+          "thumb_hash": ""
+        },
+        {
+          "url": "https://assets.editorial.aetnd.com/uploads/2009/10/albert-einstein-gettyimages-544750041.jpg",
+          "thumb_hash": ""
+        }
+      ],
+      "last_message": {
+        "text": "Hello, I'm Albert Einstein and I'm genious",
+        "timestamp": 100
+      },
+      "messages_to_read": 3
+    },
+    {
+      "peer_id": 2049,
+      "nickname": "Albus Dumbledore",
+      "avatars": [
+        {
+          "url": "https://creations.mattel.com/cdn/shop/products/e4g44r0kigsn14peqbtj_1024x.jpg",
+          "thumb_hash": ""
+        },
+        {
+          "url": "https://images.ctfassets.net/usf1vwtuqyxm/1dmmUJzpRcWaUmMOCu8QwO/7e013145694566076d47fd004fd604c2/AlbusDumbledore_WB_F6_DumbledoreSittingInChair_Promo_080615_Port.jpg",
+          "thumb_hash": ""
+        }
+      ],
+      "last_message": {
+        "text": "Hello, I am Albus Dumbledore. I wanna show you a bit magic ...",
+        "timestamp": 100
+      },
+      "messages_to_read": 3
+    },
+    {
+      "peer_id": 2050,
+      "nickname": "Harry Potter",
+      "avatars": [
+        {
+          "url": "https://www.irishtimes.com/resizer/o8d6ehEnAeE9LYXPAP1Vl1GYCBg=/1600x0/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/irishtimes/3MS3PYEKJI2N533Z3ZG6VJ2RKU.jpg",
+          "thumb_hash": ""
+        }
+      ],
+      "last_message": {
+        "message_id": 0,
+        "text": "Hello, I am Harry Potter",
+        "timestamp": 100,
+        "hash": 0
+      },
+      "messages_to_read": 3
+    },
+    {
+      "peer_id": 2051,
+      "nickname": "Anonimous",
+      "messages_to_read": 0
+    }
+  ]
 }

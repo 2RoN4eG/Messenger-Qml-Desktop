@@ -12,8 +12,8 @@ public:
     virtual bool does_exist(const t_fs_path& path) const = 0;
 
     virtual bool is_directory(const t_fs_path& path) const = 0;
-
-    virtual void do_create_directories(const t_fs_path& path) const = 0;
+    
+    virtual void create_directories(const t_fs_path& path) const = 0;
 
     virtual std::set<t_fs_path> get_paths_in_directory(const t_fs_path& path) const = 0;
 
@@ -49,8 +49,8 @@ public:
     // imlementation of i_fs
 
     bool is_directory(const t_fs_path& path) const override;
-
-    void do_create_directories(const t_fs_path& path) const override;
+    
+    void create_directories(const t_fs_path& path) const override;
 
     std::set<t_fs_path> get_paths_in_directory(const t_fs_path& path) const override;
 

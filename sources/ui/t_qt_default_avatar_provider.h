@@ -9,7 +9,8 @@ class i_image_fs_path_maker;
 
 class QQuickImageResponse;
 
-class t_qt_default_avatar_provider : public QQuickAsyncImageProvider
+class t_qt_default_avatar_provider
+    : public QQuickAsyncImageProvider
 {
 public:
     t_qt_default_avatar_provider(const i_image_fs_path_maker& path_holder,

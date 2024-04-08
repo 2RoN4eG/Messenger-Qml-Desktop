@@ -4,7 +4,8 @@
 #include "../t_defines.h"
 
 // alternative name is { i_cache_holder }
-class i_meta_holder {
+class i_meta_holder
+{
 public:
     virtual ~i_meta_holder() = 0;
 

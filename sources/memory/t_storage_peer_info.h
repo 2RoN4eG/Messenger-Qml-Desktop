@@ -6,10 +6,12 @@
 
 namespace memory
 {
-    class t_peer_info_storage : public i_peer_info_storage
+    class t_peer_info_storage
+        : public i_peer_info_storage
     {
     public:
         t_peer_info_storage(t_peer_infos& peer_infos);
+        ~t_peer_info_storage() override = default;
 
         void set_peer_info(const t_peer_id peer_id, t_nickname&& nickname) override;
 

@@ -10,13 +10,14 @@ class i_message_info_storage;
 
 namespace memory
 {
-
-    class t_peer_context_getter : public i_peer_context_getter
+    class t_peer_context_getter
+        : public i_peer_context_getter
     {
     public:
         t_peer_context_getter(const i_peer_info_storage& peer_info_storage,
                               const i_image_info_storage& image_info_storage,
                               const i_message_info_storage& message_info_storage);
+        ~t_peer_context_getter() override = default;
 
 
         const i_peer_info_storage& peer_info_storage() const override;
@@ -48,7 +49,6 @@ namespace memory
 
         const i_message_info_storage& _message_info_storage;
     };
-
 } // namespace memory
 
 #endif // T_PEER_CONTEXT_GETTER_H

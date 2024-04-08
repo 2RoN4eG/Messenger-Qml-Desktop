@@ -4,9 +4,7 @@ import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.0
 
 ListView {
-    // property var conversation_provider: conversation_provider
-
-    id: chat_area
+    id: conversation_area_view
     spacing: 0
     model: conversation_provider.size()
 
@@ -14,7 +12,8 @@ ListView {
     height: parent.height
 
     delegate: Item {
-        width: chat_area.width
+        id: conversation_item
+        width: conversation_area_view.width
         height: 200
 
         Rectangle {
@@ -27,28 +26,32 @@ ListView {
                 spacing: 0
 
                 Image {
-                    id: peer_avatar
+                    readonly property string latest_peer_avatar_source: preview_provider.latest_peer_avatar(index)
+                    readonly property int latest_peer_avatar_width: 50
+                    readonly property int latest_peer_avatar_height: 50
 
-                    property string photo_source: conversation_provider.latest_avatar_id(index)
+                    id: latest_peer_avatar
+                    width: latest_peer_avatar_width
+                    height: latest_peer_avatar_height
 
-                    source: photo_source
-                    sourceSize.height: height
-                    sourceSize.width: width
-                    visible: photo_source.length ? true : false
+                    source: latest_peer_avatar_source
+                    sourceSize.height: Math.min(width, height)
+                    sourceSize.width: Math.min(width, height)
 
                     fillMode: Image.PreserveAspectFit
+
                     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
                     layer.enabled: true
                     layer.effect: OpacityMask {
                         maskSource: Item {
-                            width: peer_avatar.width
-                            height: peer_avatar.height
+                            width: latest_peer_avatar.width
+                            height: latest_peer_avatar.height
 
                             Rectangle {
                                 anchors.centerIn: parent
-                                width: Math.min(peer_avatar.width, peer_avatar.height)
-                                height: Math.min(peer_avatar.width, peer_avatar.height)
+                                width: Math.min(latest_peer_avatar.width, latest_peer_avatar.height)
+                                height: Math.min(latest_peer_avatar.width, latest_peer_avatar.height)
                                 radius: Math.min(width, height)
                             }
                         }
@@ -60,19 +63,21 @@ ListView {
 
                     Text {
                         id: peer_nickname
-                        text: conversation_provider.message_peer_nickname(index)
+                        text: conversation_provider.peer_nickname(index)
                         font.bold: true
                     }
 
                     Image {
-                        property string photo_source: conversation_provider.message_photo(index)
+                        readonly property string sent_photo_source: conversation_provider.message_photo(index)
 
                         id: sent_photo
+
                         width: 250
-                        height: photo_source.length ? 150 : 0
-                        source: conversation_provider.message_photo(index)
+                        height: sent_photo_source.length ? 150 : 0
+
+                        source: sent_photo_source
                         sourceSize.width: width
-                        sourceSize.height: photo_source.length ? height : 0
+                        sourceSize.height: sent_photo_source.length ? height : 0
                     }
 
                     Text {

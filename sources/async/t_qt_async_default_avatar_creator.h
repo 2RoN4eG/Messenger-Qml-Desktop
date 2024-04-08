@@ -5,7 +5,8 @@
 
 #include <QObject>
 
-class i_default_avatar_creator : public QObject
+class i_default_avatar_creator
+    : public QObject
 {
     Q_OBJECT
 
@@ -24,7 +25,8 @@ signals:
 
 namespace async
 {
-    class t_qt_async_default_avatar_creator : public i_default_avatar_creator
+    class t_qt_async_default_avatar_creator
+        : public i_default_avatar_creator
     {
     public:
         t_qt_async_default_avatar_creator() = default;

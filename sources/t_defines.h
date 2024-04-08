@@ -160,7 +160,7 @@ public:
 };
 
 using t_peer_infos          = std::set<t_peer_info>;
-using t_peer_infos_iterator = t_peer_infos::iterator;
+using t_peer_infos_iterator = t_peer_infos::const_iterator;
 
 class t_message_info
 {
@@ -168,7 +168,7 @@ public:
     t_message_info(const t_message_id message_id,
                    const t_peer_id peer_id,
                    const t_message_text& text,
-                   t_message_timestamp timestamp)
+                   const t_message_timestamp timestamp)
         : t_message_info { message_id, peer_id, t_photo_id::none(), text, timestamp }
     {
     }
@@ -177,7 +177,7 @@ public:
                    const t_peer_id peer_id,
                    const t_photo_id photo_id,
                    const t_message_text& text,
-                   t_message_timestamp timestamp)
+                   const t_message_timestamp timestamp)
         : _message_id { message_id }
         , _peer_id { peer_id }
         , _photo_id { photo_id }

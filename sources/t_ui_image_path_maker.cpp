@@ -6,12 +6,16 @@ inline t_ui_string to_ui_string(const t_image_type_id image_type_id)
     {
     case t_image_type_id::t_default_avatar_image:
         return "image://default/";
+
     case t_image_type_id::t_squared_avatar_image:
         return "image://squared/";
+
     case t_image_type_id::t_photo_image:
         return "image://photos/";
+
     case t_image_type_id::t_stiker_image:
         return "image://stiker/";
+
     default:
         break;
     }

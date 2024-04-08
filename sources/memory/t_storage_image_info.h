@@ -21,12 +21,12 @@ namespace memory
     // Pros: to avoid working with fs
     // Cons: in systems with limited amount of memory needs to use "in file image info storage"
 
-    class t_image_info_storage : public i_image_info_storage
+    class t_image_info_storage
+        : public i_image_info_storage
     {
     public:
         t_image_info_storage(t_image_infos& image_infos);
-        virtual ~t_image_info_storage() override = default;
-
+        ~t_image_info_storage() override = default;
 
         // Подумать, не стоит ли разделить типы изображений, что бы ускорить поиск?
 

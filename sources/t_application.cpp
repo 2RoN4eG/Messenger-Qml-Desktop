@@ -21,15 +21,15 @@ namespace
     {
         try
         {
-            fs.do_create_directories(
+            fs.create_directories(
                 path.get_fs_path_for_avatar(peer_id, t_avatar_type_id::t_default_avatar)
                 );
 
-            fs.do_create_directories(
+            fs.create_directories(
                 path.get_fs_path_for_avatar(peer_id, t_avatar_type_id::t_squared_avatar)
                 );
 
-            fs.do_create_directories(
+            fs.create_directories(
                 path.get_fs_path_for_photo(peer_id)
                 );
         }
@@ -114,8 +114,6 @@ t_application::t_application(int& argc, char** argv)
         std::cout << "exception's what is '" << exception.what() << "'" << std::endl;
     }
 
-    // print(self);
-
     _engine.rootContext()->setContextProperty("preview_provider",      &_peer_preview_provider);
     _engine.rootContext()->setContextProperty("conversation_provider", &_peer_conversation_provider);
 
@@ -128,20 +126,11 @@ t_application::t_application(int& argc, char** argv)
     {
         throw std::runtime_error { "array root objects is empty" };
     }
-
-    // i_rotator& rotator = meta_holder;
-    // meta_holder.do_rotate(fs);
 }
 
 t_application::~t_application()
 {
-    std::cout << "t_application::~t_application()" << std::endl;
-
-    std::cout << "t_application::~t_application(): _engine.~QQmlApplicationEngine()" << std::endl;
-
     _engine.~QQmlApplicationEngine();
-
-    std::cout << "t_application::~t_application(): _application.~QGuiApplication()" << std::endl;
 
     _application.~QGuiApplication();
 }

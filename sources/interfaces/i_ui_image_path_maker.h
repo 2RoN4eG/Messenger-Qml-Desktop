@@ -8,7 +8,7 @@ class i_ui_mage_path_maker
 {
 public:
     virtual ~i_ui_mage_path_maker() = 0;
-    
+
     virtual t_ui_path operator()(const t_image_type_id image_type, const t_image_id image_id) const = 0;
 };
 

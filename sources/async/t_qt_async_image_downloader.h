@@ -10,7 +10,8 @@
 
 class QNetworkReply;
 
-class i_t_qt_async_image_downloader : public QObject
+class i_t_qt_async_image_downloader
+    : public QObject
 {
     Q_OBJECT
 
@@ -46,7 +47,8 @@ signals:
 
 namespace async
 {
-    class t_qt_async_image_downloader : public i_t_qt_async_image_downloader
+    class t_qt_async_image_downloader
+        : public i_t_qt_async_image_downloader
     {
         Q_OBJECT
 

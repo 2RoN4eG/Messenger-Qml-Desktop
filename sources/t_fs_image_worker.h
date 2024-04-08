@@ -7,8 +7,6 @@
 
 class i_fs_qt;
 class i_meta_holder;
-class i_avatar_fs_path;
-class t_memory_meta_holder;
 class t_image_info;
 
 // interface section
@@ -24,9 +22,9 @@ public:
     t_fs_image_worker(const i_fs_qt& fs, i_meta_holder& meta_holder);
     ~t_fs_image_worker() = default;
 
-    bool does_image_exist_on_drive(const t_fs_path& path) override;
+    bool does_image_exist_on_drive(const t_fs_path& path) const override;
 
-    t_ui_image read_image_from_drive(const t_fs_path& path) override;
+    t_ui_image read_image_from_drive(const t_fs_path& path) const override;
 
     void write_image_to_drive(const t_ui_image& image, t_fs_path&& path) override;
 

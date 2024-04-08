@@ -31,7 +31,7 @@ ListView {
                     width: peer_item.height
                     height: peer_item.height
 
-                    source: preview_provider.latest_avatar_id(index)
+                    source: preview_provider.latest_peer_avatar(index)
                     sourceSize.height: Math.min(width, height)
                     sourceSize.width: Math.min(width, height)
 
@@ -59,7 +59,7 @@ ListView {
 
                     Text {
                         height: 25
-                        text: preview_provider.nickname(index)
+                        text: preview_provider.peer_nickname(index)
                         font.pixelSize: font_size
                         font.bold: true
 
@@ -68,7 +68,7 @@ ListView {
 
                     Text {
                         id: message
-                        text: qsTr("Hello, I would like to say you ...")
+                        text: preview_provider.latest_message_preview(index)
                         font.pixelSize: font_size
 
                         Layout.alignment: Qt.AlignTop
@@ -81,7 +81,7 @@ ListView {
 
                     Text {
                         id: peer_last_message_timestamp
-                        text: preview_provider.last_message_timestamp(index)
+                        text: preview_provider.latest_message_timestamp(index)
                         font.pixelSize: font_size
                         horizontalAlignment: Text.AlignRight
 

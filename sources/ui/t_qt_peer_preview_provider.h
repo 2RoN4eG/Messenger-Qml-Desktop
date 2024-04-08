@@ -8,7 +8,8 @@ class i_ui_mage_path_maker;
 class i_peer_context_getter;
 class i_peer_info_storage;
 
-class t_peer_preview_provider : public QQuickItem
+class t_peer_preview_provider
+    : public QQuickItem
 {
     Q_OBJECT
 
@@ -18,13 +19,13 @@ public:
 
     Q_INVOKABLE int size() const;
     
-    Q_INVOKABLE QString latest_avatar_id(int index) const;
+    Q_INVOKABLE QString latest_peer_avatar(int index) const;
 
-    Q_INVOKABLE QString nickname(int index) const;
+    Q_INVOKABLE QString peer_nickname(int index) const;
 
-    Q_INVOKABLE QString last_message_preview(int index) const;
+    Q_INVOKABLE QString latest_message_preview(int index) const;
 
-    Q_INVOKABLE QString last_message_timestamp(int index) const;
+    Q_INVOKABLE QString latest_message_timestamp(int index) const;
 
     Q_INVOKABLE QString unread_messages(int index) const;
 

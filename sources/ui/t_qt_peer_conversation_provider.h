@@ -9,7 +9,8 @@
 class i_peer_context_getter;
 class i_message_info_storage;
 
-class t_peer_conversation_provider : public QQuickItem
+class t_peer_conversation_provider
+    : public QQuickItem
 {
     Q_OBJECT
 
@@ -19,9 +20,9 @@ public:
 
     Q_INVOKABLE int size() const;
 
-    Q_INVOKABLE QString latest_avatar_id(int index) const;
+    Q_INVOKABLE QString latest_peer_avatar(int index) const;
 
-    Q_INVOKABLE QString message_peer_nickname(int index) const;
+    Q_INVOKABLE QString peer_nickname(int index) const;
 
     Q_INVOKABLE QString message_photo(int index) const;
 

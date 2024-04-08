@@ -17,7 +17,7 @@ int t_peer_conversation_provider::size() const {
     return (int)_message_infos.size();
 }
 
-QString t_peer_conversation_provider::latest_avatar_id(int index) const {
+QString t_peer_conversation_provider::latest_peer_avatar(int index) const {
     const t_message_id message_id = _message_info_storage[index];
 
     const t_peer_id peer_id = _message_info_storage.get_message_peer_id(message_id);
@@ -39,7 +39,7 @@ QString t_peer_conversation_provider::latest_avatar_id(int index) const {
     }
 }
 
-QString t_peer_conversation_provider::message_peer_nickname(int index) const {
+QString t_peer_conversation_provider::peer_nickname(int index) const {
     const t_message_id message_id = _message_info_storage[index];
 
     const t_peer_id peer_id = _message_info_storage.get_message_peer_id(message_id);

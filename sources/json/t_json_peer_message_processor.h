@@ -7,7 +7,8 @@
 
 class i_peer_context_setter;
 
-class t_json_peer_message_processor : public i_json_processor
+class t_json_peer_message_processor
+    : public i_json_processor
 {
 public:
     t_json_peer_message_processor(i_peer_context_setter& peer_context_setter,

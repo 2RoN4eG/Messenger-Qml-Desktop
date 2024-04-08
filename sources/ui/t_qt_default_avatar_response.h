@@ -13,7 +13,8 @@ class i_image_fs_path_maker;
 
 class QQuickTextureFactory;
 
-class t_qt_default_avatar_response : public QQuickImageResponse
+class t_qt_default_avatar_response
+    : public QQuickImageResponse
 {
 public:
     t_qt_default_avatar_response(const i_image_fs_path_maker& path_holder,

@@ -7,20 +7,22 @@
 
 namespace memory
 {
-    class t_message_info_storage : public i_message_info_storage
+    class t_message_info_storage
+        : public i_message_info_storage
     {
     public:
         t_message_info_storage(t_message_infos& message_infos);
 
         ~t_message_info_storage() override = default;
 
-
+        [[deprecated ("use external t_message_infos& _message_infos to work as array")]]
         t_message_infos& message_infos() const override;
 
+        [[deprecated ("use external t_message_infos& _message_infos to work as array")]]
         const size_t size() const override;
 
+        [[deprecated ("use external t_message_infos& _message_infos to work as array")]]
         const t_message_id operator[](size_t index) const override;
-
 
         void set_message_info(const t_message_id message_id,
                               const t_peer_id peer_id,
