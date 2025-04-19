@@ -14,17 +14,17 @@ namespace
 }
 
 t_qt_image_provider::t_qt_image_provider(const i_image_fs_path_maker& path_maker,
-                                   const i_image_info_storage& image_info_storage,
+                                   const i_image_component_storage& image_component_storage,
                                    i_fs_image_worker& image_storage)
     : _path_maker { path_maker }
-    , _image_info_storage { image_info_storage }
+    , _image_component_storage { image_component_storage }
     , _image_storage { image_storage }
 {
 }
 
 QQuickImageResponse* t_qt_image_provider::requestImageResponse(const QString &id, const t_ui_size& size)
 {
-    t_qt_image_response* image_response = new t_qt_image_response(_image_storage, _path_maker, _image_info_storage, size);
+    t_qt_image_response* image_response = new t_qt_image_response(_image_storage, _path_maker, _image_component_storage, size);
 
     image_response->run(make_image_id(id));
 

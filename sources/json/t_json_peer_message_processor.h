@@ -2,7 +2,7 @@
 #define T_JSON_PEER_MESSAGE_PROCESSOR_H
 
 #include "../t_defines.h"
-#include "../interfaces/i_json_processor.h"
+#include "../interfaces/i_json_processor.hpp"
 
 
 class i_peer_context_setter;

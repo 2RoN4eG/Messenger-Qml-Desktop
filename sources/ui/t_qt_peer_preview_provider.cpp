@@ -1,38 +1,44 @@
 #include "t_qt_peer_preview_provider.h"
 
-#include "../t_defines.h"
-
 #include "../memory/t_peer_context_getter.h"
-#include "../interfaces/i_storage_peer_info.h"
-#include "../t_ui_image_path_maker.h"
+#include "../interfaces/i_peer_component_storage.hpp"
 
 #include <iostream>
 
-namespace {
-    const t_peer_info& get_peer_info(const t_peer_infos& peer_infos, const int index) {
-        if (t_peer_infos::iterator iterator = std::next(peer_infos.begin(), index); iterator != peer_infos.end()) {
+namespace
+{
+    inline const t_peer_component& get_peer_component(const t_peer_components& peer_components, const int index)
+    {
+        if (t_peer_components::iterator iterator = std::next(peer_components.begin(), index); iterator != peer_components.end())
+        {
             return *iterator;
         }
 
-        throw std::runtime_error { "peer_info does not exist by index" };
+        throw std::runtime_error { "peer_component does not exist by index" };
+    }
+
+    inline const t_peer_id get_peer_id(const t_peer_components& peer_components, const int index)
+    {
+        return get_peer_component(peer_components, index)._peer_id;
     }
 }
 
-t_peer_preview_provider::t_peer_preview_provider(const i_peer_context_getter* peer_context_getter, const i_ui_mage_path_maker* ui_path_maker)
+t_qt_peer_preview_provider::t_qt_peer_preview_provider(const i_peer_context_getter* peer_context_getter, const i_ui_mage_path_maker* ui_path_maker)
     : _peer_context_getter { *peer_context_getter }
-    , _peer_info_storage { _peer_context_getter.peer_info_storage() }
+    , _peer_component_storage { _peer_context_getter.peer_component_storage() }
+    , _peer_components { _peer_component_storage.get_peer_components() }
     , _ui_path_maker { *ui_path_maker }
 {
 }
 
-int t_peer_preview_provider::size() const
+int t_qt_peer_preview_provider::size() const
 {
-    return (int)_peer_info_storage.size();
+    return (int)_peer_components.size();
 }
 
-QString t_peer_preview_provider::latest_peer_avatar(int index) const
+QString t_qt_peer_preview_provider::latest_peer_avatar(int index) const
 {
-    const t_peer_id peer_id = _peer_info_storage[index];
+    const t_peer_id peer_id = get_peer_id(_peer_components, index);
 
     try
     {
@@ -43,33 +49,50 @@ QString t_peer_preview_provider::latest_peer_avatar(int index) const
     catch (const std::exception& exception)
     {
         std::cerr << "exception: " << exception.what() << std::endl;
+    }
 
+    try
+    {
         const t_avatar_id avatar_id = _peer_context_getter.get_peer_default_avatar_id(peer_id);
 
         return "image://default/" + QString::number(avatar_id.value());
     }
+    catch (const std::exception& exception)
+    {
+        std::cerr << "exception: " << exception.what() << std::endl;
+    }
+
+    return "";
 }
 
-QString t_peer_preview_provider::peer_nickname(int index) const
+QString t_qt_peer_preview_provider::peer_nickname(int index) const
 {
-    const t_peer_id peer_id = _peer_info_storage[index];
+    const t_peer_id peer_id = get_peer_id(_peer_components, index);
 
     const t_nickname nickname = _peer_context_getter.get_peer_nickname(peer_id);
 
     return QString::fromStdString(nickname);
 }
 
-QString t_peer_preview_provider::latest_message_preview(int index) const
+QString t_qt_peer_preview_provider::latest_message_preview(int index) const
 {
-    return "peer_last_message, Index " + QString::number(index);
+    const t_peer_id peer_id = get_peer_id(_peer_components, index);
+    
+    _peer_context_getter.get_room_latest_message_preview(t_room_id::none());
+
+    return "latest message preview for peer id " + QString::number(peer_id.value());
 }
 
-QString t_peer_preview_provider::latest_message_timestamp(int index) const
+QString t_qt_peer_preview_provider::latest_message_timestamp(int index) const
 {
+    const t_peer_id peer_id = get_peer_id(_peer_components, index);
+
     return QString::number(index);
 }
 
-QString t_peer_preview_provider::unread_messages(int index) const
+QString t_qt_peer_preview_provider::unread_messages(int index) const
 {
-    return "peer_message_amount, Index " + QString::number(index);
+    const t_peer_id peer_id = get_peer_id(_peer_components, index);
+
+    return QString::number(index);
 }

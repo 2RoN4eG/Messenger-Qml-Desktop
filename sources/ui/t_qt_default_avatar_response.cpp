@@ -3,7 +3,7 @@
 #include "../t_fs_image_worker.h"
 #include "../t_path_aggregator.h"
 
-#include "../memory/t_storage_image_info.h"
+#include "../memory/t_image_component_storage.hpp"
 
 #include <QMetaType>
 #include <iostream>
@@ -20,16 +20,16 @@ namespace
     }
 }
 
+
 Q_DECLARE_METATYPE(t_image_id);
 
-//
 
 t_qt_default_avatar_response::t_qt_default_avatar_response(const i_image_fs_path_maker& path_holder,
-                                                     const i_image_info_storage& image_info_storage,
-                                                     const t_ui_size& size,
-                                                     i_fs_image_worker& image_storage)
+                                                           const i_image_component_storage& image_component_storage,
+                                                           const t_ui_size& size,
+                                                           i_fs_image_worker& image_storage)
     : _path_holder { path_holder }
-    , _image_info_storage { image_info_storage }
+    , _image_component_storage { image_component_storage }
     , _size { size }
     , _image_storage { image_storage }
 {
@@ -38,7 +38,7 @@ t_qt_default_avatar_response::t_qt_default_avatar_response(const i_image_fs_path
 
 void t_qt_default_avatar_response::run(const t_image_id image_id)
 {
-    const t_fs_path& default_image_path = _image_info_storage.get_image_fs_path(image_id, _path_holder);
+    const t_fs_path& default_image_path = _image_component_storage.get_image_fs_path(_path_holder, image_id);
 
     if (_image_storage.does_image_exist_on_drive(default_image_path))
     {
@@ -74,10 +74,10 @@ void t_qt_default_avatar_response::run_async_image_creating(const t_image_id ima
 void t_qt_default_avatar_response::on_image_created(const t_image_id image_id)
 {
     _image = make_default_image(_command);
-    
-    t_fs_path default_image_path = _image_info_storage.get_image_fs_path(image_id, _path_holder);
 
-    _image_storage.write_image_to_drive(_image, std::move(default_image_path));
+    t_fs_path default_image_path = _image_component_storage.get_image_fs_path(_path_holder, image_id);
+
+    _image_storage.write_image_to_drive(default_image_path, _image);
 
     emit_finished();
 }

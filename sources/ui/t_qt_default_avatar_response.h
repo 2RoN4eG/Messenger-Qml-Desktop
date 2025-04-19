@@ -8,7 +8,7 @@
 #include <QQuickAsyncImageProvider>
 
 class i_fs_image_worker;
-class i_image_info_storage;
+class i_image_component_storage;
 class i_image_fs_path_maker;
 
 class QQuickTextureFactory;
@@ -18,7 +18,7 @@ class t_qt_default_avatar_response
 {
 public:
     t_qt_default_avatar_response(const i_image_fs_path_maker& path_holder,
-                                 const i_image_info_storage& image_info_storage,
+                                 const i_image_component_storage& image_component_storage,
                                  const t_ui_size& size,
                                  i_fs_image_worker& image_storage);
     ~t_qt_default_avatar_response() override = default;
@@ -41,7 +41,7 @@ protected:
 private:
     const i_image_fs_path_maker& _path_holder;
 
-    const i_image_info_storage& _image_info_storage;
+    const i_image_component_storage& _image_component_storage;
     
     i_fs_image_worker& _image_storage;
     

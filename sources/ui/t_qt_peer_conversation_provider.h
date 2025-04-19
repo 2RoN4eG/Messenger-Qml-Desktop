@@ -1,5 +1,5 @@
-#ifndef T_QT_PEER_CONVERSATION_PROVIDER_H
-#define T_QT_PEER_CONVERSATION_PROVIDER_H
+#ifndef T_QT_PEER_room_PROVIDER_H
+#define T_QT_PEER_room_PROVIDER_H
 
 #include <QObject>
 #include <QQuickItem>
@@ -7,16 +7,16 @@
 #include "../t_defines.h"
 
 class i_peer_context_getter;
-class i_message_info_storage;
+class i_message_component_storage;
 
-class t_peer_conversation_provider
+class t_qt_peer_conversation_provider
     : public QQuickItem
 {
     Q_OBJECT
 
 public:
-    t_peer_conversation_provider(const i_peer_context_getter* context_getter = nullptr);
-    ~t_peer_conversation_provider() override = default;
+    t_qt_peer_conversation_provider(const i_peer_context_getter* context_getter = nullptr);
+    ~t_qt_peer_conversation_provider() override = default;
 
     Q_INVOKABLE int size() const;
 
@@ -33,9 +33,9 @@ public:
 private:
     const i_peer_context_getter& _context_getter;
 
-    const i_message_info_storage& _message_info_storage;
+    const i_message_component_storage& _message_component_storage;
 
-    const t_message_infos& _message_infos;
+    const t_message_components& _message_components;
 };
 
-#endif // T_QT_PEER_CONVERSATION_PROVIDER_H
+#endif // T_QT_PEER_room_PROVIDER_H

@@ -42,7 +42,7 @@ std::set<t_fs_path> t_fs::get_paths_in_directory(const t_fs_path& root) const {
         return {};
     }
 
-    std::set<t_fs_path> paths;
+    std::set<t_fs_path> paths {};
     std::ranges::for_each (t_directory_entries { root }, [&paths](const t_entry& entry) {
         if (entry.is_directory())
         {
@@ -61,7 +61,7 @@ std::set<t_fs_meta> t_fs::get_metas_in_directory(const t_fs_path& root) const {
         return {};
     }
 
-    std::set<t_fs_meta> metas;
+    std::set<t_fs_meta> metas {};
     std::ranges::for_each (t_directory_entries { root }, [&metas](const t_entry& entry) {
         if (entry.is_directory())
         {
@@ -107,21 +107,20 @@ t_fs_line t_fs::read_as_single_line(const t_fs_path &path) const
     return string_stream.str();
 }
 
-void t_fs::do_write_to_drive(const t_ui_image& image, const t_fs_path& path) const
+void t_fs::do_write_to_drive(const t_fs_path& path, const t_ui_image& image) const
 {
     if (!image.save(path.c_str()))
     {
-        throw std::runtime_error { "image did not write on drive by path " + path.string() };
+        throw std::runtime_error { "image did not write to drive, path is " + path.string() };
     }
 }
 
 t_ui_image t_fs::do_read_from_drive(const t_fs_path& path) const
 {
     t_ui_image image {};
-
     if (!image.load(path.c_str()))
     {
-        throw std::runtime_error { "image did not read on drive by path " + path.string() };
+        throw std::runtime_error { "image did not read from drive, path " + path.string() };
     }
 
     return image;

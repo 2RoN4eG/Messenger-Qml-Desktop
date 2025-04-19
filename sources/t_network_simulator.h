@@ -12,7 +12,7 @@ public:
                         t_message_id_generator& message_id_generator,
                         t_image_id_generator& image_id_generator);
 
-    void process_peer_info_file();
+    void process_peer_component_file();
 
     void process_peer_message_file();
 

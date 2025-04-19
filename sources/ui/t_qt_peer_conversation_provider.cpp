@@ -1,26 +1,28 @@
 #include "t_qt_peer_conversation_provider.h"
 
 #include "../interfaces/i_peer_context_getter.h"
-#include "../memory/t_storage_message_info.h"
+#include "../memory/t_message_component_storage.hpp"
 
 #include <iostream>
 
 
-t_peer_conversation_provider::t_peer_conversation_provider(const i_peer_context_getter* context_getter)
+t_qt_peer_conversation_provider::t_qt_peer_conversation_provider(const i_peer_context_getter* context_getter)
     : _context_getter { *context_getter }
-    , _message_info_storage { _context_getter.message_info_storage() }
-    , _message_infos { _message_info_storage.message_infos() }
+    , _message_component_storage { _context_getter.message_component_storage() }
+    , _message_components { _message_component_storage.message_components() }
 {
 }
 
-int t_peer_conversation_provider::size() const {
-    return (int)_message_infos.size();
+int t_qt_peer_conversation_provider::size() const
+{
+    return (int)_message_components.size();
 }
 
-QString t_peer_conversation_provider::latest_peer_avatar(int index) const {
-    const t_message_id message_id = _message_info_storage[index];
+QString t_qt_peer_conversation_provider::latest_peer_avatar(int index) const
+{
+    const t_message_id message_id = _message_component_storage[index];
 
-    const t_peer_id peer_id = _message_info_storage.get_message_peer_id(message_id);
+    const t_peer_id peer_id = _message_component_storage.get_message_peer_id(message_id);
 
     try
     {
@@ -34,15 +36,15 @@ QString t_peer_conversation_provider::latest_peer_avatar(int index) const {
 
         const t_avatar_id avatar_id = _context_getter.get_peer_default_avatar_id(peer_id);
 
-        return "";
         return "image://default/" + QString::number(avatar_id.value());
     }
 }
 
-QString t_peer_conversation_provider::peer_nickname(int index) const {
-    const t_message_id message_id = _message_info_storage[index];
+QString t_qt_peer_conversation_provider::peer_nickname(int index) const
+{
+    const t_message_id message_id = _message_component_storage[index];
 
-    const t_peer_id peer_id = _message_info_storage.get_message_peer_id(message_id);
+    const t_peer_id peer_id = _message_component_storage.get_message_peer_id(message_id);
 
     const t_nickname nickname = _context_getter.get_peer_nickname(peer_id);
 
@@ -51,10 +53,11 @@ QString t_peer_conversation_provider::peer_nickname(int index) const {
     return QString::fromStdString(nickname);
 }
 
-QString t_peer_conversation_provider::message_photo(int index) const {
-    const t_message_id message_id = _message_info_storage[index];
+QString t_qt_peer_conversation_provider::message_photo(int index) const
+{
+    const t_message_id message_id = _message_component_storage[index];
     
-    const t_photo_id photo_id = _message_info_storage.get_message_photo_id(message_id);
+    const t_photo_id photo_id = _message_component_storage.get_message_photo_id(message_id);
 
     if (photo_id == t_avatar_id::none()) {
         return "";
@@ -63,18 +66,20 @@ QString t_peer_conversation_provider::message_photo(int index) const {
     return "image://photos/" + QString::number(photo_id.value());
 }
 
-QString t_peer_conversation_provider::message_text(int index) const {
-    const t_message_id message_id = _message_info_storage[index];
+QString t_qt_peer_conversation_provider::message_text(int index) const
+{
+    const t_message_id message_id = _message_component_storage[index];
 
-    const t_message_text& text = _message_info_storage.get_message_text(message_id);
+    const t_message_text& text = _message_component_storage.get_message_text(message_id);
 
     return QString::fromStdString(text);
 }
 
-QString t_peer_conversation_provider::message_timestamp(int index) const {
-    const t_message_id message_id = _message_info_storage[index];
+QString t_qt_peer_conversation_provider::message_timestamp(int index) const
+{
+    const t_message_id message_id = _message_component_storage[index];
     
-    const t_message_timestamp timestamp = _message_info_storage.get_message_timestamp(message_id);
+    const t_message_timestamp timestamp = _message_component_storage.get_message_timestamp(message_id);
 
     return QString::number(timestamp);
 }

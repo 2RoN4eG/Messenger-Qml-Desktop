@@ -12,19 +12,21 @@
 
 enum /*class*/ t_avatar_type_id /*: size_t*/
 {
-    t_default_avatar = 0,
-    t_squared_avatar = 1,
+    t_default_avatar    = 0,
+    t_squared_avatar    = 1,
+    t_rounded_avatar    = 2,
 
     t_avatar_type_amount
 };
 
-enum /*class*/ t_image_type_id /*: size_t*/
+enum class t_image_type_id /*: size_t*/
 {
-    t_default_avatar_image = t_avatar_type_id::t_default_avatar,
-    t_squared_avatar_image = t_avatar_type_id::t_squared_avatar,
+    t_default_avatar = t_avatar_type_id::t_default_avatar,
+    t_squared_avatar = t_avatar_type_id::t_squared_avatar,
+    t_rounded_avatar = t_avatar_type_id::t_rounded_avatar,
 
-    t_photo_image,
-    t_stiker_image,
+    t_photo,
+    t_stiker,
 
     t_image_type_amount
 };
@@ -77,8 +79,8 @@ using t_message_id                  = t_value_holder<t_id_type>;
 using t_message_id_generator        = t_value_generator<t_id_type>;
 using t_message_bundle_id           = t_value_holder<t_id_type>;
 
-using t_conversation_id             = t_value_holder<t_id_type>;
-using t_conversation_id_generator   = t_value_generator<t_id_type>;
+using t_room_id                     = t_value_holder<t_id_type>;
+using t_room_id_generator           = t_value_generator<t_id_type>;
 
 using t_protocol                    = std::string_view;
 using t_hostname                    = std::string_view;
@@ -89,7 +91,7 @@ using t_message_timestamp           = t_ui_message_timestamp;
 
 constexpr std::string_view to_string(const t_avatar_type_id avatar_type_id)
 {
-    static_assert(static_cast<size_t>(t_avatar_type_id::t_avatar_type_amount) == size_t { 2 }, "t_avatar_type::t_amount must be equal with 2");
+    static_assert(static_cast<size_t>(t_avatar_type_id::t_avatar_type_amount) == size_t { 3 }, "t_avatar_type::t_amount must be equal with 3");
 
     switch (avatar_type_id)
     {
@@ -97,21 +99,24 @@ constexpr std::string_view to_string(const t_avatar_type_id avatar_type_id)
         return "default";
     case t_avatar_type_id::t_squared_avatar:
         return "squared";
+    case t_avatar_type_id::t_rounded_avatar:
+        return "rounded";
     default:
-        throw std::runtime_error { "avatar_type_id sis undefined" };
+        throw std::runtime_error { "avatar_type_id is undefined" };
     }
 }
 
 constexpr std::string image_type_id_to_string(const t_image_type_id image_type_id)
 {
-    static_assert(static_cast<size_t>(t_image_type_id::t_image_type_amount) == size_t { 4 }, "t_image_type_id::t_amount must be equal with 4");
+    static_assert(static_cast<size_t>(t_image_type_id::t_image_type_amount) == size_t { 5 }, "t_image_type_id::t_amount must be equal with 5");
 
     switch (image_type_id)
     {
-    case t_image_type_id::t_default_avatar_image:   return "default_avatar_image";
-    case t_image_type_id::t_squared_avatar_image:   return "squared_avatar_image";
-    case t_image_type_id::t_photo_image:            return "photo_image";
-    case t_image_type_id::t_stiker_image:           return "stiker_image";
+    case t_image_type_id::t_default_avatar: return "default_avatar";
+    case t_image_type_id::t_squared_avatar: return "squared_avatar";
+    case t_image_type_id::t_rounded_avatar: return "rounded_avatar";
+    case t_image_type_id::t_photo:          return "photo";
+    case t_image_type_id::t_stiker:         return "stiker";
     default: throw std::runtime_error { "image_type_id is undefined" };
     }
 }
@@ -126,33 +131,35 @@ public:
     {
     }
 
-    friend inline bool operator<(const t_fs_meta& lhs, const t_fs_meta& rhs)
-    {
-        return lhs._timestamp < rhs._timestamp;
-    }
-
 public:
     t_fs_path _path;
+
     t_fs_size _size;
+
     t_fs_timestamp _timestamp;
 };
 
-class t_peer_info
+inline bool operator<(const t_fs_meta& lhs, const t_fs_meta& rhs)
+{
+    return lhs._timestamp < rhs._timestamp;
+}
+
+class t_peer_component
 {
 public:
-    t_peer_info()
-        : t_peer_info({}, {})
+    t_peer_component()
+        : t_peer_component({}, {})
     {
     }
 
-    t_peer_info(const t_peer_id peer_id,
+    t_peer_component(const t_peer_id peer_id,
                 t_nickname&& nickname)
         : _peer_id { peer_id }
         , _nickname { std::move(nickname) }
     {
     }
 
-    friend inline bool operator<(const t_peer_info& lhs, const t_peer_info& rhs)
+    friend inline bool operator<(const t_peer_component& lhs, const t_peer_component& rhs)
     {
         return lhs._peer_id < rhs._peer_id;
     }
@@ -163,21 +170,22 @@ public:
     t_nickname _nickname;
 };
 
-using t_peer_infos          = std::set<t_peer_info>;
-using t_peer_infos_iterator = t_peer_infos::const_iterator;
+using t_peer_components          = std::set<t_peer_component>;
 
-class t_message_info
+using t_peer_components_iterator = t_peer_components::const_iterator;
+
+class t_message_component
 {
 public:
-    t_message_info(const t_message_id message_id,
+    t_message_component(const t_message_id message_id,
                    const t_peer_id peer_id,
                    const t_message_text& text,
                    const t_message_timestamp timestamp)
-        : t_message_info { message_id, peer_id, t_photo_id::none(), text, timestamp }
+        : t_message_component { message_id, peer_id, t_photo_id::none(), text, timestamp }
     {
     }
 
-    t_message_info(const t_message_id message_id,
+    t_message_component(const t_message_id message_id,
                    const t_peer_id peer_id,
                    const t_photo_id photo_id,
                    const t_message_text& text,
@@ -191,7 +199,7 @@ public:
     }
 
 public:
-    t_conversation_id _conversation_id {};
+    t_room_id _room_id {};
 
     t_message_id _message_id {};
 
@@ -204,7 +212,10 @@ public:
     t_message_timestamp _timestamp {};
 };
 
-using t_message_infos          = std::vector<t_message_info>;
-using t_message_infos_iterator = std::vector<t_message_info>::iterator;
+using t_message_components          = std::vector<t_message_component>;
+
+using t_message_components_iterator = std::vector<t_message_component>::iterator;
+
+constexpr const char* t_messenger_root_path = "/Users/2RoN4eG/Messenger/MacOS";
 
 #endif // T_DEFINES_H

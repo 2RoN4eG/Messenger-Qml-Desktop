@@ -4,18 +4,20 @@
 #include <QObject>
 #include <QQuickItem>
 
+#include "../t_defines.h"
+
 class i_ui_mage_path_maker;
 class i_peer_context_getter;
-class i_peer_info_storage;
+class i_peer_component_storage;
 
-class t_peer_preview_provider
+class t_qt_peer_preview_provider
     : public QQuickItem
 {
     Q_OBJECT
 
 public:
-    t_peer_preview_provider(const i_peer_context_getter* peer_context_getter = nullptr, const i_ui_mage_path_maker* ui_path_maker = nullptr);
-    ~t_peer_preview_provider() override = default;
+    t_qt_peer_preview_provider(const i_peer_context_getter* peer_context_getter = nullptr, const i_ui_mage_path_maker* ui_path_maker = nullptr);
+    ~t_qt_peer_preview_provider() override = default;
 
     Q_INVOKABLE int size() const;
     
@@ -32,7 +34,9 @@ public:
 private:
     const i_peer_context_getter& _peer_context_getter;
 
-    const i_peer_info_storage& _peer_info_storage;
+    const i_peer_component_storage& _peer_component_storage;
+
+    const t_peer_components& _peer_components;
 
     const i_ui_mage_path_maker& _ui_path_maker;
 };

@@ -7,6 +7,7 @@
 
 
 namespace {
+    constexpr const char* room_field                      = "room_id";
     constexpr const char* messages_field                  = "messages";
     constexpr const char* messages_text_field             = "text";
     constexpr const char* messages_timestamp_field        = "timestamp";
@@ -23,7 +24,7 @@ namespace {
         const t_url url = json_object[messages_photo_url_field].toString();
         const t_thumb_hash thumb_hash = json_object[messages_photo_thumb_hash_field].toString().toStdString();
 
-        peer_context_setter.set_peer_message_photo_image_info(peer_id, photo_id, url, thumb_hash);
+        peer_context_setter.set_peer_message_photo_component(peer_id, photo_id, url, thumb_hash);
     }
 
     void process_peer_message(const t_qt_json_object& json_object,
@@ -43,12 +44,12 @@ namespace {
             const t_qt_json_object& photo_object = json_object[messages_photo_field].toObject();
             process_peer_message_photo(photo_object, peer_id, photo_id, peer_context_setter);
 
-            peer_context_setter.set_peer_message_info(peer_id, message_id, photo_id, text, timestamp);
+            peer_context_setter.set_peer_message_component(peer_id, message_id, photo_id, text, timestamp);
 
             return;
         }
 
-        peer_context_setter.set_peer_message_info(peer_id, message_id, text, timestamp);
+        peer_context_setter.set_peer_message_component(peer_id, message_id, text, timestamp);
     }
 
     void process_peer_messages(const t_qt_json_array& json_array, i_peer_context_setter& peer_context_setter, t_message_id_generator& message_id_generator, t_image_id_generator& photo_id_generator) {
@@ -72,8 +73,8 @@ void t_json_peer_message_processor::operator()(const t_json_string_view json) co
     t_qt_json_document document = QJsonDocument::fromJson(QByteArray::fromRawData(json.data(), json.size()), &error);
 
     if (error.error != QJsonParseError::NoError) {
-        qWarning() << "Error parsing JSON:" << error.errorString();
-        qWarning() << "JSON:" << t_qt_json { json.data() };
+        qWarning() << "t_json_peer_message_processor: Error parsing JSON:" << error.errorString();
+        qWarning() << "t_json_peer_message_processor: JSON:" << t_qt_json { json.data() };
         return;
     }
 

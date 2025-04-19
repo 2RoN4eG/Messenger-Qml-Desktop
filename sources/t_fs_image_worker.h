@@ -1,13 +1,13 @@
 #ifndef T_FS_IMAGE_WORKER_H
 #define T_FS_IMAGE_WORKER_H
 
-#include "interfaces/i_fs_image_worker.h"
+#include "interfaces/i_image_fs_worker.h"
 
 // forward declaration section
 
 class i_fs_qt;
 class i_meta_holder;
-class t_image_info;
+class t_image_component;
 
 // interface section
 
@@ -26,7 +26,7 @@ public:
 
     t_ui_image read_image_from_drive(const t_fs_path& path) const override;
 
-    void write_image_to_drive(const t_ui_image& image, t_fs_path&& path) override;
+    void write_image_to_drive(const t_fs_path& path, const t_ui_image& image) override;
 
 private:
     const i_fs_qt& _fs;

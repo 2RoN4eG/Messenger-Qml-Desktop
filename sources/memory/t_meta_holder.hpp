@@ -11,14 +11,18 @@
 class t_fs;
 class t_fs_meta;
 
-using t_meta_holder_cache = std::set<t_fs_path>;
-using t_capacity = t_fs_size;
+
+using t_meta_holder_cache   = std::set<t_fs_path>;
+using t_capacity            = t_fs_size;
+using t_cache_to_remove     = std::vector<t_fs_path>;
+
 
 struct t_capacity_range
 {
     t_capacity _minimum {};
     t_capacity _maximum {};
 };
+
 
 namespace memory
 {
@@ -70,7 +74,7 @@ namespace memory
 
         t_meta_holder_cache _cache;
 
-        std::vector<t_fs_path> _to_remove;
+        t_cache_to_remove _to_remove;
     };
 }
 

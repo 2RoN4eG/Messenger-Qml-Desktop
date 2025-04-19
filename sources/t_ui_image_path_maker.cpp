@@ -4,16 +4,16 @@ inline t_ui_string to_ui_string(const t_image_type_id image_type_id)
 {
     switch (image_type_id)
     {
-    case t_image_type_id::t_default_avatar_image:
+    case t_image_type_id::t_default_avatar:
         return "image://default/";
 
-    case t_image_type_id::t_squared_avatar_image:
+    case t_image_type_id::t_squared_avatar:
         return "image://squared/";
 
-    case t_image_type_id::t_photo_image:
+    case t_image_type_id::t_photo:
         return "image://photos/";
 
-    case t_image_type_id::t_stiker_image:
+    case t_image_type_id::t_stiker:
         return "image://stiker/";
 
     default:

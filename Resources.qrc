@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/Main.qml</file>
-        <file>json/peer_info.json</file>
-        <file>json/conversation_with.json</file>
         <file>ui/ChatArea.qml</file>
         <file>ui/PeerArea.qml</file>
         <file>ui/DebugArea.qml</file>
+        <file>json/peer_info.json</file>
+        <file>json/conversation_with.json</file>
     </qresource>
 </RCC>
