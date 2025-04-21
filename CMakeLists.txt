@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(Messenger-Qml-Desktop LANGUAGES CXX)
+project(Messenger LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -14,6 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core LinguistTools Quick 
 
 add_executable(${CMAKE_PROJECT_NAME}
     sources/t_main.cpp
+
     # header only section
     sources/t_value.h
     sources/t_defines.h
@@ -27,17 +28,17 @@ add_executable(${CMAKE_PROJECT_NAME}
     #
     sources/interfaces/i_image_component_storage.hpp    sources/interfaces/i_image_component_storage.cpp
     sources/interfaces/i_peer_component_storage.hpp     sources/interfaces/i_peer_component_storage.cpp
-    sources/interfaces/i_message_component_storage.hpp    sources/interfaces/i_message_component_storage.cpp
+    sources/interfaces/i_message_component_storage.hpp  sources/interfaces/i_message_component_storage.cpp
 
     sources/interfaces/i_peer_context_setter.h          sources/interfaces/i_peer_context_setter.cpp
     sources/interfaces/i_peer_context_getter.h          sources/interfaces/i_peer_context_getter.cpp
 
-    sources/interfaces/i_meta_holder.h                  sources/interfaces/i_meta_holder.cpp
+    sources/interfaces/i_file_meta_holder.hpp           sources/interfaces/i_file_meta_holder.cpp
     sources/interfaces/i_rotator.h                      sources/interfaces/i_rotator.cpp
     sources/interfaces/i_avatar_fs_path.hpp             sources/interfaces/i_avatar_fs_path.cpp
     sources/interfaces/i_path_self_and_peer.h           sources/interfaces/i_path_self_and_peer.cpp
     sources/interfaces/i_photo_path.hpp                 sources/interfaces/i_photo_path.cpp
-    sources/interfaces/i_path_stiker.h                  sources/interfaces/i_path_stiker.cpp
+    sources/interfaces/i_stiker_fs_path.hpp             sources/interfaces/i_path_stiker.cpp
     sources/interfaces/i_json_processor.hpp             sources/interfaces/i_json_processor.cpp
     sources/interfaces/i_ui_image_path_maker.h          sources/interfaces/i_ui_image_path_maker.cpp
     sources/interfaces/i_image_fs_worker.h              sources/interfaces/i_image_fs_worker.cpp

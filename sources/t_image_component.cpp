@@ -31,6 +31,8 @@ bool operator<(const t_image_component& lhs, const t_image_component& rhs)
 
 bool does_image_component_contain_url(const t_image_component& info)
 {
+    std::cout << "url is " << (info._url.isValid() ? "" : "not") << " valid " << std::endl;
+
     return info._url.isValid();
 }
 

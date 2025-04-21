@@ -9,7 +9,7 @@
 class i_fs_common
 {
 public:
-    virtual bool does_exist(const t_fs_path& path) const = 0;
+    virtual bool does_path_exist(const t_fs_path& path) const = 0;
 };
 
 
@@ -21,9 +21,9 @@ public:
 
     virtual void create_directories(const t_fs_path& path) const = 0;
 
-    virtual std::set<t_fs_path> get_paths_in_directory(const t_fs_path& path) const = 0;
+    virtual std::set<t_fs_path> get_directory_file_paths(const t_fs_path& path) const = 0;
 
-    virtual std::set<t_fs_meta> get_metas_in_directory(const t_fs_path& path) const = 0;
+    virtual t_fs_metas get_metas_in_directory(const t_fs_path& path) const = 0;
 
     virtual void do_directories_remove(const t_fs_path& path) const = 0;
 
@@ -39,9 +39,9 @@ public:
 class i_fs_qt : public i_fs_common
 {
 public:
-    virtual void do_write_to_drive(const t_fs_path& path, const t_ui_image& image) const = 0;
+    virtual void do_write_image_to_drive(const t_fs_path& path, const t_ui_image& image) const = 0;
 
-    virtual t_ui_image do_read_from_drive(const t_fs_path& path) const = 0;
+    virtual t_ui_image do_read_image_from_drive(const t_fs_path& path) const = 0;
 };
 
 
@@ -50,7 +50,7 @@ class t_fs : public i_fs_std, public i_fs_qt
 public:
     // imlementation of i_fs_common
 
-    bool does_exist(const t_fs_path& path) const override;
+    bool does_path_exist(const t_fs_path& path) const override;
 
     // imlementation of i_fs
 
@@ -58,9 +58,9 @@ public:
     
     void create_directories(const t_fs_path& path) const override;
 
-    std::set<t_fs_path> get_paths_in_directory(const t_fs_path& path) const override;
+    std::set<t_fs_path> get_directory_file_paths(const t_fs_path& path) const override;
 
-    std::set<t_fs_meta> get_metas_in_directory(const t_fs_path& path) const override;
+    t_fs_metas get_metas_in_directory(const t_fs_path& path) const override;
 
     void do_directories_remove(const t_fs_path& path) const override;
     
@@ -72,9 +72,9 @@ public:
 
     // implementation of i_qt_fs
 
-    void do_write_to_drive(const t_fs_path& path, const t_ui_image& image) const override;
+    void do_write_image_to_drive(const t_fs_path& path, const t_ui_image& image) const override;
 
-    t_ui_image do_read_from_drive(const t_fs_path& path) const override;
+    t_ui_image do_read_image_from_drive(const t_fs_path& path) const override;
 };
 
 

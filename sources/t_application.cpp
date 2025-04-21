@@ -17,7 +17,7 @@
 
 namespace
 {
-inline void do_create_peer_directories(const t_peer_id peer_id, const t_common_fs_path_maker& path, const i_fs_std& fs)
+inline void do_create_peer_directories(const t_peer_id peer_id, const t_compound_fs_path_maker& path, const i_fs_std& fs)
 {
     try
     {
@@ -60,7 +60,7 @@ inline size_t gigabytes(const size_t amount)
 t_application::t_application(int& argument_counter, char** argument_values)
     : _application(argument_counter, argument_values)
     , _self { 1024 }
-    , _root { make_root_path(t_messenger_root_path, _self) }
+    , _root { make_compaund_fs_path_maker(t_messenger_root_path, _self) }
     , _self_path { _root.get_self_fs_path() }
     , _peer_component_storage { _peer_components }
     , _image_component_storage { _image_components }
@@ -74,7 +74,7 @@ t_application::t_application(int& argument_counter, char** argument_values)
     , _photo_fs_path_maker  { _root }
     , _network_simulator { _peer_context_setter, _message_id_generator, _image_id_generator }
     , _fs {}
-    , _meta_holder { megabytes(10), megabytes(20), _fs.get_paths_in_directory(_self_path) }
+    , _meta_holder { megabytes(10), megabytes(20), _fs.get_directory_file_paths(_self_path) }
     , _image_fs_worker { _fs, _meta_holder }
 {
     std::cout << "Number of arguments: " << argument_counter << std::endl;
@@ -123,7 +123,7 @@ t_application::t_application(int& argument_counter, char** argument_values)
 
     try
     {
-        test_common_fs_path_maker();
+        test_compound_fs_path_maker();
     }
     catch (const std::exception& exception)
     {
@@ -134,8 +134,8 @@ t_application::t_application(int& argument_counter, char** argument_values)
     _engine.rootContext()->setContextProperty("conversation_provider", &_peer_conversation_provider);
 
     _engine.addImageProvider(QLatin1String("default"), new t_qt_default_avatar_provider { _default_avatar_fs_path_maker, _image_component_storage, _image_fs_worker });
-    _engine.addImageProvider(QLatin1String("avatars"), new t_qt_image_provider          { _squared_avatar_fs_path_maker, _image_component_storage, _image_fs_worker });
-    _engine.addImageProvider(QLatin1String("photos"),  new t_qt_image_provider          { _photo_fs_path_maker,          _image_component_storage, _image_fs_worker });
+    _engine.addImageProvider(QLatin1String("avatars"), new t_qt_image_provider          { _image_fs_worker, _squared_avatar_fs_path_maker, _image_component_storage });
+    _engine.addImageProvider(QLatin1String("photos"),  new t_qt_image_provider          { _image_fs_worker, _photo_fs_path_maker,          _image_component_storage });
 
     _engine.load(url);
     if (_engine.rootObjects().isEmpty())

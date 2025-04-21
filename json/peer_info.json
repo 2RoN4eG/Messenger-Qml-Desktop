@@ -3,12 +3,11 @@
     "peer_id": 1024,
     "nickname": "Self Nickname",
     "avatars": [{
-        "url": "https://www.alexanderthamm.com/wp-content/uploads/Bilderkennung1-e1537862307419.jpg",
+        "url": "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg",
         "thumb_hash": ""
     }]
   },
-  "peers": [
-    {
+  "peers": [{
       "peer_id": 2048,
       "nickname": "Albert Einstein",
       "avatars": [{
@@ -28,49 +27,43 @@
         "text": "Hello, I'm Albert Einstein and I'm genious",
         "timestamp": 100
       }
-    },
-    {
-      "peer_id": 2049,
-      "nickname": "Albus Dumbledore",
-      "avatars": [
+    }, {
+        "peer_id": 2049,
+        "nickname": "Albus Dumbledore",
+        "avatars": [
         {
-          "url": "https://creations.mattel.com/cdn/shop/products/e4g44r0kigsn14peqbtj_1024x.jpg",
-          "thumb_hash": ""
+            "url": "https://creations.mattel.com/cdn/shop/products/e4g44r0kigsn14peqbtj_1024x.jpg",
+            "thumb_hash": ""
         },
         {
-          "url": "https://images.ctfassets.net/usf1vwtuqyxm/1dmmUJzpRcWaUmMOCu8QwO/7e013145694566076d47fd004fd604c2/AlbusDumbledore_WB_F6_DumbledoreSittingInChair_Promo_080615_Port.jpg",
-          "thumb_hash": ""
-        }
-      ],
-      "latest_message": {
-        "room_id": 128,
-        "peer_id": 2049,
-        "text": "Hello, I am Albus Dumbledore. I wanna show you a bit magic ...",
-        "timestamp": 100
-      },
-      "messages_to_read": 3
+            "url": "https://images.ctfassets.net/usf1vwtuqyxm/1dmmUJzpRcWaUmMOCu8QwO/7e013145694566076d47fd004fd604c2/AlbusDumbledore_WB_F6_DumbledoreSittingInChair_Promo_080615_Port.jpg",
+            "thumb_hash": ""
+        }],
+        "latest_message": {
+            "room_id": 128,
+            "peer_id": 2049,
+            "text": "Hello, I am Albus Dumbledore. I wanna show you a bit magic ...",
+            "timestamp": 100
+        },
+        "messages_to_read": 3
     },
     {
-      "peer_id": 2050,
-      "nickname": "Harry Potter",
-      "avatars": [
-        {
+        "peer_id": 2050,
+        "nickname": "Harry Potter",
+        "avatars": [{
           "url": "https://www.irishtimes.com/resizer/o8d6ehEnAeE9LYXPAP1Vl1GYCBg=/1600x0/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/irishtimes/3MS3PYEKJI2N533Z3ZG6VJ2RKU.jpg",
           "thumb_hash": ""
-        }
-      ],
-      "latest_message": {
-        "room_id": 128,
-        "peer_id": 2050,
-        "text": "Hello, I am Harry Potter",
-        "timestamp": 100
-      },
-      "messages_to_read": 3
-    },
-    {
-      "peer_id": 2051,
-      "nickname": "Anonimous",
-      "messages_to_read": 0
-    }
-  ]
+        }],
+        "latest_message": {
+            "room_id": 128,
+            "peer_id": 2050,
+            "text": "Hello, I am Harry Potter",
+            "timestamp": 100
+        },
+        "messages_to_read": 3
+    }, {
+        "peer_id": 2051,
+        "nickname": "Anonimous",
+        "messages_to_read": 0
+    }]
 }

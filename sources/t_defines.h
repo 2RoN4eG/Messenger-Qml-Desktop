@@ -144,6 +144,8 @@ inline bool operator<(const t_fs_meta& lhs, const t_fs_meta& rhs)
     return lhs._timestamp < rhs._timestamp;
 }
 
+using t_fs_metas                    = std::set<t_fs_meta>;
+
 class t_peer_component
 {
 public:
@@ -152,8 +154,7 @@ public:
     {
     }
 
-    t_peer_component(const t_peer_id peer_id,
-                t_nickname&& nickname)
+    t_peer_component(const t_peer_id peer_id, t_nickname&& nickname)
         : _peer_id { peer_id }
         , _nickname { std::move(nickname) }
     {
@@ -170,26 +171,26 @@ public:
     t_nickname _nickname;
 };
 
-using t_peer_components          = std::set<t_peer_component>;
+using t_peer_components             = std::set<t_peer_component>;
 
-using t_peer_components_iterator = t_peer_components::const_iterator;
+using t_peer_components_iterator    = t_peer_components::const_iterator;
 
 class t_message_component
 {
 public:
     t_message_component(const t_message_id message_id,
-                   const t_peer_id peer_id,
-                   const t_message_text& text,
-                   const t_message_timestamp timestamp)
+                        const t_peer_id peer_id,
+                        const t_message_text& text,
+                        const t_message_timestamp timestamp)
         : t_message_component { message_id, peer_id, t_photo_id::none(), text, timestamp }
     {
     }
 
     t_message_component(const t_message_id message_id,
-                   const t_peer_id peer_id,
-                   const t_photo_id photo_id,
-                   const t_message_text& text,
-                   const t_message_timestamp timestamp)
+                        const t_peer_id peer_id,
+                        const t_photo_id photo_id,
+                        const t_message_text& text,
+                        const t_message_timestamp timestamp)
         : _message_id { message_id }
         , _peer_id { peer_id }
         , _photo_id { photo_id }

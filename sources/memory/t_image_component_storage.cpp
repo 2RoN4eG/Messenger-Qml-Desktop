@@ -26,6 +26,19 @@ namespace
         const t_image_id _image_id;
     };
 
+    inline const t_image_component& get_image_component_by_image_id(const t_image_components& image_components, const t_image_id image_id)
+    {
+        const t_finding_image_component_by_image_id finding_predicate { image_id };
+
+        if (t_image_components_iterator it = std::find_if(image_components.begin(), image_components.end(), std::move(finding_predicate)); it != image_components.end())
+        {
+            return *it;
+        }
+
+        throw std::runtime_error { "get_image_component_by_image_id: image component does not exist, image_id is " + image_id.to_string() };
+    }
+
+
     struct t_finding_image_component_by_image_id_and_image_type_id
     {
         t_finding_image_component_by_image_id_and_image_type_id(const t_image_id image_id, const t_image_type_id image_type_id)
@@ -43,37 +56,6 @@ namespace
 
         const t_image_id _image_id;
     };
-
-    struct t_finding_image_component_by_peer_id_and_image_type_id
-    {
-        t_finding_image_component_by_peer_id_and_image_type_id(const t_peer_id peer_id, const t_image_type_id image_type_id)
-            : _peer_id { peer_id }
-            , _image_type_id { image_type_id }
-        {
-        }
-
-        bool operator()(const t_image_component& image_component) const
-        {
-            return image_component._peer_id == _peer_id && image_component._image_type_id == _image_type_id;
-        }
-
-        const t_peer_id _peer_id;
-
-        const t_image_type_id _image_type_id;
-    };
-
-
-    inline const t_image_component& get_image_component_by_image_id(const t_image_components& image_components, const t_image_id image_id)
-    {
-        const t_finding_image_component_by_image_id finding_predicate { image_id };
-
-        if (t_image_components_iterator it = std::find_if(image_components.begin(), image_components.end(), std::move(finding_predicate)); it != image_components.end())
-        {
-            return *it;
-        }
-
-        throw std::runtime_error { "get_image_component_by_image_id: image component does not exist, image_id is " + image_id.to_string() };
-    }
 
     inline const t_image_component& get_avatar_component_by_avatar_id(const t_image_components& image_components, const t_avatar_id avatar_id)
     {
@@ -99,6 +81,25 @@ namespace
         throw std::runtime_error { "get_photo_component_by_photo_id: photo component does not exist, photo_id is " + photo_id.to_string() };
     }
 
+
+    struct t_finding_image_component_by_peer_id_and_image_type_id
+    {
+        t_finding_image_component_by_peer_id_and_image_type_id(const t_peer_id peer_id, const t_image_type_id image_type_id)
+            : _peer_id { peer_id }
+            , _image_type_id { image_type_id }
+        {
+        }
+
+        bool operator()(const t_image_component& image_component) const
+        {
+            return image_component._peer_id == _peer_id && image_component._image_type_id == _image_type_id;
+        }
+
+        const t_peer_id _peer_id;
+
+        const t_image_type_id _image_type_id;
+    };
+
     inline const t_image_component& get_avatar_component_by_peer_id_and_image_type_id(const t_image_components& image_components, const t_peer_id peer_id, const t_image_type_id image_type_id)
     {
         const t_finding_image_component_by_peer_id_and_image_type_id finding_predicate { peer_id, image_type_id };
@@ -110,6 +111,7 @@ namespace
 
         throw std::runtime_error { "get_avatar_component_by_peer_id_and_image_type_id: image component does not exist, peer_id is " + peer_id.to_string() + ", image_type_id is " + image_type_id_to_string(image_type_id) };
     }
+
 
     inline t_fs_filename get_fs_filename(const t_url& url)
     {
@@ -153,7 +155,7 @@ namespace memory
     }
 
 
-    const t_fs_path t_image_component_storage::get_image_fs_path(const i_image_fs_path_maker& path_maker, const t_image_id image_id) const
+    const t_fs_path t_image_component_storage::get_image_fs_path(const i_file_fs_path_maker& path_maker, const t_image_id image_id) const
     {
         const t_image_component& image_component = get_image_component_by_image_id(_image_components, image_id);
 

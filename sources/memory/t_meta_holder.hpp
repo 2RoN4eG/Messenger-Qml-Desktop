@@ -3,7 +3,7 @@
 
 #include "../t_defines.h"
 
-#include "../interfaces/i_meta_holder.h"
+#include "../interfaces/i_file_meta_holder.hpp"
 #include "../interfaces/i_rotator.h"
 
 #include <set>
@@ -34,8 +34,9 @@ namespace memory
     // файловой системе
 
     // alternative name is { t_path_holder, t_file_cacher, t_path_cacher }
+
     class t_meta_holder
-        : public i_meta_holder
+        : public i_file_meta_holder
         , public i_rotator
     {
     public:
@@ -43,14 +44,14 @@ namespace memory
                       const t_capacity maximum_capacity,
                       t_meta_holder_cache&& paths);
 
-        // implement i_meta_holder interface
+        // implement i_file_meta_holder interface
 
-        bool does_exist(const t_fs_path& path) const override;
+        bool does_path_exist(const t_fs_path& path) const override;
 
         void do_register(const t_fs_path& path) override;
 
         // const time (O(1))
-        void do_hold(const t_fs_path& path) override { do_register(path); }
+        void hold_on(const t_fs_path& path) override { do_register(path); }
 
         // void do_unhold(const t_fs_path& path) override { do_unregister(path); }
 
@@ -61,7 +62,7 @@ namespace memory
         void do_rotate(const t_fs& fs) override;
 
     protected:
-        bool _does_exist(const t_fs_path& path) const;
+        bool _does_path_exist(const t_fs_path& path) const;
 
         void _do_register(const t_fs_path& path);
 

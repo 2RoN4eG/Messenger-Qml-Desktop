@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-    test_common_fs_path_maker();
+    test_compound_fs_path_maker();
 
     t_application application { argc, argv };
 

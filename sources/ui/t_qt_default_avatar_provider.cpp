@@ -9,10 +9,10 @@ t_image_id make_image_id(const QString& id) {
 }
 }
 
-t_qt_default_avatar_provider::t_qt_default_avatar_provider(const i_image_fs_path_maker& path_holder,
+t_qt_default_avatar_provider::t_qt_default_avatar_provider(const i_file_fs_path_maker& path_maker,
                                                            const i_image_component_storage& image_component_storage,
                                                            i_fs_image_worker& image_storage)
-    : _path_maker { path_holder }
+    : _path_maker { path_maker }
     , _image_component_storage { image_component_storage }
     , _image_storage { image_storage }
 {

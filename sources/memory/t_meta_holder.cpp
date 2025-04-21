@@ -76,9 +76,9 @@ namespace memory
         }
     }
 
-    bool t_meta_holder::does_exist(const t_fs_path& path) const
+    bool t_meta_holder::does_path_exist(const t_fs_path& path) const
     {
-        return _does_exist(path);
+        return _does_path_exist(path);
     }
 
     // const time (O(1))
@@ -106,7 +106,7 @@ namespace memory
         }
     }
 
-    bool t_meta_holder::_does_exist(const t_fs_path &path) const
+    bool t_meta_holder::_does_path_exist(const t_fs_path &path) const
     {
         return std::ranges::find(_cache, path) != _cache.end();
     }

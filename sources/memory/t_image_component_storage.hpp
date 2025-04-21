@@ -6,7 +6,7 @@
 #include "../t_image_component.hpp"
 
 
-class i_image_fs_path_maker;
+class i_file_fs_path_maker;
 class i_ui_mage_path_maker;
 
 namespace memory
@@ -15,12 +15,12 @@ namespace memory
     // Pros: to avoid working with fs
     // Cons: in systems with limited amount of memory needs to use "in file image info storage"
 
-    class t_image_component_storage
-        : public i_image_component_storage
+    class t_image_component_storage : public i_image_component_storage
     {
     public:
         t_image_component_storage(t_image_components& image_components);
         ~t_image_component_storage() override = default;
+
 
         // Подумать, не стоит ли разделить типы изображений, что бы ускорить поиск?
 
@@ -32,7 +32,7 @@ namespace memory
 
 
         // getting image path using image_id and path maker (image_component::path will be maked using avatar_type)
-        const t_fs_path get_image_fs_path(const i_image_fs_path_maker& path_maker, const t_image_id image_id) const override;
+        const t_fs_path get_image_fs_path(const i_file_fs_path_maker& path_maker, const t_image_id image_id) const override;
 
         // getting image url using image_id
         const t_url& get_image_url(const t_image_id image_id) const override;

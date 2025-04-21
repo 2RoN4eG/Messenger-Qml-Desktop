@@ -24,11 +24,11 @@ namespace
 Q_DECLARE_METATYPE(t_image_id);
 
 
-t_qt_default_avatar_response::t_qt_default_avatar_response(const i_image_fs_path_maker& path_holder,
+t_qt_default_avatar_response::t_qt_default_avatar_response(const i_file_fs_path_maker& path_maker,
                                                            const i_image_component_storage& image_component_storage,
                                                            const t_ui_size& size,
                                                            i_fs_image_worker& image_storage)
-    : _path_holder { path_holder }
+    : _path_maker { path_maker }
     , _image_component_storage { image_component_storage }
     , _size { size }
     , _image_storage { image_storage }
@@ -38,7 +38,7 @@ t_qt_default_avatar_response::t_qt_default_avatar_response(const i_image_fs_path
 
 void t_qt_default_avatar_response::run(const t_image_id image_id)
 {
-    const t_fs_path& default_image_path = _image_component_storage.get_image_fs_path(_path_holder, image_id);
+    const t_fs_path& default_image_path = _image_component_storage.get_image_fs_path(_path_maker, image_id);
 
     if (_image_storage.does_image_exist_on_drive(default_image_path))
     {
@@ -75,7 +75,7 @@ void t_qt_default_avatar_response::on_image_created(const t_image_id image_id)
 {
     _image = make_default_image(_command);
 
-    t_fs_path default_image_path = _image_component_storage.get_image_fs_path(_path_holder, image_id);
+    const t_fs_path default_image_path = _image_component_storage.get_image_fs_path(_path_maker, image_id);
 
     _image_storage.write_image_to_drive(default_image_path, _image);
 

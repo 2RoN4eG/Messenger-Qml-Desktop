@@ -13,9 +13,7 @@ namespace
     }
 }
 
-t_qt_image_provider::t_qt_image_provider(const i_image_fs_path_maker& path_maker,
-                                   const i_image_component_storage& image_component_storage,
-                                   i_fs_image_worker& image_storage)
+t_qt_image_provider::t_qt_image_provider(i_fs_image_worker& image_storage, const i_file_fs_path_maker& path_maker, const i_image_component_storage& image_component_storage)
     : _path_maker { path_maker }
     , _image_component_storage { image_component_storage }
     , _image_storage { image_storage }

@@ -8,16 +8,15 @@
 #include <QQuickAsyncImageProvider>
 
 class i_fs_image_worker;
+class i_file_fs_path_maker;
 class i_image_component_storage;
-class i_image_fs_path_maker;
 
 class QQuickTextureFactory;
 
-class t_qt_default_avatar_response
-    : public QQuickImageResponse
+class t_qt_default_avatar_response : public QQuickImageResponse
 {
 public:
-    t_qt_default_avatar_response(const i_image_fs_path_maker& path_holder,
+    t_qt_default_avatar_response(const i_file_fs_path_maker& path_maker,
                                  const i_image_component_storage& image_component_storage,
                                  const t_ui_size& size,
                                  i_fs_image_worker& image_storage);
@@ -29,7 +28,7 @@ public:
 
 protected:
     void emit_finished();
-    
+
     void run_async_image_creating(const t_image_id image_id, const t_ui_nickname nickname, const t_ui_size& size);
 
 protected slots:
@@ -39,14 +38,14 @@ protected:
     async::t_qt_default_avatar_creator_pointer _command;
 
 private:
-    const i_image_fs_path_maker& _path_holder;
+    const i_file_fs_path_maker& _path_maker;
 
     const i_image_component_storage& _image_component_storage;
-    
+
     i_fs_image_worker& _image_storage;
-    
+
     t_ui_size _size;
-    
+
     t_ui_image _image;
 };
 

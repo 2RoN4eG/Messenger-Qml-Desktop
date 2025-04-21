@@ -1,5 +1,5 @@
-#include "i_path_stiker.h"
+#include "i_stiker_fs_path.hpp"
 
-i_path_stiker::~i_path_stiker()
+i_stiker_fs_path::~i_stiker_fs_path()
 {
 }

@@ -10,7 +10,7 @@
 
 class i_fs_image_worker;
 class i_image_component_storage;
-class i_image_fs_path_maker;
+class i_file_fs_path_maker;
 
 class QQuickTextureFactory;
 
@@ -19,7 +19,7 @@ class t_qt_image_response
 {
 public:
     t_qt_image_response(i_fs_image_worker& image_storage,
-                        const i_image_fs_path_maker& path_holder,
+                        const i_file_fs_path_maker& path_maker,
                         const i_image_component_storage& image_component_storage,
                         const QSize& size);
     ~t_qt_image_response() override = default;
@@ -46,7 +46,7 @@ private:
 
     QNetworkAccessManager _network;
     
-    const i_image_fs_path_maker& _path_maker;
+    const i_file_fs_path_maker& _path_maker;
 
     const i_image_component_storage& _image_component_storage;
 

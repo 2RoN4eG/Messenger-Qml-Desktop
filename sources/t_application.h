@@ -52,7 +52,7 @@ private:
 
     t_qt_peer_conversation_provider         _peer_conversation_provider;
 
-    t_common_fs_path_maker                  _root;
+    t_compound_fs_path_maker                  _root;
 
     t_avatar_fs_path_maker                  _default_avatar_fs_path_maker;
     t_avatar_fs_path_maker                  _squared_avatar_fs_path_maker;

@@ -13,7 +13,7 @@ namespace
     using t_directory_entries = std::filesystem::recursive_directory_iterator;
 }
 
-bool t_fs::does_exist(const t_fs_path& path) const
+bool t_fs::does_path_exist(const t_fs_path& path) const
 {
     return std::filesystem::exists(path);
 }
@@ -25,7 +25,7 @@ bool t_fs::is_directory(const t_fs_path& path) const
 
 void t_fs::create_directories(const t_fs_path& path) const
 {
-    if (does_exist(path))
+    if (does_path_exist(path))
     {
         return;
     }
@@ -36,33 +36,41 @@ void t_fs::create_directories(const t_fs_path& path) const
     }
 }
 
-std::set<t_fs_path> t_fs::get_paths_in_directory(const t_fs_path& root) const {
-    if (!does_exist(root))
+std::set<t_fs_path> t_fs::get_directory_file_paths(const t_fs_path& root) const
+{
+    if (!does_path_exist(root))
     {
         return {};
     }
 
     std::set<t_fs_path> paths {};
-    std::ranges::for_each (t_directory_entries { root }, [&paths](const t_entry& entry) {
+    std::ranges::for_each (t_directory_entries { root }, [&paths](const t_entry& entry)
+    {
         if (entry.is_directory())
         {
             return;
         }
 
-        paths.emplace(entry.path());
+        const t_fs_path path = entry.path();
+
+        paths.emplace(path);
+
+        std::cout << " [] path is " << path << std::endl;
     });
 
     return paths;
 }
 
-std::set<t_fs_meta> t_fs::get_metas_in_directory(const t_fs_path& root) const {
-    if (!does_exist(root))
+t_fs_metas t_fs::get_metas_in_directory(const t_fs_path& root) const
+{
+    if (!does_path_exist(root))
     {
         return {};
     }
 
-    std::set<t_fs_meta> metas {};
-    std::ranges::for_each (t_directory_entries { root }, [&metas](const t_entry& entry) {
+    t_fs_metas metas {};
+    std::ranges::for_each (t_directory_entries { root }, [&metas](const t_entry& entry)
+    {
         if (entry.is_directory())
         {
             return;
@@ -107,7 +115,7 @@ t_fs_line t_fs::read_as_single_line(const t_fs_path &path) const
     return string_stream.str();
 }
 
-void t_fs::do_write_to_drive(const t_fs_path& path, const t_ui_image& image) const
+void t_fs::do_write_image_to_drive(const t_fs_path& path, const t_ui_image& image) const
 {
     if (!image.save(path.c_str()))
     {
@@ -115,7 +123,7 @@ void t_fs::do_write_to_drive(const t_fs_path& path, const t_ui_image& image) con
     }
 }
 
-t_ui_image t_fs::do_read_from_drive(const t_fs_path& path) const
+t_ui_image t_fs::do_read_image_from_drive(const t_fs_path& path) const
 {
     t_ui_image image {};
     if (!image.load(path.c_str()))

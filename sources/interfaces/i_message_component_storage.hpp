@@ -18,7 +18,17 @@ public:
 
     virtual bool does_message_photo_exist(const t_message_id message_id) const = 0;
 
+    virtual bool does_message_photo_bundle_exist(const t_message_id message_id) const
+    {
+        return {};
+    }
+
     virtual t_photo_id get_message_photo_id(const t_message_id message_id) const = 0;
+
+    virtual t_photo_bundle_id get_message_photo_bundle_id(const t_message_id message_id) const
+    {
+        return {};
+    }
 
     virtual t_message_text get_message_text(const t_message_id message_id) const = 0;
 

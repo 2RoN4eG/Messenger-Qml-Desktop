@@ -31,7 +31,7 @@ namespace
 Q_DECLARE_METATYPE(t_image_id);
 
 t_qt_image_response::t_qt_image_response(i_fs_image_worker& image_storage,
-                                         const i_image_fs_path_maker& path_maker,
+                                         const i_file_fs_path_maker& path_maker,
                                          const i_image_component_storage& image_component_storage,
                                          const QSize& size)
     : _path_maker { path_maker }
